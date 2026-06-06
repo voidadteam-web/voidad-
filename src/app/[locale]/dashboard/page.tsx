@@ -48,6 +48,7 @@ export default function DashboardPage() {
   const voidpoints = stats.voidpoints;
   const level = stats.level;
   const adsBlocked = stats.adsBlocked;
+  const donateable = Math.max(0, stats.voidpoints - stats.voidpointsDonated);
   const isNewAccount = voidpoints === 0 && adsBlocked === 0;
 
   async function toggleSetting(
@@ -141,9 +142,21 @@ export default function DashboardPage() {
             <VoidStat label={ts("voidpoints")} value={voidpoints} />
             <div className="mt-4 space-y-2 text-xs text-void-muted">
               <div className="flex justify-between">
+                <span>{t("donateBalance")}</span>
+                <span className="text-void-green">
+                  {donateable.toLocaleString(locale)}
+                </span>
+              </div>
+              <div className="flex justify-between">
                 <span>{ts("adsBlocked")}</span>
                 <span className="text-void-green">
-                  {adsBlocked.toLocaleString(locale)} pts
+                  {adsBlocked.toLocaleString(locale)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>{t("donatedPoints")}</span>
+                <span className="text-void-green">
+                  {stats.voidpointsDonated.toLocaleString(locale)}
                 </span>
               </div>
               <div className="flex justify-between">
