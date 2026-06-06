@@ -127,38 +127,90 @@ body {
   animation: pulse-glow 2.5s ease-in-out infinite;
 }
 
-/** Carbon tree — pulsing neon bloom on wireframe art */
+/** Carbon tree — soft neon bloom (reduced intensity) */
 @keyframes void-tree-neon-pulse {
   0%,
   100% {
-    filter: drop-shadow(0 0 14px rgba(0, 255, 153, 0.5))
-      drop-shadow(0 0 28px rgba(0, 255, 153, 0.28));
+    filter: drop-shadow(0 0 6px rgba(0, 255, 153, 0.22))
+      drop-shadow(0 0 12px rgba(0, 255, 153, 0.1));
   }
   50% {
-    filter: drop-shadow(0 0 26px rgba(0, 255, 153, 0.85))
-      drop-shadow(0 0 52px rgba(0, 255, 153, 0.45))
-      drop-shadow(0 0 72px rgba(0, 255, 153, 0.18));
+    filter: drop-shadow(0 0 10px rgba(0, 255, 153, 0.32))
+      drop-shadow(0 0 20px rgba(0, 255, 153, 0.14));
   }
 }
 
 .void-tree-glow-art {
-  animation: void-tree-neon-pulse 3s ease-in-out infinite;
+  animation: void-tree-neon-pulse 4s ease-in-out infinite;
 }
 
 .void-tree-root-aura {
   background: radial-gradient(
-    ellipse 85% 45% at 50% 100%,
-    rgba(0, 255, 153, 0.22),
-    rgba(0, 255, 153, 0.06) 45%,
-    transparent 72%
+    ellipse 80% 40% at 50% 100%,
+    rgba(0, 255, 153, 0.1),
+    rgba(0, 255, 153, 0.03) 50%,
+    transparent 75%
   );
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 .void-tree-map-feed {
-  opacity: 0.45;
-  filter: drop-shadow(0 0 12px rgba(0, 255, 153, 0.35));
-  animation: pulse-glow 3.5s ease-in-out infinite;
+  opacity: 0.32;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 153, 0.15));
+}
+
+.void-tree-map-ground {
+  opacity: 0.38;
+  mix-blend-mode: screen;
+}
+
+@keyframes void-tree-feed-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.void-tree-feed-node {
+  animation: void-tree-feed-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes void-tree-stream-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.void-tree-stream {
+  animation: void-tree-stream-pulse 3s ease-in-out infinite;
+}
+
+@keyframes void-energy-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.55;
+  }
+  88% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(-72px);
+    opacity: 0;
+  }
+}
+
+.void-tree-energy-particle {
+  animation: void-energy-rise 2.6s ease-in infinite;
 }
 
 @keyframes void-pixel-trail {

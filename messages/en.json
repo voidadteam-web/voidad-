@@ -207,6 +207,8 @@
     "password": "Password",
     "levelBadge": "Level {level} — Dragon Shield",
     "levelStarter": "Level 0 — New Guardian",
+    "carbonTreeTitle": "Carbon Absorption Tree",
+    "carbonTreeLevel": "Tree Level",
     "uploading": "Uploading…",
     "saving": "Saving…",
     "saved": "All changes saved.",

@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 
 type LevelMilitaryRankProps = {
   level: number;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
 };
 
-const HEIGHT = { sm: 42, md: 52, lg: 64 } as const;
+const HEIGHT = { sm: 42, md: 52, lg: 64, xl: 96 } as const;
 
 /** Cyber shield badge — selected by player level */
 export function LevelMilitaryRank({

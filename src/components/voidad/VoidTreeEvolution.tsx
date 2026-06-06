@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { CarbonTreeEnergyFlow } from "@/components/voidad/CarbonTreeEnergyFlow";
 import {
   CARBON_TREE_LEVEL_COUNT,
   CARBON_TREE_NAMES,
@@ -52,7 +53,7 @@ export function VoidTreeEvolution({
               )}
             >
               <div className="relative mb-2 flex h-[100px] w-full items-end justify-center sm:h-[120px]">
-                <div className="void-tree-map-feed pointer-events-none absolute inset-x-0 bottom-0 h-[38%]">
+                <div className="void-tree-map-feed void-tree-map-ground pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[40%]">
                   <Image
                     src="/world-map-net.png"
                     alt=""
@@ -62,10 +63,13 @@ export function VoidTreeEvolution({
                   />
                 </div>
                 {isActive && (
-                  <div
-                    className="void-tree-root-aura pointer-events-none absolute inset-x-[5%] bottom-0 top-[40%]"
-                    aria-hidden
-                  />
+                  <>
+                    <CarbonTreeEnergyFlow intensity="sm" className="z-[5]" />
+                    <div
+                      className="void-tree-root-aura pointer-events-none absolute inset-x-[8%] bottom-[6%] z-[4] h-[30%]"
+                      aria-hidden
+                    />
+                  </>
                 )}
                 <Image
                   src={carbonTreeImageForLevel(level)}
@@ -75,7 +79,9 @@ export function VoidTreeEvolution({
                   unoptimized
                   className={cn(
                     "relative z-10 object-contain object-bottom",
-                    isActive ? "void-tree-glow-art" : "drop-shadow-[0_0_10px_rgba(0,255,153,0.35)]",
+                    isActive
+                      ? "void-tree-glow-art"
+                      : "drop-shadow-[0_0_6px_rgba(0,255,153,0.18)]",
                   )}
                   style={{ height: isActive ? 110 : 95, width: "auto" }}
                 />

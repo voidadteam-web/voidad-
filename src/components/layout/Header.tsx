@@ -5,6 +5,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { VoidLogo } from "@/components/voidad/VoidLogo";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
+import { LevelMilitaryRank } from "@/components/leaderboard/LevelMilitaryRank";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
@@ -30,6 +31,8 @@ export function Header() {
     user?.user_metadata?.display_name ??
     user?.email?.split("@")[0] ??
     "";
+
+  const playerLevel = profile?.level ?? 0;
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -61,8 +64,15 @@ export function Header() {
         <div className="flex items-center gap-3">
           {!loading && user ? (
             <>
-              <Link href="/settings" className="hidden sm:block">
-                <span className="text-xs font-medium text-void-text-mint">
+              <Link
+                href="/settings"
+                className="hidden items-center gap-2 transition-opacity hover:opacity-90 sm:flex"
+              >
+                <LevelMilitaryRank
+                  level={Math.min(Math.max(playerLevel, 1), 57)}
+                  size="sm"
+                />
+                <span className="max-w-[120px] truncate text-xs font-medium text-void-text-mint">
                   {displayName}
                 </span>
               </Link>
@@ -129,8 +139,12 @@ export function Header() {
                   avatarUrl={profile?.avatar_url}
                   size="xs"
                 />
-                <span className="void-display text-sm tracking-wider text-void-muted">
-                  {t("settings")}
+                <LevelMilitaryRank
+                  level={Math.min(Math.max(playerLevel, 1), 57)}
+                  size="sm"
+                />
+                <span className="void-display truncate text-sm tracking-wider text-void-muted">
+                  {displayName || t("settings")}
                 </span>
               </Link>
             )}

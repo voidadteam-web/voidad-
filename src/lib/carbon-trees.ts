@@ -1,3 +1,5 @@
+import { shieldTierForLevel } from "@/lib/shield-ranks";
+
 export const CARBON_TREE_LEVEL_COUNT = 10;
 
 export const CARBON_TREE_NAMES: Record<number, string> = {
@@ -25,4 +27,9 @@ export function carbonTreeNameForLevel(level: number): string {
 
 export function clampCarbonTreeLevel(level: number): number {
   return Math.min(CARBON_TREE_LEVEL_COUNT, Math.max(1, Math.round(level)));
+}
+
+/** Map player level 0–57 → carbon tree stage 1–10 */
+export function carbonTreeLevelForPlayerLevel(level: number): number {
+  return shieldTierForLevel(level) + 1;
 }

@@ -16,6 +16,8 @@ import { useUserSettings } from "@/hooks/useUserSettings";
 import { Link } from "@/i18n/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
+import { CarbonWireframeTree } from "@/components/voidad/CarbonWireframeTree";
+import { carbonTreeLevelForPlayerLevel } from "@/lib/carbon-trees";
 import { Shield, Heart, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
@@ -81,6 +83,8 @@ export default function SettingsPage() {
 
   const voidpoints = profile?.voidpoints_total ?? 0;
   const level = profile?.level ?? 0;
+  const playerLevel = Math.min(Math.max(level, 1), 57);
+  const carbonTreeLevel = carbonTreeLevelForPlayerLevel(level);
   const communityRank = voidpoints > 0 ? t("ranked") : t("unranked");
 
   async function handleSignOut() {
@@ -214,13 +218,29 @@ export default function SettingsPage() {
                     level > 0 ? "opacity-100" : "opacity-40"
                   }`}
                 >
-                  <LevelMilitaryRank level={Math.min(Math.max(level, 1), 57)} size="lg" />
+                  <LevelMilitaryRank level={playerLevel} size="xl" />
                 </div>
-                <p className="mt-2 text-xs text-void-green">
+                <p className="mt-3 text-xs text-void-green">
                   {level > 0
                     ? `${levelBadgeTitle(level)} — ${t("level")} ${level}`
                     : t("levelStarter")}
                 </p>
+
+                <div className="mt-6 w-full rounded-xl border border-void-green/20 bg-void-black/50 p-3">
+                  <p className="void-display mb-2 text-center text-[10px] tracking-[0.16em] text-void-green">
+                    {t("carbonTreeTitle")}
+                  </p>
+                  <CarbonWireframeTree
+                    level={carbonTreeLevel}
+                    size="sm"
+                    showLabel={false}
+                    className="mx-auto max-w-[200px]"
+                  />
+                  <p className="mt-2 text-center text-[10px] uppercase tracking-wider text-void-muted">
+                    {t("carbonTreeLevel")} {carbonTreeLevel}
+                  </p>
+                </div>
+
                 <VoidButton
                   variant="ghost"
                   className="mt-6 w-full text-xs text-void-muted hover:text-red-400"
