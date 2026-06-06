@@ -66,15 +66,16 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
           </span>
         </p>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {featured ? (
             <Image
               src="/grand-guardian-shield.png"
               alt="Grand Guardian"
-              width={44}
-              height={96}
-              className="h-10 w-auto shrink-0 object-contain drop-shadow-[0_0_10px_rgba(0,255,153,0.35)] sm:h-12"
-              unoptimized
+              width={663}
+              height={862}
+              className="h-14 w-auto shrink-0 object-contain drop-shadow-[0_0_12px_rgba(192,192,192,0.45)] sm:h-16"
+              quality={100}
+              priority
             />
           ) : (
             <DragonShield size="md" />
