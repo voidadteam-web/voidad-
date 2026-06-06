@@ -81,6 +81,3 @@ export const VOID_GUARDIANS: VoidGuardian[] = Array.from(
     };
   },
 );
-
-/** Top contributors for the full ranks page */
-export const TOP_CONTRIBUTORS = VOID_GUARDIANS.slice(0, 8);

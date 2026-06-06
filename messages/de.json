@@ -79,7 +79,8 @@
     "shieldTiersTitle": "Cyber-Schild-Stufen",
     "scrollShieldTiers": "← Alle 10 Schild-Stufen scrollen →",
     "clickToEnlarge": "Abzeichen antippen zum Vergrößern",
-    "closePreview": "Vorschau schließen"
+    "closePreview": "Vorschau schließen",
+    "sharedLevel": "{count} Mitwirkende auf diesem Level"
   },
   "pricing": {
     "heroTitle": "VoidAd",

@@ -79,7 +79,8 @@
     "shieldTiersTitle": "Cyber Shield Tiers",
     "scrollShieldTiers": "← Scroll to browse all 10 shield tiers →",
     "clickToEnlarge": "Tap a badge to enlarge",
-    "closePreview": "Close preview"
+    "closePreview": "Close preview",
+    "sharedLevel": "{count} contributors at this level"
   },
   "pricing": {
     "heroTitle": "VoidAd",

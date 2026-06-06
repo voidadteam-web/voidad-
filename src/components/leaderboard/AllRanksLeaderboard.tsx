@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ChevronRight } from "lucide-react";
@@ -12,12 +11,11 @@ import {
   BadgePreviewModal,
   type ShieldPreview,
 } from "@/components/leaderboard/BadgePreviewModal";
+import { CommunityContributorsList } from "@/components/leaderboard/CommunityContributorsList";
+import { TOP_CONTRIBUTORS_FOR_PROGRESS } from "@/components/leaderboard/community-contributors-data";
 import { VoidRankShield } from "@/components/leaderboard/shields/VoidRankShield";
-import { TOP_CONTRIBUTORS } from "@/components/leaderboard/guardians-data";
-import { countryFlag } from "@/lib/countries";
 import { MAX_PLAYER_LEVEL } from "@/lib/levels";
 import {
-  shieldTierForLevel,
   SHIELD_TIER_COUNT,
   SHIELD_TIER_NAMES,
   type ShieldTier,
@@ -48,50 +46,20 @@ export function AllRanksLeaderboard() {
       </div>
 
       <VoidPanel glow="strong" className="overflow-hidden">
-        <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
-          <div>
-            <h2 className="void-display mb-4 text-sm tracking-[0.18em] text-void-green sm:text-base">
-              {t("communityContributors")}
-            </h2>
-            <ul className="space-y-3">
-              {TOP_CONTRIBUTORS.map((player) => (
-                <li
-                  key={player.rank}
-                  className="flex items-center gap-3 rounded-lg border border-void-green/15 bg-void-black/50 px-3 py-2.5"
-                >
-                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-void-green/35">
-                    <Image
-                      src={player.avatarUrl}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                  <span className="text-lg leading-none">{countryFlag(player.countryCode)}</span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-void-text-mint">
-                      {player.username}
-                    </p>
-                    <p className="text-[10px] uppercase tracking-wider text-void-muted">
-                      {t("rank")} #{player.rank} · {t("level")} {player.level}
-                    </p>
-                  </div>
-                  <VoidRankShield tier={shieldTierForLevel(player.level)} size={36} />
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="grid gap-8 lg:grid-cols-[1fr_260px]">
+          <CommunityContributorsList />
 
-          <div className="space-y-4">
+          <aside className="space-y-4 lg:border-l lg:border-void-green/15 lg:pl-6">
             <h2 className="void-display text-sm tracking-[0.18em] text-void-green sm:text-base">
               {t("nextLevel")}
             </h2>
-            {TOP_CONTRIBUTORS.slice(0, 3).map((player) => (
+            {TOP_CONTRIBUTORS_FOR_PROGRESS.map((player) => (
               <div key={player.rank} className="space-y-1.5">
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-void-muted">
-                  <span className="truncate pr-2">{player.username}</span>
-                  <span className="text-void-green">{player.nextLevelProgress}%</span>
+                <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wider text-void-muted">
+                  <span className="truncate">
+                    {player.displayName} ({player.countryCode})
+                  </span>
+                  <span className="shrink-0 text-void-green">{player.nextLevelProgress}%</span>
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-void-black/80">
                   <div
@@ -99,12 +67,15 @@ export function AllRanksLeaderboard() {
                     style={{ width: `${player.nextLevelProgress}%` }}
                   />
                 </div>
+                <p className="text-[9px] uppercase tracking-wider text-void-muted">
+                  {t("level")} {player.level + 1}
+                </p>
               </div>
             ))}
             <p className="border-t border-void-green/15 pt-4 text-[10px] uppercase leading-relaxed tracking-wider text-void-muted">
               {t("tierGoal")}
             </p>
-          </div>
+          </aside>
         </div>
 
         <div className="mt-10 border-t border-void-green/15 pt-8">
