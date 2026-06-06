@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, Download, CheckCircle2, Chrome } from "lucide-react";
+import { Shield, Download, CheckCircle2, Puzzle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
@@ -50,7 +50,7 @@ export function ExtensionActivate() {
               window.alert(t("copied"));
             }}
           >
-            <Chrome className="h-4 w-4" />
+            <Puzzle className="h-4 w-4" />
             {t("openChrome")}
           </VoidButton>
           <p className="flex items-center gap-1 text-[10px] text-void-muted">
