@@ -127,6 +127,40 @@ body {
   animation: pulse-glow 2.5s ease-in-out infinite;
 }
 
+/** Carbon tree — pulsing neon bloom on wireframe art */
+@keyframes void-tree-neon-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 14px rgba(0, 255, 153, 0.5))
+      drop-shadow(0 0 28px rgba(0, 255, 153, 0.28));
+  }
+  50% {
+    filter: drop-shadow(0 0 26px rgba(0, 255, 153, 0.85))
+      drop-shadow(0 0 52px rgba(0, 255, 153, 0.45))
+      drop-shadow(0 0 72px rgba(0, 255, 153, 0.18));
+  }
+}
+
+.void-tree-glow-art {
+  animation: void-tree-neon-pulse 3s ease-in-out infinite;
+}
+
+.void-tree-root-aura {
+  background: radial-gradient(
+    ellipse 85% 45% at 50% 100%,
+    rgba(0, 255, 153, 0.22),
+    rgba(0, 255, 153, 0.06) 45%,
+    transparent 72%
+  );
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.void-tree-map-feed {
+  opacity: 0.45;
+  filter: drop-shadow(0 0 12px rgba(0, 255, 153, 0.35));
+  animation: pulse-glow 3.5s ease-in-out infinite;
+}
+
 @keyframes void-pixel-trail {
   0%,
   100% {

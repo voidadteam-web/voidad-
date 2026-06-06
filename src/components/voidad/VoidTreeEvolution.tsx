@@ -52,7 +52,7 @@ export function VoidTreeEvolution({
               )}
             >
               <div className="relative mb-2 flex h-[100px] w-full items-end justify-center sm:h-[120px]">
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[35%] opacity-25">
+                <div className="void-tree-map-feed pointer-events-none absolute inset-x-0 bottom-0 h-[38%]">
                   <Image
                     src="/world-map-net.png"
                     alt=""
@@ -61,6 +61,12 @@ export function VoidTreeEvolution({
                     unoptimized
                   />
                 </div>
+                {isActive && (
+                  <div
+                    className="void-tree-root-aura pointer-events-none absolute inset-x-[5%] bottom-0 top-[40%]"
+                    aria-hidden
+                  />
+                )}
                 <Image
                   src={carbonTreeImageForLevel(level)}
                   alt=""
@@ -69,7 +75,7 @@ export function VoidTreeEvolution({
                   unoptimized
                   className={cn(
                     "relative z-10 object-contain object-bottom",
-                    isActive && "drop-shadow-[0_0_16px_rgba(0,255,153,0.5)]",
+                    isActive ? "void-tree-glow-art" : "drop-shadow-[0_0_10px_rgba(0,255,153,0.35)]",
                   )}
                   style={{ height: isActive ? 110 : 95, width: "auto" }}
                 />
