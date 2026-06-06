@@ -14,6 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { LeaderboardPreview } from "@/components/voidad/LeaderboardPreview";
+import { HeroBrand } from "@/components/voidad/HeroBrand";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -38,7 +39,9 @@ export default async function HomePage({ params }: Props) {
       <StatusBar />
 
       {/* Hero */}
-      <section className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+      <section className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
+        <HeroBrand />
+
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-block rounded-full border border-void-green/30 bg-void-green/5 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-void-green">
             {t("hero.badge")}
