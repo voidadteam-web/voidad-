@@ -36,7 +36,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-void-green/10 bg-void-black/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="transition-opacity hover:opacity-90">
-          <VoidLogo />
+          <VoidLogo priority />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
