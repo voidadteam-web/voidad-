@@ -14,7 +14,7 @@ import { useRecentDonations } from "@/hooks/useRecentDonations";
 import {
   formatBandwidthGb,
   formatCarbonKg,
-  formatEuro,
+  formatEstimatedSavings,
 } from "@/lib/user-stats";
 import { Link } from "@/i18n/navigation";
 
@@ -83,7 +83,7 @@ export default function VoidPointsPage() {
           <VoidPanel glow="strong">
             <VoidStat
               label={t("estimatedSavings")}
-              value={loading ? "—" : formatEuro(stats.estimatedSavingsEur, locale)}
+              value={loading ? "—" : formatEstimatedSavings(stats.voidpoints, locale)}
             />
             <p className="mt-2 text-center text-xs text-void-muted">{t("savingsNote")}</p>
             <VoidButton className="mt-6 w-full">{t("convert")}</VoidButton>

@@ -1,5 +1,5 @@
 import { carbonTreeLevelForPlayerLevel } from "@/lib/carbon-trees";
-import { MAX_PLAYER_LEVEL } from "@/lib/levels";
+import { MAX_PLAYER_LEVEL, voidpointsToCents, voidpointsToEuro } from "@/lib/levels";
 
 export type UserStatsInput = {
   level: number;
@@ -20,8 +20,9 @@ export type UserStats = {
   bandwidthGb: number;
   carbonOffsetKg: number;
   carbonTreeLevel: number;
-  /** €1 = 1,000 VoidPoints */
+  /** 1,000 VoidPoints = €0.001 (0.10 cent) */
   estimatedSavingsEur: number;
+  estimatedSavingsCents: number;
 };
 
 /** Shared impact formulas — ads blocked + donations → bandwidth & carbon */
@@ -52,7 +53,8 @@ export function buildUserStats(input: UserStatsInput): UserStats {
     bandwidthGb: derived.bandwidthGb,
     carbonOffsetKg: derived.carbonOffsetKg,
     carbonTreeLevel: carbonTreeLevelForPlayerLevel(input.level),
-    estimatedSavingsEur: input.voidpointsTotal / 1000,
+    estimatedSavingsEur: voidpointsToEuro(input.voidpointsTotal),
+    estimatedSavingsCents: voidpointsToCents(input.voidpointsTotal),
   };
 }
 
@@ -69,6 +71,18 @@ export function formatEuro(amount: number, locale = "en"): string {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 4,
   }).format(amount);
+}
+
+export function formatCents(cents: number, locale = "en"): string {
+  return `${cents.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ¢`;
+}
+
+/** Display estimated savings — rounds to €0.00 below 1 cent total */
+export function formatEstimatedSavings(voidpoints: number, locale = "en"): string {
+  const cents = voidpointsToCents(voidpoints);
+  if (cents < 1) return formatEuro(0, locale);
+  if (cents < 100) return formatCents(cents, locale);
+  return formatEuro(voidpointsToEuro(voidpoints), locale);
 }

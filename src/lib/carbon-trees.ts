@@ -29,7 +29,8 @@ export function clampCarbonTreeLevel(level: number): number {
   return Math.min(CARBON_TREE_LEVEL_COUNT, Math.max(1, Math.round(level)));
 }
 
-/** Map player level 0–57 → carbon tree stage 1–10 */
+/** Map player level 0–57 → carbon tree stage 1–10 (each tree = same player level) */
 export function carbonTreeLevelForPlayerLevel(level: number): number {
-  return shieldTierForLevel(level) + 1;
+  if (level <= 0) return 1;
+  return Math.min(CARBON_TREE_LEVEL_COUNT, level);
 }

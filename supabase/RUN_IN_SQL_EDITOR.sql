@@ -34,8 +34,8 @@ language sql
 immutable
 as $$
   select case
-    when coalesce(p_voidpoints, 0) < 50 then 0
-    else least(57, floor(sqrt(p_voidpoints / 50.0))::integer)
+    when coalesce(p_voidpoints, 0) < 10000 then 0
+    else least(57, floor(sqrt(p_voidpoints / 10000.0))::integer)
   end;
 $$;
 

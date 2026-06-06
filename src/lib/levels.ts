@@ -2,8 +2,14 @@ export const MAX_PLAYER_LEVEL = 57;
 
 export const LEADERBOARD_RANK_COUNT = MAX_PLAYER_LEVEL;
 
-/** VoidPoints required to reach level N (quadratic curve, level 1 at 50 pts) */
-export const VOIDPOINTS_PER_LEVEL_UNIT = 50;
+/** Quadratic curve — level 1 starts at 10,000 VoidPoints (large gap between levels) */
+export const VOIDPOINTS_PER_LEVEL_UNIT = 10_000;
+
+/** 1,000 VoidPoints = €0.001 (0.10 cent) */
+export const VOIDPOINTS_EUR_PER_1000 = 0.001;
+
+/** 1,000 VoidPoints = 0.10 cent */
+export const VOIDPOINTS_CENT_PER_1000 = 0.1;
 
 /** Leaderboard position #1 → highest level (57) */
 export function levelForLeaderboardRank(rank: number): number {
@@ -22,6 +28,16 @@ export function levelForVoidpoints(voidpoints: number): number {
     MAX_PLAYER_LEVEL,
     Math.floor(Math.sqrt(voidpoints / VOIDPOINTS_PER_LEVEL_UNIT)),
   );
+}
+
+/** Monetary value of VoidPoints in euros (0.10 cent per 1,000 VP) */
+export function voidpointsToEuro(voidpoints: number): number {
+  return (voidpoints / 1000) * VOIDPOINTS_EUR_PER_1000;
+}
+
+/** Monetary value of VoidPoints in cents (0.10 cent per 1,000 VP) */
+export function voidpointsToCents(voidpoints: number): number {
+  return (voidpoints / 1000) * VOIDPOINTS_CENT_PER_1000;
 }
 
 /** Progress toward the next level (0–100) */
@@ -43,4 +59,15 @@ export function voidpointsNeededForNextLevel(level: number): number {
 /** VoidPoints earned inside the current level band */
 export function voidpointsEarnedInLevelBand(voidpoints: number, level: number): number {
   return Math.max(0, voidpoints - voidpointsForLevel(level));
+}
+
+/** Minimum player level to unlock carbon tree stage N (1–10) */
+export function playerLevelForCarbonTree(treeLevel: number): number {
+  if (treeLevel <= 1) return 1;
+  return Math.min(MAX_PLAYER_LEVEL, treeLevel);
+}
+
+/** VoidPoints required to unlock carbon tree stage N */
+export function voidpointsForCarbonTree(treeLevel: number): number {
+  return voidpointsForLevel(playerLevelForCarbonTree(treeLevel));
 }

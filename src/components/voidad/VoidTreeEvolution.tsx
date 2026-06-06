@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Lock } from "lucide-react";
 import { CarbonTreeEnergyFlow } from "@/components/voidad/CarbonTreeEnergyFlow";
 import {
@@ -9,6 +9,7 @@ import {
   CARBON_TREE_NAMES,
   carbonTreeImageForLevel,
 } from "@/lib/carbon-trees";
+import { voidpointsForCarbonTree } from "@/lib/levels";
 import { cn } from "@/lib/utils";
 
 type VoidTreeEvolutionProps = {
@@ -28,6 +29,7 @@ export function VoidTreeEvolution({
   onSelectLevel,
 }: VoidTreeEvolutionProps) {
   const t = useTranslations("voidpoints");
+  const locale = useLocale();
   const active = Math.min(CARBON_TREE_LEVEL_COUNT, Math.max(1, currentLevel));
   const unlocked = Math.min(
     CARBON_TREE_LEVEL_COUNT,
@@ -129,6 +131,12 @@ export function VoidTreeEvolution({
                     </div>
                     <p className="mt-2 px-2 text-center text-[7px] uppercase leading-tight tracking-[0.14em] text-void-muted sm:text-[8px]">
                       {t("levelLocked")}
+                    </p>
+                    <p className="mt-1 px-1 text-center font-mono text-[7px] leading-tight text-void-green/70 sm:text-[8px]">
+                      {t("treeUnlockRequires", {
+                        level,
+                        points: voidpointsForCarbonTree(level).toLocaleString(locale),
+                      })}
                     </p>
                   </div>
                 )}

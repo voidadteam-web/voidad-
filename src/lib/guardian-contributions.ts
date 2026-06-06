@@ -1,4 +1,4 @@
-import { shieldTierForLevel } from "@/lib/shield-ranks";
+import { carbonTreeLevelForPlayerLevel } from "@/lib/carbon-trees";
 import { deriveImpactMetrics } from "@/lib/user-stats";
 
 export type GuardianContributions = {
@@ -36,7 +36,7 @@ export function buildGuardianContributions(rank: number, level: number): Guardia
     donated,
   );
   const voidpointsEarned = Math.round(adsBlocked * 0.04 + donated * 1.2);
-  const carbonTreeLevel = shieldTierForLevel(level) + 1;
+  const carbonTreeLevel = carbonTreeLevelForPlayerLevel(level);
   const protectionDays = Math.max(30, 400 - rank * 6);
 
   return {
