@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "VoidAd — Ihre digitale Schutzzone",
+    "description": "DNS-basierte Netzwerksicherheit, Werbeblocker und Datenschutz für jedes Gerät in Ihrem Netzwerk."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "voidpoints": "VoidPoints",
+    "about": "Über uns",
+    "login": "Anmelden",
+    "signup": "Kostenlos testen"
+  },
+  "status": {
+    "activeProtection": "Aktiver Schutz",
+    "systemWide": "Systemweit",
+    "focusMode": "Fokus-Modus",
+    "unscheduled": "Nicht geplant"
+  },
+  "hero": {
+    "badge": "DNS-basierte Netzwerksicherheit",
+    "title": "Erobern Sie Ihr Internet zurück.",
+    "titleHighlight": "Werbung blockieren. Privatsphäre schützen.",
+    "subtitle": "VoidAd filtert Bedrohungen auf Netzwerkebene — jedes Gerät an Ihrem Router wird automatisch geschützt. Keine Apps. Keine Werbung finanziert uns.",
+    "ctaPrimary": "Schutzreise starten",
+    "ctaSecondary": "Dashboard-Demo ansehen"
+  },
+  "features": {
+    "title": "Funktionen & Steuerung",
+    "antiAdware": "Anti-Adware",
+    "antiTracker": "Anti-Tracker",
+    "antiPhishing": "Anti-Phishing",
+    "parentalControl": "Kindersicherung",
+    "voidpoints": "VoidPoints Belohnungen",
+    "iotGuard": "IoT-Schutz"
+  },
+  "stats": {
+    "adsBlocked": "Blockierte Werbung",
+    "trackersBlocked": "Blockierte Tracker",
+    "voidpoints": "VoidPoints gesamt",
+    "carbonOffset": "CO2-Ausgleich",
+    "bandwidthSaved": "Gesparte Bandbreite"
+  },
+  "leaderboard": {
+    "title": "Treffen Sie die Void Guardians",
+    "subtitle": "Globale Reclaimer",
+    "joinElite": "Werden Sie Elite",
+    "rank": "Rang",
+    "level": "Level",
+    "donated": "Gespendete Punkte"
+  },
+  "dashboard": {
+    "title": "Systemweiter Schutz",
+    "protectionRules": "Schutzregeln",
+    "iotGuard": "IoT-Schutz Steuerung",
+    "voidpointsDonate": "VoidPoints & Spenden",
+    "mentalHealth": "Mental-Health-Filter",
+    "liveFeed": "Live-Aktivitätsfeed",
+    "saveChanges": "Änderungen speichern",
+    "quickDonate": "Schnell spenden",
+    "viewCharities": "Wohltätigkeitsorganisationen",
+    "homeNetwork": "Heimnetzwerk",
+    "focusScheduler": "Fokus-Modus Planer",
+    "keywordFilter": "Schlüsselwort-Filter"
+  },
+  "voidpoints": {
+    "title": "Machen Sie einen Unterschied mit Ihren VoidPoints",
+    "yourBalance": "Ihre VoidPoints",
+    "estimatedSavings": "Geschätzte Ersparnis",
+    "savingsNote": "Basierend auf typischen Daten- und Stromeinsparungen.",
+    "convert": "In spendbare VoidPoints umwandeln",
+    "convertRate": "1 € = 1.000 Pkt.",
+    "charitiesTitle": "Registrierte digitale CO2-Ausgleichs-Organisationen",
+    "donate": "Punkte spenden",
+    "totalBandwidth": "Gesparte Bandbreite gesamt",
+    "carbonOffset": "CO2-Ausgleich"
+  },
+  "about": {
+    "title": "Über VoidAd",
+    "mission": "Unsere Mission",
+    "missionText": "VoidAd ist eine integrierte digitale Sicherheitsplattform auf Basis von DNS-Filterung. Wir schützen die Privatsphäre, blockieren Malware und Phishing und verwandeln gesparte Bandbreite in VoidPoints für wohltätige Zwecke.",
+    "values": "Kernwerte",
+    "privacy": "Datenschutz zuerst — Zero-Log-Richtlinie, kein Werbemodell.",
+    "security": "Netzweiter Schutz — jedes verbundene Gerät geschützt.",
+    "social": "Soziale Wirkung — Ersparnisse in reale Gutes umwandeln.",
+    "hardware": "VoidAd-Box — zukünftige Hardware-Lösung für Smart Homes (demnächst)."
+  },
+  "footer": {
+    "tagline": "Ihre digitale Schutzzone",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "gdpr": "DSGVO-Einstellungen",
+    "rights": "Alle Rechte vorbehalten."
+  }
+}

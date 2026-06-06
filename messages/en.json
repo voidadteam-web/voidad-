@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "VoidAd — Your Digital Neutral Zone",
+    "description": "DNS-level network security, ad blocking, and privacy protection for every device on your network."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "voidpoints": "VoidPoints",
+    "about": "About",
+    "login": "Sign In",
+    "signup": "Start Free Trial"
+  },
+  "status": {
+    "activeProtection": "Active Protection",
+    "systemWide": "System-Wide",
+    "focusMode": "Focus Mode",
+    "unscheduled": "Unscheduled"
+  },
+  "hero": {
+    "badge": "DNS-Level Network Security",
+    "title": "Reclaim Your Internet.",
+    "titleHighlight": "Block Ads. Protect Privacy.",
+    "subtitle": "VoidAd filters threats at the network level — every device on your router is protected automatically. No apps to install. No ads to fund us.",
+    "ctaPrimary": "Start Your Protection Journey",
+    "ctaSecondary": "View Dashboard Demo"
+  },
+  "features": {
+    "title": "Features & Control",
+    "antiAdware": "Anti-Adware",
+    "antiTracker": "Anti-Tracker",
+    "antiPhishing": "Anti-Phishing",
+    "parentalControl": "Parental Control",
+    "voidpoints": "VoidPoints Rewards",
+    "iotGuard": "IoT Guard"
+  },
+  "stats": {
+    "adsBlocked": "Ads Blocked",
+    "trackersBlocked": "Trackers Blocked",
+    "voidpoints": "Total VoidPoints",
+    "carbonOffset": "Carbon Offset",
+    "bandwidthSaved": "Bandwidth Saved"
+  },
+  "leaderboard": {
+    "title": "Meet the Void Guardians",
+    "subtitle": "Global Reclaimers",
+    "joinElite": "Join the Elite",
+    "rank": "Rank",
+    "level": "Level",
+    "donated": "Donated Points"
+  },
+  "dashboard": {
+    "title": "System-Wide Protection",
+    "protectionRules": "Protection Rules",
+    "iotGuard": "IoT Guard Control",
+    "voidpointsDonate": "VoidPoints & Donate",
+    "mentalHealth": "Mental Health Filter",
+    "liveFeed": "Live Activity Feed",
+    "saveChanges": "Save Changes",
+    "quickDonate": "Quick Donate",
+    "viewCharities": "View Charities",
+    "homeNetwork": "Home Network",
+    "focusScheduler": "Focus Mode Scheduler",
+    "keywordFilter": "Keyword Filter"
+  },
+  "voidpoints": {
+    "title": "Make a Difference with Your VoidPoints",
+    "yourBalance": "Your VoidPoints",
+    "estimatedSavings": "Estimated Money Saved",
+    "savingsNote": "Based on typical data and power savings.",
+    "convert": "Convert to Donatable VoidPoints",
+    "convertRate": "€1 = 1,000 pts",
+    "charitiesTitle": "Registered Digital Carbon Offset Charities",
+    "donate": "Donate Points",
+    "totalBandwidth": "Total Bandwidth Saved",
+    "carbonOffset": "Carbon Offset"
+  },
+  "about": {
+    "title": "About VoidAd",
+    "mission": "Our Mission",
+    "missionText": "VoidAd is an integrated digital security platform built on DNS-level filtering. We protect privacy, block malware and phishing, and turn saved bandwidth into VoidPoints for charity.",
+    "values": "Core Values",
+    "privacy": "Privacy First — zero-log policy, no ad revenue model.",
+    "security": "Network-Wide Security — every connected device protected.",
+    "social": "Social Impact — convert savings into real-world good.",
+    "hardware": "VoidAd-Box — future hardware solution for smart homes (coming soon)."
+  },
+  "footer": {
+    "tagline": "Your Digital Neutral Zone",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "gdpr": "GDPR Settings",
+    "rights": "All rights reserved."
+  }
+}

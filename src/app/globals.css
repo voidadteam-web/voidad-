@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --void-black: #030806;
+  --void-dark: #0a1410;
+  --void-panel: #0d1a14;
+  --void-green: #39ff14;
+  --void-green-dim: #1a9930;
+  --void-green-glow: rgba(57, 255, 20, 0.35);
+  --void-text: #e8ffe8;
+  --void-muted: #7a9a7a;
+  --background: var(--void-black);
+  --foreground: var(--void-text);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-void-black: var(--void-black);
+  --color-void-dark: var(--void-dark);
+  --color-void-panel: var(--void-panel);
+  --color-void-green: var(--void-green);
+  --color-void-green-dim: var(--void-green-dim);
+  --color-void-muted: var(--void-muted);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--void-black);
+  color: var(--void-text);
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(57, 255, 20, 0.25);
+  color: #fff;
+}
+
+.void-glow-border {
+  border: 1px solid rgba(57, 255, 20, 0.45);
+  box-shadow:
+    0 0 20px rgba(57, 255, 20, 0.08),
+    inset 0 0 30px rgba(57, 255, 20, 0.03);
+}
+
+.void-glow-text {
+  text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+}
+
+.void-grid-bg {
+  background-image:
+    linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
