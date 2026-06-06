@@ -80,7 +80,19 @@
     "scrollShieldTiers": "← Alle 10 Schild-Stufen scrollen →",
     "clickToEnlarge": "Abzeichen antippen zum Vergrößern",
     "closePreview": "Vorschau schließen",
-    "sharedLevel": "{count} Mitwirkende auf diesem Level"
+    "sharedLevel": "{count} Mitwirkende auf diesem Level",
+    "closeProfile": "Profil schließen",
+    "carbonTreeTitle": "Kohlenstoff-Absorptionsbaum",
+    "carbonTreeLevel": "Baum-Level",
+    "levelContributors": "Beiträge zum Level-Wachstum",
+    "trackersBlocked": "Tracker blockiert",
+    "bandwidthSaved": "Bandbreite gespart",
+    "carbonOffset": "CO₂-Ausgleich",
+    "voidpointsEarned": "VoidPoints verdient",
+    "contributionShare": "des Level-Wachstums",
+    "protectionDays": "Aktiver Schutz",
+    "days": "Tage",
+    "clickProfileHint": "Profil anklicken für Details"
   },
   "pricing": {
     "heroTitle": "VoidAd",

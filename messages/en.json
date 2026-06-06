@@ -80,7 +80,19 @@
     "scrollShieldTiers": "← Scroll to browse all 10 shield tiers →",
     "clickToEnlarge": "Tap a badge to enlarge",
     "closePreview": "Close preview",
-    "sharedLevel": "{count} contributors at this level"
+    "sharedLevel": "{count} contributors at this level",
+    "closeProfile": "Close profile",
+    "carbonTreeTitle": "Carbon Absorption Tree",
+    "carbonTreeLevel": "Tree Level",
+    "levelContributors": "What Grew This Level",
+    "trackersBlocked": "Trackers Blocked",
+    "bandwidthSaved": "Bandwidth Saved",
+    "carbonOffset": "Carbon Offset",
+    "voidpointsEarned": "VoidPoints Earned",
+    "contributionShare": "of level growth",
+    "protectionDays": "Active Protection",
+    "days": "days",
+    "clickProfileHint": "Click a profile for full stats"
   },
   "pricing": {
     "heroTitle": "VoidAd",

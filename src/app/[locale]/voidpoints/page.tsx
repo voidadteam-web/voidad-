@@ -6,6 +6,7 @@ import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidStat } from "@/components/ui/VoidStat";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { Heart, Leaf, TreePine } from "lucide-react";
+import { CarbonWireframeTree } from "@/components/voidad/CarbonWireframeTree";
 
 const CHARITIES = [
   { slug: "green-servers", icon: Leaf, nameEn: "Green Servers Alliance" },
@@ -22,7 +23,7 @@ export default function VoidPointsPage() {
 
       {/* Hero tree visual */}
       <div className="relative mb-10 flex flex-col items-center">
-        <WireframeTree />
+        <CarbonWireframeTree level={7} idPrefix="voidpoints-hero" className="max-w-lg" />
         <div className="mt-6 flex flex-wrap justify-center gap-8 text-center">
           <div>
             <p className="void-section-title text-[10px] text-void-muted">
@@ -100,42 +101,5 @@ export default function VoidPointsPage() {
         </VoidPanel>
       </div>
     </div>
-  );
-}
-
-function WireframeTree() {
-  return (
-    <svg
-      viewBox="0 0 400 320"
-      className="h-56 w-full max-w-lg"
-      aria-hidden
-    >
-      <defs>
-        <linearGradient id="treeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#00ff99" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#2d5a4c" stopOpacity="0.4" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M200 300 L200 200 M200 200 L160 140 M200 200 L240 140 M160 140 L130 100 M240 140 L270 100 M130 100 L110 70 M270 100 L290 70"
-        stroke="url(#treeGrad)"
-        strokeWidth="1.5"
-        fill="none"
-      />
-      <circle cx="200" cy="120" r="60" stroke="#00ff99" strokeOpacity="0.3" fill="none" />
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-        <rect
-          key={i}
-          x={270 + i * 10}
-          y={60 + (i % 3) * 12}
-          width={7}
-          height={7}
-          fill="#00ff99"
-          opacity={0.3 + i * 0.1}
-          className="void-pixel-trail"
-          style={{ animationDelay: `${i * 0.15}s` }}
-        />
-      ))}
-    </svg>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LevelMilitaryRank } from "@/components/leaderboard/LevelMilitaryRank";
+import { GuardianProfileModal } from "@/components/leaderboard/GuardianProfileModal";
 import {
   getLeaderboardDisplayOrder,
   type VoidGuardian,
@@ -21,17 +23,28 @@ type VoidGuardianCardProps = {
     adsBlocked: string;
     donated: string;
   };
+  onSelect: () => void;
 };
 
-export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
+export function VoidGuardianCard({ player, labels, onSelect }: VoidGuardianCardProps) {
   const featured = player.rank === 1;
 
   return (
     <article
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
       className={cn(
-        "group void-glow-border flex shrink-0 snap-start flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm",
+        "group void-glow-border flex shrink-0 cursor-pointer snap-start flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm",
         "origin-bottom transition-all duration-300 ease-out",
         "hover:z-30 hover:border-void-green/55 hover:shadow-[0_0_32px_rgba(0,255,153,0.22)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-void-green/60",
         featured
           ? "void-glow-border-strong z-10 w-[200px] scale-105 hover:scale-[1.14] sm:w-[220px]"
           : "w-[160px] shrink-0 opacity-95 hover:scale-110 sm:w-[175px]",
@@ -121,6 +134,7 @@ export function VoidGuardiansBoard({
   className,
 }: VoidGuardiansBoardProps) {
   const t = useTranslations("leaderboard");
+  const [selected, setSelected] = useState<VoidGuardian | null>(null);
 
   const labels = {
     rank: t("rankLabel"),
@@ -135,6 +149,8 @@ export function VoidGuardiansBoard({
 
   return (
     <div className={cn("w-full", className)}>
+      <GuardianProfileModal player={selected} onClose={() => setSelected(null)} />
+
       <div className="mb-8 text-center">
         <h1
           className={cn(
@@ -171,7 +187,12 @@ export function VoidGuardiansBoard({
 
       <HorizontalScrollStrip hint={t("scrollRanks")}>
         {list.map((player) => (
-          <VoidGuardianCard key={player.rank} player={player} labels={labels} />
+          <VoidGuardianCard
+            key={player.rank}
+            player={player}
+            labels={labels}
+            onSelect={() => setSelected(player)}
+          />
         ))}
       </HorizontalScrollStrip>
     </div>
