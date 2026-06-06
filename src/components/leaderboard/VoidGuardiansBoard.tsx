@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { LevelDragonShield } from "@/components/leaderboard/LevelDragonShield";
+import { LevelMilitaryRank } from "@/components/leaderboard/LevelMilitaryRank";
 import {
   getLeaderboardDisplayOrder,
   type VoidGuardian,
@@ -30,8 +30,8 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
       className={cn(
         "void-glow-border flex shrink-0 flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
         featured
-          ? "void-glow-border-strong z-10 w-[230px] scale-105 sm:w-[260px] sm:scale-110"
-          : "w-[175px] opacity-95 sm:w-[195px]",
+          ? "void-glow-border-strong z-10 w-[200px] scale-105 sm:w-[220px]"
+          : "w-[160px] shrink-0 opacity-95 sm:w-[175px]",
       )}
     >
       <header className="border-b border-void-green/20 px-3 py-2.5 text-center">
@@ -67,7 +67,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
 
         <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none">
-          <LevelDragonShield
+          <LevelMilitaryRank
             level={player.level}
             size={featured ? "lg" : "md"}
           />
@@ -164,10 +164,17 @@ export function VoidGuardiansBoard({
         )}
       </div>
 
-      <div className="flex items-end justify-start gap-3 overflow-x-auto pb-2 sm:justify-center sm:gap-4 sm:pb-4">
-        {list.map((player) => (
-          <VoidGuardianCard key={player.rank} player={player} labels={labels} />
-        ))}
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-void-black/90 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-void-black/90 to-transparent" />
+        <div className="flex items-end justify-start gap-2 overflow-x-auto pb-3 scroll-smooth sm:gap-3 [scrollbar-width:thin]">
+          {list.map((player) => (
+            <VoidGuardianCard key={player.rank} player={player} labels={labels} />
+          ))}
+        </div>
+        <p className="mt-2 text-center text-[10px] uppercase tracking-widest text-void-muted">
+          {t("scrollRanks")}
+        </p>
       </div>
     </div>
   );

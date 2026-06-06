@@ -1,3 +1,10 @@
+import { COUNTRIES } from "@/lib/countries";
+import {
+  LEADERBOARD_RANK_COUNT,
+  levelForLeaderboardRank,
+  rankForLevel,
+} from "@/lib/military-ranks";
+
 export type VoidGuardian = {
   rank: number;
   title: string;
@@ -10,110 +17,50 @@ export type VoidGuardian = {
   avatarUrl: string;
 };
 
-/** Eight ranks — linear order #1 → #8 */
 export function getLeaderboardDisplayOrder(players: VoidGuardian[]): VoidGuardian[] {
   return [...players].sort((a, b) => a.rank - b.rank);
 }
 
-/** Rank #1 = level 110 … rank #8 = level 103 (one shield tier each) */
-export function levelForRank(rank: number, topLevel = 110): number {
-  return topLevel - (rank - 1);
+export { LEADERBOARD_RANK_COUNT, levelForLeaderboardRank };
+
+const AVATARS = [
+  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+];
+
+function formatStat(value: number, suffix = ""): string {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M${suffix}`;
+  if (value >= 1_000) return `${Math.round(value / 1_000)}K${suffix}`;
+  return `${value}${suffix}`;
 }
 
-export const LEADERBOARD_RANK_COUNT = 8;
+/** 57 leaderboard slots — military order, scroll horizontally */
+export const VOID_GUARDIANS: VoidGuardian[] = Array.from(
+  { length: LEADERBOARD_RANK_COUNT },
+  (_, i) => {
+    const rank = i + 1;
+    const level = levelForLeaderboardRank(rank);
+    const military = rankForLevel(level);
+    const country = COUNTRIES[i % COUNTRIES.length]!;
+    const ads = Math.max(50_000, 1_550_000 - rank * 25_000);
+    const donated = Math.max(5_000, 305_000 - rank * 5_000);
 
-const GUARDIAN_TITLES = [
-  "GRAND GUARDIAN",
-  "CYBER SENTRY",
-  "TECH SENTINEL",
-  "DIGITAL GUARDIAN",
-  "NET SHIELD",
-  "VOID WARDEN",
-  "PIXEL SENTINEL",
-  "SHADOW DRAGON",
-] as const;
-
-const GUARDIAN_PROFILES = [
-  {
-    username: "Void_Reclaimer_01",
-    countryCode: "DE",
-    countryName: "Germany",
-    adsBlocked: "1.5M",
-    donated: "300,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+    return {
+      rank,
+      title: military.grade.toUpperCase(),
+      username: `Void_Guardian_${String(rank).padStart(2, "0")}`,
+      level,
+      countryCode: country.code,
+      countryName: country.name,
+      adsBlocked: formatStat(ads),
+      donated: formatStat(donated),
+      avatarUrl: AVATARS[i % AVATARS.length]!,
+    };
   },
-  {
-    username: "Cyber_Sentry",
-    countryCode: "JP",
-    countryName: "Japan",
-    adsBlocked: "1.2M",
-    donated: "250,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Tech_Sentinel",
-    countryCode: "US",
-    countryName: "USA",
-    adsBlocked: "1.1M",
-    donated: "210,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Digital_Guardian",
-    countryCode: "GB",
-    countryName: "United Kingdom",
-    adsBlocked: "980K",
-    donated: "180,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Net_Shield_AE",
-    countryCode: "AE",
-    countryName: "UAE",
-    adsBlocked: "870K",
-    donated: "150,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Void_Warden_FR",
-    countryCode: "FR",
-    countryName: "France",
-    adsBlocked: "820K",
-    donated: "140,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Pixel_Sentinel_BR",
-    countryCode: "BR",
-    countryName: "Brazil",
-    adsBlocked: "760K",
-    donated: "120,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop",
-  },
-  {
-    username: "Shadow_Dragon_KR",
-    countryCode: "KR",
-    countryName: "South Korea",
-    adsBlocked: "710K",
-    donated: "110,000",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-  },
-] as const;
-
-export const VOID_GUARDIANS: VoidGuardian[] = GUARDIAN_PROFILES.map((profile, index) => {
-  const rank = index + 1;
-  return {
-    rank,
-    title: GUARDIAN_TITLES[index] ?? `GUARDIAN ${rank}`,
-    level: levelForRank(rank),
-    ...profile,
-  };
-});
+);

@@ -15,7 +15,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useUserSettings } from "@/hooks/useUserSettings";
 import { Link } from "@/i18n/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { LevelDragonShield, levelBadgeTitle } from "@/components/leaderboard/LevelDragonShield";
+import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
 import { Shield, Heart, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
@@ -214,7 +214,7 @@ export default function SettingsPage() {
                     level > 0 ? "opacity-100" : "opacity-40"
                   }`}
                 >
-                  <LevelDragonShield level={Math.max(level, 1)} size="lg" />
+                  <LevelMilitaryRank level={Math.min(Math.max(level, 1), 57)} size="lg" />
                 </div>
                 <p className="mt-2 text-xs text-void-green">
                   {level > 0
