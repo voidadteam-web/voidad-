@@ -64,7 +64,7 @@ async function updateBadge() {
   }
   const text = blockedCount > 0 ? (blockedCount > 999 ? "999+" : String(blockedCount)) : "";
   await chrome.action.setBadgeText({ text });
-  await chrome.action.setBadgeBackgroundColor({ color: "#8ecaff" });
+  await chrome.action.setBadgeBackgroundColor({ color: "#00ff99" });
   await chrome.action.setBadgeTextColor({ color: "#000000" });
 }
 

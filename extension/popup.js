@@ -117,9 +117,11 @@ async function loadExtensionState() {
     if (blocked === 0) {
       headlineEl.textContent = "Nothing to block here";
       countEl.textContent = "0";
+      countEl.classList.add("empty");
     } else {
       headlineEl.textContent = "Ads blocked";
       countEl.textContent = blocked.toLocaleString();
+      countEl.classList.remove("empty");
     }
 
     subEl.textContent = formatBlockedSub(state);
@@ -127,6 +129,7 @@ async function loadExtensionState() {
 
     toggleBtn.disabled = false;
     toggleBtn.classList.toggle("off-mode", !enabled);
+    toggleBtn.classList.toggle("on-mode", enabled);
     toggleBtn.textContent = enabled ? "Turn Off Protection" : "Turn On Protection";
     toggleBtn.onclick = async () => {
       toggleBtn.disabled = true;

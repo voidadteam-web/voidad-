@@ -78,8 +78,8 @@ export function ExtensionActivate() {
                 {installed ? t("activeDesc") : t("installDesc")}
               </p>
               {installed && runtime ? (
-                <p className="mt-2 inline-flex items-center gap-2 rounded-md bg-[#8ecaff]/20 px-2 py-1 text-[11px] font-bold text-[#8ecaff]">
-                  <span className="rounded bg-[#8ecaff] px-1.5 py-0.5 text-[10px] text-black">
+                <p className="mt-2 inline-flex items-center gap-2 rounded-md border border-void-green/30 bg-void-green/10 px-2 py-1 text-[11px] font-bold text-void-green">
+                  <span className="rounded bg-void-green px-1.5 py-0.5 text-[10px] text-void-black">
                     {runtime.blockedCount > 999 ? "999+" : runtime.blockedCount}
                   </span>
                   {runtime.protectionEnabled
@@ -152,7 +152,7 @@ export function ExtensionActivate() {
           </a>
           <span className="text-void-green/40">·</span>
           <code className="rounded border border-void-green/20 bg-void-black/50 px-1.5 py-0.5 text-void-green">
-            v0.5.0
+            v0.5.1
           </code>
         </div>
       </div>
