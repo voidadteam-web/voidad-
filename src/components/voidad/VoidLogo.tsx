@@ -41,6 +41,10 @@ function VoidLogoGlobal({ showTagline = false }: { showTagline?: boolean }) {
           <stop offset="0.72" stopColor="#e8fff5" />
           <stop offset="1" stopColor="#00ff99" />
         </linearGradient>
+        <linearGradient id="voidLockFill" x1="36" y1="22" x2="36" y2="46" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#ffffff" />
+          <stop offset="1" stopColor="#e6fff4" />
+        </linearGradient>
         <filter id="voidLogoSoftGlow" x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
@@ -72,19 +76,25 @@ function VoidLogoGlobal({ showTagline = false }: { showTagline?: boolean }) {
         filter="url(#voidLogoSoftGlow)"
       />
 
-      {/* V padlock — shackle + V body + keyhole */}
+      {/* V padlock — balanced proportions, rounded shackle + wide V body */}
       <g filter="url(#voidLogoSoftGlow)">
         <path
-          d="M 27 28.5 C 27 20.8 45 20.8 45 28.5"
-          stroke="#f5fffa"
-          strokeWidth="2.85"
+          d="M 27.5 31.2 C 27.5 23.2 44.5 23.2 44.5 31.2"
+          stroke="url(#voidLockFill)"
+          strokeWidth="2.35"
           fill="none"
           strokeLinecap="round"
         />
-        <path d="M 28 29 L 36 46.5 L 44 29 Z" fill="#f5fffa" />
-        <path d="M 31.2 29.4 L 36 41.2 L 40.8 29.4 Z" fill="#00b36b" />
-        <circle cx="36" cy="32" r="2.05" fill="#050a0a" />
-        <rect x="35.05" y="32.6" width="1.9" height="4.2" rx="0.45" fill="#050a0a" />
+        <path
+          d="M 27 31.4 L 34.2 44.2 Q 36 46.2 37.8 44.2 L 45 31.4 L 41.2 31.4 L 36 40.2 L 30.8 31.4 Z"
+          fill="url(#voidLockFill)"
+        />
+        <path
+          d="M 30.6 31.8 L 36 39.8 L 41.4 31.8 L 39.2 31.8 L 36 36.4 L 32.8 31.8 Z"
+          fill="#00a86b"
+        />
+        <circle cx="36" cy="33.6" r="1.75" fill="#050a0a" />
+        <rect x="35.15" y="34.1" width="1.7" height="3.6" rx="0.4" fill="#050a0a" />
       </g>
 
       {/* Node accents — global network */}
