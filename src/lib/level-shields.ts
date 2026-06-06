@@ -19,10 +19,13 @@ export const SHIELD_TIERS: ShieldTierMeta[] = [
   { tier: 7, name: "Legend Dragon", image: "/shields/tier-7.png", minLevel: 98 },
 ];
 
-/** Map any level to one of the 8 shields (every ~14 levels) */
+/** Map any level to one of the 8 shields */
 export function tierIndexForLevel(level: number): ShieldTier {
   if (level <= 0) return 0;
-  return Math.min(7, Math.floor(level / 14)) as ShieldTier;
+  // Top ranks: one unique shield per level (103–110 → tiers 0–7)
+  if (level >= 103) return Math.min(7, level - 103) as ShieldTier;
+  // Mid/high: tier bands every ~14 levels
+  return Math.min(6, Math.floor(level / 14)) as ShieldTier;
 }
 
 export function shieldTierForLevel(level: number): ShieldTierMeta {
