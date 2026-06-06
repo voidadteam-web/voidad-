@@ -29,10 +29,12 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
   return (
     <article
       className={cn(
-        "void-glow-border flex shrink-0 snap-start flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
+        "group void-glow-border flex shrink-0 snap-start flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm",
+        "origin-bottom transition-all duration-300 ease-out",
+        "hover:z-30 hover:border-void-green/55 hover:shadow-[0_0_32px_rgba(0,255,153,0.22)]",
         featured
-          ? "void-glow-border-strong z-10 w-[200px] scale-105 sm:w-[220px]"
-          : "w-[160px] shrink-0 opacity-95 sm:w-[175px]",
+          ? "void-glow-border-strong z-10 w-[200px] scale-105 hover:scale-[1.14] sm:w-[220px]"
+          : "w-[160px] shrink-0 opacity-95 hover:scale-110 sm:w-[175px]",
       )}
     >
       <header className="border-b border-void-green/20 px-3 py-2.5 text-center">
@@ -44,7 +46,8 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
       <div className={cn("p-3", featured && "px-4 pt-4")}>
         <div
           className={cn(
-            "relative mx-auto overflow-hidden rounded-lg border border-void-green/35 bg-void-panel",
+            "relative mx-auto overflow-hidden rounded-lg border border-void-green/35 bg-void-panel transition-all duration-300",
+            "group-hover:border-void-green/60 group-hover:shadow-[0_0_20px_rgba(0,255,153,0.18)]",
             featured ? "aspect-[4/5] w-full" : "aspect-square w-full",
           )}
         >
@@ -52,7 +55,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
             src={player.avatarUrl}
             alt={player.username}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
             unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-void-black/50 via-transparent to-transparent" />
@@ -67,10 +70,11 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
           </span>
         </p>
 
-        <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none">
+        <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none transition-transform duration-300 group-hover:scale-105">
           <LevelMilitaryRank
             level={player.level}
             size={featured ? "lg" : "md"}
+            className="transition-transform duration-300 group-hover:scale-110"
           />
           <p
             className={cn(

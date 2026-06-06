@@ -52,7 +52,7 @@ export function HorizontalScrollStrip({
       <div
         ref={scrollerRef}
         className={cn(
-          "flex items-end gap-2 overflow-x-auto scroll-smooth px-11 pb-3 sm:gap-3",
+          "flex items-end gap-2 overflow-x-auto overflow-y-visible scroll-smooth px-11 py-4 pb-3 sm:gap-3",
           "snap-x snap-mandatory [scrollbar-width:thin]",
           scrollClassName,
         )}

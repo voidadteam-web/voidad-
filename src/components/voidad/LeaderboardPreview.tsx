@@ -12,7 +12,7 @@ export function LeaderboardPreview() {
   const t = useTranslations("leaderboard");
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-void-green/25 bg-void-black/40">
+    <div className="relative overflow-visible rounded-xl border border-void-green/25 bg-void-black/40">
       <LeaderboardMapBackdrop />
 
       <div className="relative z-10 px-4 py-10 sm:px-6 sm:py-12">
