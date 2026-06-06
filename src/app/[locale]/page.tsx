@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { LeaderboardPreview } from "@/components/voidad/LeaderboardPreview";
 import { HeroBrand } from "@/components/voidad/HeroBrand";
+import { HeroWorldMapBackdrop } from "@/components/voidad/HeroWorldMapBackdrop";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -39,8 +40,10 @@ export default async function HomePage({ params }: Props) {
       <StatusBar />
 
       {/* Hero — mockup 3-column layout */}
-      <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
+      <section className="relative mx-auto min-h-[420px] max-w-7xl overflow-hidden px-4 py-10 sm:min-h-[480px] sm:px-6 sm:py-16">
+        <HeroWorldMapBackdrop />
+
+        <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
           {/* Left copy */}
           <div className="order-2 text-center lg:order-1 lg:text-left">
             <p className="void-display text-xs tracking-[0.25em] text-void-green void-glow-text">
@@ -79,7 +82,7 @@ export default async function HomePage({ params }: Props) {
         </div>
 
         {/* Stats row */}
-        <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        <div className="relative z-10 mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           <VoidPanel className="text-center">
             <VoidStat label={t("stats.adsBlocked")} value="1.5M+" />
           </VoidPanel>

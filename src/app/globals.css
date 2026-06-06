@@ -225,6 +225,11 @@ body {
   filter: drop-shadow(0 0 28px rgba(0, 255, 153, 0.18));
 }
 
+.void-hero-map-large {
+  opacity: 0.72;
+  filter: drop-shadow(0 0 40px rgba(0, 255, 153, 0.22));
+}
+
 @keyframes void-route-flow {
   0% {
     stroke-dashoffset: 100;
