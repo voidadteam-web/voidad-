@@ -10,15 +10,17 @@ export type VoidGuardian = {
   avatarUrl: string;
 };
 
-/** Linear order: rank #1 → #2 → #3 … left to right */
+/** Eight ranks — linear order #1 → #8 */
 export function getLeaderboardDisplayOrder(players: VoidGuardian[]): VoidGuardian[] {
   return [...players].sort((a, b) => a.rank - b.rank);
 }
 
-/** Top rank starts at 110, each next rank −1 */
+/** Rank #1 = level 110 … rank #8 = level 103 (one shield tier each) */
 export function levelForRank(rank: number, topLevel = 110): number {
   return topLevel - (rank - 1);
 }
+
+export const LEADERBOARD_RANK_COUNT = 8;
 
 const GUARDIAN_TITLES = [
   "GRAND GUARDIAN",
@@ -28,6 +30,7 @@ const GUARDIAN_TITLES = [
   "NET SHIELD",
   "VOID WARDEN",
   "PIXEL SENTINEL",
+  "SHADOW DRAGON",
 ] as const;
 
 const GUARDIAN_PROFILES = [
@@ -93,6 +96,15 @@ const GUARDIAN_PROFILES = [
     donated: "120,000",
     avatarUrl:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop",
+  },
+  {
+    username: "Shadow_Dragon_KR",
+    countryCode: "KR",
+    countryName: "South Korea",
+    adsBlocked: "710K",
+    donated: "110,000",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
   },
 ] as const;
 

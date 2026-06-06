@@ -28,7 +28,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
   return (
     <article
       className={cn(
-        "void-glow-border flex shrink-0 flex-col overflow-hidden rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
+        "void-glow-border flex shrink-0 flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
         featured
           ? "void-glow-border-strong z-10 w-[230px] scale-105 sm:w-[260px] sm:scale-110"
           : "w-[175px] opacity-95 sm:w-[195px]",
@@ -66,11 +66,10 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
           </span>
         </p>
 
-        <div className="flex items-center gap-0 leading-none">
+        <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none">
           <LevelDragonShield
             level={player.level}
             size={featured ? "lg" : "md"}
-            className={featured ? "-mr-0.5" : undefined}
           />
           <p
             className={cn(

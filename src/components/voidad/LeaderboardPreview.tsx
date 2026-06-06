@@ -12,10 +12,7 @@ export function LeaderboardPreview() {
 
   return (
     <VoidPanel glow="strong" className="overflow-hidden">
-      <VoidGuardiansBoard
-        players={VOID_GUARDIANS.slice(0, 5)}
-        variant="preview"
-      />
+      <VoidGuardiansBoard players={VOID_GUARDIANS} variant="preview" />
 
       <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <Link href="/leaderboard">

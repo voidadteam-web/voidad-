@@ -8,7 +8,9 @@ type LevelDragonShieldProps = {
   className?: string;
 };
 
-const HEIGHT = { sm: 40, md: 48, lg: 64 } as const;
+const HEIGHT = { sm: 44, md: 52, lg: 68 } as const;
+/** Source cells are 256×288 */
+const SHIELD_ASPECT = 256 / 288;
 
 /** Rank shield image auto-selected by level (8 tiers) */
 export function LevelDragonShield({
@@ -18,20 +20,20 @@ export function LevelDragonShield({
 }: LevelDragonShieldProps) {
   const tier = shieldTierForLevel(level);
   const h = HEIGHT[size];
+  const w = Math.round(h * SHIELD_ASPECT);
 
   return (
-    <Image
-      src={shieldImageForLevel(level)}
-      alt={tier.name}
-      width={h}
-      height={h}
-      unoptimized
-      className={cn(
-        "block w-auto max-w-none shrink-0 object-contain object-left leading-[0]",
-        className,
-      )}
-      style={{ height: h }}
-    />
+    <span className={cn("inline-flex shrink-0 items-center overflow-visible", className)}>
+      <Image
+        src={shieldImageForLevel(level)}
+        alt={tier.name}
+        width={w}
+        height={h}
+        unoptimized
+        className="block max-h-none max-w-none object-contain object-center"
+        style={{ width: w, height: h }}
+      />
+    </span>
   );
 }
 
