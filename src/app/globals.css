@@ -243,6 +243,44 @@ body {
   filter: drop-shadow(0 0 3px var(--void-green-glow));
 }
 
+.void-logo-pro {
+  filter: drop-shadow(0 0 16px rgba(0, 255, 153, 0.22));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.void-logo-pro:hover {
+  filter: drop-shadow(0 0 22px rgba(0, 255, 153, 0.38));
+  transform: translateY(-1px);
+}
+
+.void-logo-pro-halo {
+  background: radial-gradient(
+    ellipse at 18% 50%,
+    rgba(0, 255, 153, 0.18) 0%,
+    rgba(0, 255, 153, 0.05) 42%,
+    transparent 72%
+  );
+  filter: blur(12px);
+}
+
+.void-logo-global {
+  overflow: visible;
+}
+
+@keyframes void-logo-globe-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.void-logo-globe-spin {
+  transform-origin: 36px 36px;
+  animation: void-logo-globe-spin 48s linear infinite;
+}
+
 .void-logo-wrap {
   filter: drop-shadow(0 0 18px rgba(0, 255, 153, 0.35));
 }
