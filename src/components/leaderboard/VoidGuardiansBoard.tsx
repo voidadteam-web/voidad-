@@ -69,6 +69,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none">
           <LevelMilitaryRank
             level={player.level}
+            rank={player.rank}
             size={featured ? "lg" : "md"}
           />
           <p
