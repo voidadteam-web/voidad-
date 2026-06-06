@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/useUser";
 
 type Profile = {
@@ -22,7 +22,7 @@ export function useProfile() {
     let cancelled = false;
 
     async function loadProfile() {
-      if (!user) {
+      if (!user || !isSupabaseConfigured()) {
         if (!cancelled) {
           setProfile(null);
           setLoading(false);
@@ -30,16 +30,20 @@ export function useProfile() {
         return;
       }
 
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("profiles")
-        .select("display_name, voidpoints_total, level, ads_blocked")
-        .eq("id", user.id)
-        .single();
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("profiles")
+          .select("display_name, voidpoints_total, level, ads_blocked")
+          .eq("id", user.id)
+          .single();
 
-      if (!cancelled) {
-        setProfile(data);
-        setLoading(false);
+        if (!cancelled) {
+          setProfile(data);
+          setLoading(false);
+        }
+      } catch {
+        if (!cancelled) setLoading(false);
       }
     }
 

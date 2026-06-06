@@ -6,7 +6,7 @@ import { VoidLogo } from "@/components/voidad/VoidLogo";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUser";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { LogOut, User } from "lucide-react";
 
 const navItems = [
@@ -25,6 +25,7 @@ export function Header() {
     user?.user_metadata?.display_name ?? user?.email?.split("@")[0] ?? "";
 
   async function handleSignOut() {
+    if (!isSupabaseConfigured()) return;
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/");
