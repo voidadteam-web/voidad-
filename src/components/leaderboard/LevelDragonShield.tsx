@@ -1,10 +1,5 @@
-import { GrandGuardianShield } from "@/components/leaderboard/GrandGuardianShield";
-import { DragonShieldArt } from "@/components/leaderboard/DragonShieldArt";
-import {
-  shieldTierForLevel,
-  shieldVariantIndex,
-  usesGrandGuardianAsset,
-} from "@/lib/level-shields";
+import Image from "next/image";
+import { shieldImageForLevel, shieldTierForLevel } from "@/lib/level-shields";
 import { cn } from "@/lib/utils";
 
 type LevelDragonShieldProps = {
@@ -13,32 +8,29 @@ type LevelDragonShieldProps = {
   className?: string;
 };
 
-const SIZES = { sm: 36, md: 44, lg: 56 } as const;
+const HEIGHT = { sm: 40, md: 48, lg: 64 } as const;
 
-/** Auto-picks a professional dragon shield for any level */
+/** Rank shield image auto-selected by level (8 tiers) */
 export function LevelDragonShield({
   level,
   size = "md",
   className,
 }: LevelDragonShieldProps) {
-  if (usesGrandGuardianAsset(level)) {
-    return (
-      <GrandGuardianShield
-        className={cn(size === "sm" && "h-10 sm:h-10", className)}
-      />
-    );
-  }
-
-  const tierMeta = shieldTierForLevel(level);
-  const px = SIZES[size];
+  const tier = shieldTierForLevel(level);
+  const h = HEIGHT[size];
 
   return (
-    <DragonShieldArt
-      tier={tierMeta.tier}
-      variant={shieldVariantIndex(level)}
-      level={level}
-      size={px}
-      className={className}
+    <Image
+      src={shieldImageForLevel(level)}
+      alt={tier.name}
+      width={h}
+      height={h}
+      unoptimized
+      className={cn(
+        "block w-auto max-w-none shrink-0 object-contain object-left leading-[0]",
+        className,
+      )}
+      style={{ height: h }}
     />
   );
 }
