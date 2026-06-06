@@ -266,7 +266,10 @@
     "loadingActivity": "Aktivität wird geladen…",
     "donationEntry": "Sie haben {points} VoidPoints an {charity} gespendet",
     "playerLevel": "Spieler-Level",
-    "treeLevel": "Kohlenstoff-Baum-Level"
+    "treeLevel": "Kohlenstoff-Baum-Level",
+    "levelLocked": "Gesperrt",
+    "levelLockedAria": "Level {level} — gesperrt bis Sie diese Stufe erreichen",
+    "levelUnlockedAria": "Level {level} — {name}"
   },
   "about": {
     "title": "Über VoidAd",

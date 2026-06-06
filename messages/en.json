@@ -266,7 +266,10 @@
     "loadingActivity": "Loading activity…",
     "donationEntry": "You donated {points} VoidPoints to {charity}",
     "playerLevel": "Player Level",
-    "treeLevel": "Carbon Tree Level"
+    "treeLevel": "Carbon Tree Level",
+    "levelLocked": "Locked",
+    "levelLockedAria": "Level {level} — locked until you reach this stage",
+    "levelUnlockedAria": "Level {level} — {name}"
   },
   "about": {
     "title": "About VoidAd",

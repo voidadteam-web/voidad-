@@ -31,7 +31,11 @@ export default function VoidPointsPage() {
   const { donations, loading: donationsLoading } = useRecentDonations(5);
   const [previewTreeLevel, setPreviewTreeLevel] = useState<number | null>(null);
 
-  const treeLevel = previewTreeLevel ?? stats.carbonTreeLevel;
+  const unlockedTreeLevel = stats.carbonTreeLevel;
+  const treeLevel =
+    previewTreeLevel !== null && previewTreeLevel <= unlockedTreeLevel
+      ? previewTreeLevel
+      : unlockedTreeLevel;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -62,11 +66,14 @@ export default function VoidPointsPage() {
       <VoidPanel glow="strong" className="mb-10">
         <VoidTreeEvolution
           currentLevel={treeLevel}
-          onSelectLevel={(level) => setPreviewTreeLevel(level)}
+          unlockedLevel={unlockedTreeLevel}
+          onSelectLevel={(level) => {
+            if (level <= unlockedTreeLevel) setPreviewTreeLevel(level);
+          }}
         />
         <div className="mt-8 flex justify-center">
           <VoidButton variant="secondary" onClick={() => setPreviewTreeLevel(null)}>
-            {t("viewCurrentLevel", { level: stats.carbonTreeLevel })}
+            {t("viewCurrentLevel", { level: unlockedTreeLevel })}
           </VoidButton>
         </div>
       </VoidPanel>
