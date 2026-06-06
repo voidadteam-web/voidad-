@@ -251,7 +251,11 @@
     "donate": "Donate Points",
     "totalBandwidth": "Total Bandwidth Saved",
     "carbonOffset": "Carbon Offset",
-    "recentActivity": "Recent Donations"
+    "recentActivity": "Recent Donations",
+    "treeEvolutionTitle": "Void Tree Evolution",
+    "treeEvolutionSubtitle": "Carbon Guardian Rank Progression",
+    "level": "Level",
+    "viewCurrentLevel": "View Your Current Level (Level {level})"
   },
   "about": {
     "title": "About VoidAd",

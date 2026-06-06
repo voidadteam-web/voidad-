@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
@@ -7,6 +8,7 @@ import { VoidStat } from "@/components/ui/VoidStat";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { Heart, Leaf, TreePine } from "lucide-react";
 import { CarbonWireframeTree } from "@/components/voidad/CarbonWireframeTree";
+import { VoidTreeEvolution } from "@/components/voidad/VoidTreeEvolution";
 
 const CHARITIES = [
   { slug: "green-servers", icon: Leaf, nameEn: "Green Servers Alliance" },
@@ -16,14 +18,14 @@ const CHARITIES = [
 
 export default function VoidPointsPage() {
   const t = useTranslations("voidpoints");
+  const [treeLevel, setTreeLevel] = useState(7);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
       <VoidPageTitle>{t("title")}</VoidPageTitle>
 
-      {/* Hero tree visual */}
       <div className="relative mb-10 flex flex-col items-center">
-        <CarbonWireframeTree level={7} idPrefix="voidpoints-hero" className="max-w-lg" />
+        <CarbonWireframeTree level={treeLevel} size="lg" className="max-w-lg" />
         <div className="mt-6 flex flex-wrap justify-center gap-8 text-center">
           <div>
             <p className="void-section-title text-[10px] text-void-muted">
@@ -43,6 +45,15 @@ export default function VoidPointsPage() {
           </div>
         </div>
       </div>
+
+      <VoidPanel glow="strong" className="mb-10">
+        <VoidTreeEvolution currentLevel={treeLevel} onSelectLevel={setTreeLevel} />
+        <div className="mt-8 flex justify-center">
+          <VoidButton variant="secondary" onClick={() => setTreeLevel(7)}>
+            {t("viewCurrentLevel", { level: treeLevel })}
+          </VoidButton>
+        </div>
+      </VoidPanel>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">

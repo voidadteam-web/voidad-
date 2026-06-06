@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
@@ -22,7 +22,6 @@ type GuardianProfileModalProps = {
 
 export function GuardianProfileModal({ player, onClose }: GuardianProfileModalProps) {
   const t = useTranslations("leaderboard");
-  const treeId = useId().replace(/:/g, "");
 
   useEffect(() => {
     if (!player) return;
@@ -118,7 +117,7 @@ export function GuardianProfileModal({ player, onClose }: GuardianProfileModalPr
               </h3>
               <CarbonWireframeTree
                 level={contributions.carbonTreeLevel}
-                idPrefix={treeId}
+                size="md"
                 className="min-h-[220px]"
               />
               <div className="mt-4 grid grid-cols-2 gap-3 text-center">

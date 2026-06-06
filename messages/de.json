@@ -251,7 +251,11 @@
     "donate": "Punkte spenden",
     "totalBandwidth": "Gesparte Bandbreite gesamt",
     "carbonOffset": "CO2-Ausgleich",
-    "recentActivity": "Letzte Spenden"
+    "recentActivity": "Letzte Spenden",
+    "treeEvolutionTitle": "Void-Baum-Evolution",
+    "treeEvolutionSubtitle": "Kohlenstoff-Wächter-Rangfortschritt",
+    "level": "Level",
+    "viewCurrentLevel": "Ihr aktuelles Level anzeigen (Level {level})"
   },
   "about": {
     "title": "Über VoidAd",
