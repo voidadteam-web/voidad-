@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hashNetworkFromRequest } from "@/lib/device/hash";
 
+export const runtime = "nodejs";
+
 /** Verify Trial/Free user is on registered device/network after login */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const deviceFingerprint = String(body.deviceFingerprint ?? "");
+    const deviceFingerprint = String(body.deviceFingerprint ?? "").trim();
 
     if (!deviceFingerprint) {
       return NextResponse.json({ ok: false, reason: "DEVICE_INFO_REQUIRED" }, { status: 400 });
@@ -25,7 +27,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, reason: "EMAIL_NOT_CONFIRMED" }, { status: 403 });
     }
 
-    const networkHash = await hashNetworkFromRequest(request);
+    const networkHash = hashNetworkFromRequest(request);
 
     const { data, error } = await supabase.rpc("verify_user_device", {
       p_fingerprint_hash: deviceFingerprint,
@@ -33,6 +35,7 @@ export async function POST(request: Request) {
     });
 
     if (error) {
+      console.error("verify_user_device:", error.message);
       return NextResponse.json({ ok: false, reason: "VERIFY_FAILED" }, { status: 500 });
     }
 
@@ -44,7 +47,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(result);
-  } catch {
+  } catch (err) {
+    console.error("verify-device:", err);
     return NextResponse.json({ ok: false, reason: "INTERNAL" }, { status: 500 });
   }
 }

@@ -46,9 +46,11 @@ export default function SignupPage() {
         if (nonceData.error === "DEVICE_ALREADY_REGISTERED") {
           setMessage(t("deviceAlreadyRegistered"));
         } else if (nonceData.error === "SERVER_CONFIG") {
-          setMessage(t("notConfigured"));
+          setMessage(t("serverNotReady"));
+        } else if (nonceData.error === "CHECK_FAILED" || nonceData.error === "NONCE_FAILED") {
+          setMessage(t("databaseNotReady"));
         } else {
-          setMessage(t("signupFailed"));
+          setMessage(nonceData.detail ? `${t("signupFailed")} (${nonceData.detail})` : t("signupFailed"));
         }
         setLoading(false);
         return;

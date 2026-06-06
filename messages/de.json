@@ -229,6 +229,8 @@
     "emailExists": "Diese E-Mail ist bereits registriert.",
     "invalidCredentials": "Ungültige E-Mail oder Passwort.",
     "signupFailed": "Registrierung fehlgeschlagen.",
+    "serverNotReady": "Server nicht bereit. Vercel nach Hinzufügen von SUPABASE_SERVICE_ROLE_KEY neu deployen.",
+    "databaseNotReady": "Datenbank nicht bereit. Führen Sie Migration 002 und 003 im SQL Editor aus.",
     "notConfigured": "Authentifizierung ist auf diesem Server nicht konfiguriert.",
     "unexpectedError": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
   },
