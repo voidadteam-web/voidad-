@@ -1,0 +1,107 @@
+{
+  "manifest_version": 3,
+  "name": "VoidAd — Block Ads & Protect Privacy",
+  "version": "0.4.1",
+  "description": "Dual-layer protection: DNS network blocking + browser UI cleaner for streaming sites.",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": ["<all_urls>", "http://127.0.0.1:8053/*"],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/streaming-cleaner.js", "content/dns-bridge.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/popup-guard.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/generic-blocker.js"],
+      "css": ["content/cosmetic.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content/youtube-patch.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content/youtube.js"],
+      "css": ["content/cosmetic.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "https://localhost/*",
+        "https://127.0.0.1/*",
+        "https://voidad.com/*",
+        "https://*.voidad.com/*",
+        "https://voidad.de/*",
+        "https://*.voidad.de/*"
+      ],
+      "js": ["content/voidad-bridge.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "blocklist",
+        "enabled": true,
+        "path": "rules/block-rules.json"
+      },
+      {
+        "id": "extra",
+        "enabled": true,
+        "path": "rules/extra-rules.json"
+      }
+    ]
+  },
+  "action": {
+    "default_title": "VoidAd Protection",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "externally_connectable": {
+    "matches": [
+      "http://localhost/*",
+      "http://127.0.0.1/*",
+      "https://localhost/*",
+      "https://127.0.0.1/*",
+      "https://voidad.com/*",
+      "https://*.voidad.com/*",
+      "https://voidad.de/*",
+      "https://*.voidad.de/*"
+    ]
+  }
+}

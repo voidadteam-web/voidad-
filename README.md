@@ -50,6 +50,8 @@ src/
   components/       # UI + layout + VoidAd branding
   i18n/             # next-intl routing & navigation
   lib/supabase/     # Supabase clients
+extension/          # Chrome extension (ad blocking + YouTube)
+dev/dns-proxy/      # Local DNS proxy for dev/testing
 messages/           # en.json, de.json
 supabase/           # schema.sql
 ```

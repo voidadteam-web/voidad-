@@ -1,0 +1,26 @@
+# Extra ad/affiliate rotators — merged at DNS startup (one domain per line)
+rtmark.net
+loen21.net
+channel2pod.net
+heartlessanthemantiquity.com
+begravesimula.cfd
+hp.begravesimula.cfd
+yourlivingcost.com
+1osb.com
+corralsspatio.shop
+airlessbacach.shop
+rx.airlessbacach.shop
+onclickalgo.com
+onclickmax.com
+adexchangeclear.com
+admaster.cc
+betweendigital.com
+onetag-sys.com
+yieldmo.com
+bidswitch.net
+admanmedia.com
+smaato.net
+inmobi.com
+startappservice.com
+applovin.com
+unityads.unity3d.com

@@ -1,0 +1,48 @@
+ytd-display-ad-renderer,
+ytd-ad-slot-renderer,
+ytd-in-feed-ad-layout-renderer,
+ytd-banner-promo-renderer,
+ytd-promoted-sparkles-web-renderer,
+ytd-promoted-video-renderer,
+ytd-compact-promoted-video-renderer,
+ytd-action-companion-ad-renderer,
+ytd-video-matched-ad-renderer,
+ytd-watch-next-secondary-results-ad-renderer,
+ytd-search-pyv-renderer,
+#masthead-ad,
+#player-ads,
+.ytp-ad-module,
+.ytp-ad-overlay-container,
+.ytp-ad-overlay-slot,
+.video-ads,
+.ad-container,
+.ad-div,
+.adsbox,
+.adsbygoogle,
+ins.adsbygoogle,
+.google-auto-placed,
+[class*="ad-banner"],
+[class*="ad_banner"],
+[class*="popup-ad"],
+[class*="adsbox"],
+[id*="ad-container"],
+[id*="chaturbate"],
+[class*="chaturbate"],
+iframe[src*="doubleclick"],
+iframe[src*="googlesyndication"],
+iframe[src*="popads"],
+iframe[src*="exoclick"],
+iframe[src*="propeller"],
+iframe[src*="adsterra"],
+iframe[src*="chaturbate"],
+iframe[src*="stripchat"],
+iframe[src*="casino"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

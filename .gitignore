@@ -32,10 +32,22 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+dev/dns-proxy/.env
 
 # vercel
 .vercel
 
-# typescript
-*.tsbuildinfo
+# packaged extension (load unpacked from extension/ folder)
+extension.crx
+
+# dns proxy blocklists (downloaded via scripts/fetch_blocklist.py)
+dev/dns-proxy/data/blocklist.txt
+dev/dns-proxy/data/blocklist.meta.json
+dev/dns-proxy/data/learned-blocks.jsonl
+
 next-env.d.ts
+
+# python dev tools
+dev/dns-proxy/.venv/
+dev/dns-proxy/**/__pycache__/
+dev/dns-proxy/**/*.pyc

@@ -3,11 +3,14 @@
 import { useTranslations } from "next-intl";
 import { Shield, Clock } from "lucide-react";
 import { VoidToggle } from "@/components/ui/VoidToggle";
-import { useState } from "react";
+import { useProtectionSettings } from "@/hooks/useProtectionSettings";
 
 export function StatusBar() {
   const t = useTranslations("status");
-  const [protectionOn, setProtectionOn] = useState(true);
+  const { settings, updateSettings, loading } = useProtectionSettings();
+
+  const protectionOn = settings?.protection_enabled ?? true;
+  const focusOn = settings?.focus_mode_enabled ?? false;
 
   return (
     <div className="border-b border-void-green/15 bg-void-panel/60 backdrop-blur-sm">
@@ -22,7 +25,10 @@ export function StatusBar() {
           </span>
           <VoidToggle
             checked={protectionOn}
-            onChange={setProtectionOn}
+            disabled={loading}
+            onChange={(checked) => {
+              void updateSettings({ protection_enabled: checked });
+            }}
             activeLabel="ON"
           />
         </div>
@@ -30,7 +36,9 @@ export function StatusBar() {
         <div className="flex items-center gap-2 text-xs text-void-muted">
           <Clock className="h-3.5 w-3.5 text-void-green" />
           <span className="void-section-title text-[10px]">{t("focusMode")}:</span>
-          <span className="font-mono text-void-green">[{t("unscheduled")}]</span>
+          <span className="font-mono text-void-green">
+            [{focusOn ? t("scheduled") : t("unscheduled")}]
+          </span>
         </div>
       </div>
     </div>

@@ -6,6 +6,8 @@ export type UserStatsInput = {
   voidpointsTotal: number;
   voidpointsDonated: number;
   adsBlocked: number;
+  trackersBlocked?: number;
+  maliciousBlocked?: number;
 };
 
 export type UserStats = {
@@ -14,6 +16,7 @@ export type UserStats = {
   voidpointsDonated: number;
   adsBlocked: number;
   trackersBlocked: number;
+  maliciousBlocked: number;
   bandwidthGb: number;
   carbonOffsetKg: number;
   carbonTreeLevel: number;
@@ -35,10 +38,9 @@ export function clampPlayerLevel(level: number): number {
 }
 
 export function buildUserStats(input: UserStatsInput): UserStats {
-  const { bandwidthGb, carbonOffsetKg, trackersBlocked } = deriveImpactMetrics(
-    input.adsBlocked,
-    input.voidpointsDonated,
-  );
+  const derived = deriveImpactMetrics(input.adsBlocked, input.voidpointsDonated);
+  const trackersBlocked = input.trackersBlocked ?? derived.trackersBlocked;
+  const maliciousBlocked = input.maliciousBlocked ?? 0;
 
   return {
     level: input.level,
@@ -46,8 +48,9 @@ export function buildUserStats(input: UserStatsInput): UserStats {
     voidpointsDonated: input.voidpointsDonated,
     adsBlocked: input.adsBlocked,
     trackersBlocked,
-    bandwidthGb,
-    carbonOffsetKg,
+    maliciousBlocked,
+    bandwidthGb: derived.bandwidthGb,
+    carbonOffsetKg: derived.carbonOffsetKg,
     carbonTreeLevel: carbonTreeLevelForPlayerLevel(input.level),
     estimatedSavingsEur: input.voidpointsTotal / 1000,
   };

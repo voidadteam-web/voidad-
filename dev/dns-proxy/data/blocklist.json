@@ -1,0 +1,13 @@
+{
+  "domains": [
+    "adservice.google.com",
+    "analytics.google.com",
+    "doubleclick.net",
+    "facebook.net",
+    "google-analytics.com",
+    "googleadservices.com",
+    "googlesyndication.com",
+    "scorecardresearch.com",
+    "test-block.example"
+  ]
+}

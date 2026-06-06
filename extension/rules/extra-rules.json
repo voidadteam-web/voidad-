@@ -1,0 +1,47 @@
+[
+  {
+    "id": 9001,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube.com/pagead/",
+      "resourceTypes": ["script", "xmlhttprequest", "image", "media", "sub_frame", "other"]
+    }
+  },
+  {
+    "id": 9002,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube.com/api/stats/ads",
+      "resourceTypes": ["xmlhttprequest", "ping", "other"]
+    }
+  },
+  {
+    "id": 9003,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube.com/get_midroll_",
+      "resourceTypes": ["xmlhttprequest", "script", "other"]
+    }
+  },
+  {
+    "id": 9004,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "regexFilter": "googlevideo\\.com/videoplayback.*[?&]oad=",
+      "resourceTypes": ["media", "xmlhttprequest"]
+    }
+  },
+  {
+    "id": 9007,
+    "priority": 2,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||push-notifications.",
+      "resourceTypes": ["script", "xmlhttprequest", "other"]
+    }
+  }
+]

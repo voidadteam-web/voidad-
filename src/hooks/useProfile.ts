@@ -14,12 +14,14 @@ export type Profile = {
   voidpoints_donated: number;
   level: number;
   ads_blocked: number;
+  trackers_blocked: number;
+  malicious_blocked: number;
   is_public: boolean;
   hide_leaderboard: boolean;
 };
 
 const PROFILE_COLUMNS =
-  "display_name, username, avatar_url, country_code, bio, voidpoints_total, voidpoints_donated, level, ads_blocked, is_public, hide_leaderboard";
+  "display_name, username, avatar_url, country_code, bio, voidpoints_total, voidpoints_donated, level, ads_blocked, trackers_blocked, malicious_blocked, is_public, hide_leaderboard";
 
 export function useProfile() {
   const { user, loading: authLoading } = useUser();

@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { StatusBar } from "@/components/layout/StatusBar";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidToggle } from "@/components/ui/VoidToggle";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidStat } from "@/components/ui/VoidStat";
-import { useState } from "react";
 import {
   Shield,
   Eye,
@@ -22,35 +22,40 @@ import {
 import { Link } from "@/i18n/navigation";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
+import { ExtensionActivate } from "@/components/extension/ExtensionActivate";
+import { NetworkDnsSetup } from "@/components/dashboard/NetworkDnsSetup";
+import { MaxProtectionPanel } from "@/components/dashboard/MaxProtectionPanel";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
 import { useUserStats } from "@/hooks/useUserStats";
+import { useProtectionSettings } from "@/hooks/useProtectionSettings";
+import { useDnsActivity } from "@/hooks/useDnsActivity";
+import { formatCarbonKg } from "@/lib/user-stats";
+import { useLocale } from "next-intl";
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const ts = useTranslations("stats");
-  const { stats } = useUserStats();
+  const locale = useLocale();
+  const { stats, refetch } = useUserStats();
+  const { settings, updateSettings, saving } = useProtectionSettings();
+  const { entries: activity } = useDnsActivity();
+
+  useEffect(() => {
+    const interval = window.setInterval(() => void refetch(), 5000);
+    return () => window.clearInterval(interval);
+  }, [refetch]);
 
   const voidpoints = stats.voidpoints;
   const level = stats.level;
   const adsBlocked = stats.adsBlocked;
   const isNewAccount = voidpoints === 0 && adsBlocked === 0;
 
-  const [settings, setSettings] = useState({
-    antiAdware: true,
-    antiTracker: true,
-    antiPhishing: true,
-    falsePositive: true,
-    geoBlock: true,
-    homeNetwork: true,
-    camera: true,
-    thermostat: true,
-    lights: true,
-    refrigerator: false,
-    keywordFilter: true,
-  });
-
-  const toggle = (key: keyof typeof settings) =>
-    setSettings((s) => ({ ...s, [key]: !s[key] }));
+  async function toggleSetting(
+    key: "anti_adware" | "anti_tracker" | "anti_phishing" | "false_positive_filter" | "geo_block" | "focus_mode_enabled",
+  ) {
+    if (!settings) return;
+    await updateSettings({ [key]: !settings[key] });
+  }
 
   return (
     <>
@@ -63,33 +68,44 @@ export default function DashboardPage() {
           <DashboardProfile />
         </div>
 
+        <NetworkDnsSetup />
+
+        <ExtensionActivate />
+
+        <MaxProtectionPanel />
+
         <div className="grid gap-4 lg:grid-cols-4">
           <VoidPanel title={t("protectionRules")}>
             <div className="space-y-2">
               <VoidToggle
-                label="Anti-Adware"
-                checked={settings.antiAdware}
-                onChange={() => toggle("antiAdware")}
+                label={t("antiAdware")}
+                checked={settings?.anti_adware ?? true}
+                disabled={saving}
+                onChange={() => void toggleSetting("anti_adware")}
               />
               <VoidToggle
-                label="Anti-Tracker"
-                checked={settings.antiTracker}
-                onChange={() => toggle("antiTracker")}
+                label={t("antiTracker")}
+                checked={settings?.anti_tracker ?? true}
+                disabled={saving}
+                onChange={() => void toggleSetting("anti_tracker")}
               />
               <VoidToggle
-                label="Anti-Phishing"
-                checked={settings.antiPhishing}
-                onChange={() => toggle("antiPhishing")}
+                label={t("antiPhishing")}
+                checked={settings?.anti_phishing ?? true}
+                disabled={saving}
+                onChange={() => void toggleSetting("anti_phishing")}
               />
               <VoidToggle
-                label="False Positive Filter"
-                checked={settings.falsePositive}
-                onChange={() => toggle("falsePositive")}
+                label={t("falsePositive")}
+                checked={settings?.false_positive_filter ?? true}
+                disabled={saving}
+                onChange={() => void toggleSetting("false_positive_filter")}
               />
               <VoidToggle
-                label="Geo-Block"
-                checked={settings.geoBlock}
-                onChange={() => toggle("geoBlock")}
+                label={t("geoBlock")}
+                checked={settings?.geo_block ?? false}
+                disabled={saving}
+                onChange={() => void toggleSetting("geo_block")}
               />
             </div>
           </VoidPanel>
@@ -98,41 +114,26 @@ export default function DashboardPage() {
             <div className="space-y-2">
               <VoidToggle
                 label={t("homeNetwork")}
-                checked={settings.homeNetwork}
-                onChange={() => toggle("homeNetwork")}
+                checked={settings?.protection_enabled ?? true}
+                disabled={saving}
+                onChange={() => void updateSettings({ protection_enabled: !settings?.protection_enabled })}
               />
               <div className="flex items-center gap-2 px-3 py-1 text-xs text-void-muted">
                 <Camera className="h-3.5 w-3.5 text-void-green" />
-                Security Cameras
+                {t("securityCameras")}
               </div>
-              <VoidToggle
-                checked={settings.camera}
-                onChange={() => toggle("camera")}
-              />
               <div className="flex items-center gap-2 px-3 py-1 text-xs text-void-muted">
                 <Thermometer className="h-3.5 w-3.5 text-void-green" />
-                Smart Thermostat
+                {t("smartThermostat")}
               </div>
-              <VoidToggle
-                checked={settings.thermostat}
-                onChange={() => toggle("thermostat")}
-              />
               <div className="flex items-center gap-2 px-3 py-1 text-xs text-void-muted">
                 <Lightbulb className="h-3.5 w-3.5 text-void-green" />
-                Smart Lights
+                {t("smartLights")}
               </div>
-              <VoidToggle
-                checked={settings.lights}
-                onChange={() => toggle("lights")}
-              />
               <div className="flex items-center gap-2 px-3 py-1 text-xs text-void-muted">
                 <Refrigerator className="h-3.5 w-3.5 text-void-muted" />
-                Smart Refrigerator
+                {t("smartRefrigerator")}
               </div>
-              <VoidToggle
-                checked={settings.refrigerator}
-                onChange={() => toggle("refrigerator")}
-              />
             </div>
           </VoidPanel>
 
@@ -140,14 +141,16 @@ export default function DashboardPage() {
             <VoidStat label={ts("voidpoints")} value={voidpoints} />
             <div className="mt-4 space-y-2 text-xs text-void-muted">
               <div className="flex justify-between">
-                <span>Ads Blocked</span>
+                <span>{ts("adsBlocked")}</span>
                 <span className="text-void-green">
-                  {adsBlocked.toLocaleString()} pts
+                  {adsBlocked.toLocaleString(locale)} pts
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>Data Saving</span>
-                <span className="text-void-green">0 pts</span>
+                <span>{t("dataSaving")}</span>
+                <span className="text-void-green">
+                  {stats.bandwidthGb.toLocaleString(locale)} GB
+                </span>
               </div>
             </div>
             <div className="mt-4 flex flex-col gap-2">
@@ -177,42 +180,46 @@ export default function DashboardPage() {
 
           <VoidPanel title={t("mentalHealth")}>
             <p className="mb-3 text-xs text-void-muted">{t("focusScheduler")}</p>
-            <FocusGrid empty={isNewAccount} />
-            <div className="mt-4">
-              <VoidToggle
-                label={t("keywordFilter")}
-                checked={settings.keywordFilter}
-                onChange={() => toggle("keywordFilter")}
-              />
-            </div>
+            <FocusGrid
+              empty={isNewAccount}
+              enabled={settings?.focus_mode_enabled ?? false}
+              onToggle={() => void toggleSetting("focus_mode_enabled")}
+            />
           </VoidPanel>
         </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           <VoidPanel title={t("liveFeed")} className="lg:col-span-1">
-            {isNewAccount ? (
+            {activity.length === 0 ? (
               <p className="text-xs text-void-muted">{t("noActivity")}</p>
             ) : (
               <ul className="space-y-2">
-                {LIVE_FEED.map((entry) => (
+                {activity.map((entry) => (
                   <li
-                    key={entry}
+                    key={`${entry.created_at}-${entry.domain}`}
                     className="rounded-lg border border-void-green/15 bg-void-black/50 px-3 py-2 font-mono text-[11px] text-void-green"
                   >
-                    {entry}
+                    {formatActivityLine(entry, t)}
                   </li>
                 ))}
               </ul>
             )}
           </VoidPanel>
 
-          <VoidPanel className="lg:col-span-2">
+          <VoidPanel className="lg:col-span-2" title={t("impactStats")}>
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               <VoidStat label={ts("adsBlocked")} value={adsBlocked} />
-              <VoidStat label={ts("trackersBlocked")} value={0} />
-              <VoidStat label="Malicious Domains" value={0} />
-              <VoidStat label={ts("carbonOffset")} value={0} unit="KG" />
+              <VoidStat label={ts("trackersBlocked")} value={stats.trackersBlocked} />
+              <VoidStat label={t("maliciousDomains")} value={stats.maliciousBlocked} />
+              <VoidStat
+                label={ts("carbonOffset")}
+                value={stats.carbonOffsetKg}
+                unit="KG"
+              />
             </div>
+            <p className="mt-4 text-xs text-void-muted">
+              {formatCarbonKg(stats.carbonOffsetKg, locale)} · {t("statsNote")}
+            </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {[Shield, Eye, AlertTriangle, Filter, Globe].map((Icon, i) => (
                 <div
@@ -225,54 +232,72 @@ export default function DashboardPage() {
             </div>
           </VoidPanel>
         </div>
-
-        <div className="mt-8 text-center">
-          <VoidButton>{t("saveChanges")}</VoidButton>
-        </div>
       </div>
     </>
   );
 }
 
-const LIVE_FEED = [
-  "TRACKER: from AdServer1 → Chrome",
-  "AD-REJECT: from DoubleClick",
-  "AD-REJECT: from IP_Camera",
-  "IoT_ANOMALY: from SmartTV → blocked",
-  "PHISHING: from suspicious-domain.net → blocked",
-];
+function formatActivityLine(
+  entry: { domain: string; block_type: string; client_ip: string | null },
+  t: (key: "feedAd" | "feedTracker" | "feedPhishing") => string,
+) {
+  const prefix =
+    entry.block_type === "tracker"
+      ? t("feedTracker")
+      : entry.block_type === "phishing"
+        ? t("feedPhishing")
+        : t("feedAd");
+  const source = entry.client_ip ? ` → ${entry.client_ip}` : "";
+  return `${prefix}: ${entry.domain}${source}`;
+}
 
-function FocusGrid({ empty }: { empty: boolean }) {
+function FocusGrid({
+  empty,
+  enabled,
+  onToggle,
+}: {
+  empty: boolean;
+  enabled: boolean;
+  onToggle: () => void;
+}) {
+  const t = useTranslations("dashboard");
   const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
   const hours = [0, 6, 12, 18];
-  const active = empty
+  const active = empty || !enabled
     ? new Set<string>()
     : new Set(["Mo-0", "Tu-0", "We-12", "Th-18", "Fr-0", "Sa-12"]);
 
   return (
-    <div className="overflow-x-auto">
-      <div className="inline-grid grid-cols-8 gap-1 text-[10px]">
-        <div />
-        {days.map((d) => (
-          <div key={d} className="text-center text-void-muted">
-            {d}
-          </div>
-        ))}
-        {hours.flatMap((h) => [
-          <div key={`h-${h}`} className="text-void-muted">
-            {h}h
-          </div>,
-          ...days.map((d) => (
-            <div
-              key={`${d}-${h}`}
-              className={`h-5 w-5 rounded-sm ${
-                active.has(`${d}-${h}`)
-                  ? "bg-void-green shadow-[0_0_6px_rgba(0,255,153,0.6)]"
-                  : "bg-void-black/60 border border-void-green/10"
-              }`}
-            />
-          )),
-        ])}
+    <div>
+      <VoidToggle
+        label={t("keywordFilter")}
+        checked={enabled}
+        onChange={onToggle}
+      />
+      <div className="mt-4 overflow-x-auto">
+        <div className="inline-grid grid-cols-8 gap-1 text-[10px]">
+          <div />
+          {days.map((d) => (
+            <div key={d} className="text-center text-void-muted">
+              {d}
+            </div>
+          ))}
+          {hours.flatMap((h) => [
+            <div key={`h-${h}`} className="text-void-muted">
+              {h}h
+            </div>,
+            ...days.map((d) => (
+              <div
+                key={`${d}-${h}`}
+                className={`h-5 w-5 rounded-sm ${
+                  active.has(`${d}-${h}`)
+                    ? "bg-void-green shadow-[0_0_6px_rgba(0,255,153,0.6)]"
+                    : "bg-void-black/60 border border-void-green/10"
+                }`}
+              />
+            )),
+          ])}
+        </div>
       </div>
     </div>
   );

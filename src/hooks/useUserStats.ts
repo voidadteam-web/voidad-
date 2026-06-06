@@ -9,10 +9,13 @@ const EMPTY_STATS: UserStats = buildUserStats({
   voidpointsTotal: 0,
   voidpointsDonated: 0,
   adsBlocked: 0,
+  trackersBlocked: 0,
+  maliciousBlocked: 0,
 });
 
 export function useUserStats() {
-  const { user, profile, loading } = useProfile();
+  const profileHook = useProfile();
+  const { user, profile, loading } = profileHook;
 
   const stats = useMemo(
     () =>
@@ -22,6 +25,8 @@ export function useUserStats() {
             voidpointsTotal: profile.voidpoints_total,
             voidpointsDonated: profile.voidpoints_donated,
             adsBlocked: profile.ads_blocked,
+            trackersBlocked: profile.trackers_blocked,
+            maliciousBlocked: profile.malicious_blocked,
           })
         : EMPTY_STATS,
     [profile],
@@ -33,5 +38,6 @@ export function useUserStats() {
     stats,
     loading,
     isAuthenticated: !!user,
+    refetch: profileHook.refetch,
   };
 }
