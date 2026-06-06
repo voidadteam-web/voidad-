@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from voidad_dns.blocklist import Blocklist, is_valid_domain, normalize_domain
 from voidad_dns.blocklist_fetcher import fetch_and_save, read_meta
 from voidad_dns.blocklist_refresh import BlocklistRefreshWorker
+from voidad_dns.client_filter import ClientFilter
 from voidad_dns.config import settings
 from voidad_dns.dns_server import DNSService
 from voidad_dns.filter_engine import FilterEngine
@@ -53,8 +54,9 @@ def create_app(
     stats_flush = stats_flush or StatsFlushWorker(stats_reporter)
     blocklist_refresh = blocklist_refresh or BlocklistRefreshWorker(blocklist)
     page_reports = PageReportStore(blocklist)
+    client_filter = ClientFilter()
     dns_service = dns_service or DNSService(
-        filter_engine, request_log, tenant_registry, stats_reporter
+        filter_engine, request_log, tenant_registry, stats_reporter, client_filter
     )
 
     app = FastAPI(
@@ -72,6 +74,7 @@ def create_app(
     app.state.stats_flush = stats_flush
     app.state.blocklist_refresh = blocklist_refresh
     app.state.page_reports = page_reports
+    app.state.client_filter = client_filter
 
     @app.on_event("startup")
     def startup() -> None:
@@ -97,6 +100,11 @@ def create_app(
             "status": "ok",
             "dns": app.state.dns_service.address,
             "upstream": settings.upstream_dns,
+            "upstream_fallback": settings.upstream_dns_fallback,
+            "lan_mode": settings.lan_mode,
+            "lan_ip": settings.detected_lan_ip,
+            "client_filter": app.state.client_filter.enabled,
+            "allowed_cidrs": list(app.state.client_filter.allowed_cidrs),
         }
 
     @app.get("/api/stats")
@@ -105,6 +113,11 @@ def create_app(
         return {
             "dns": app.state.dns_service.address,
             "upstream": settings.upstream_dns,
+            "upstream_fallback": settings.upstream_dns_fallback,
+            "lan_mode": settings.lan_mode,
+            "lan_ip": settings.detected_lan_ip,
+            "client_filter": app.state.client_filter.enabled,
+            "allowed_cidrs": list(app.state.client_filter.allowed_cidrs),
             "blocklist_count": app.state.blocklist.count(),
             "blocklist_meta": read_meta(),
             "pattern_blocking": settings.pattern_blocking_enabled,

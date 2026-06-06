@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from dnslib.server import BaseResolver, DNSServer
 
+from voidad_dns.client_filter import ClientFilter
 from voidad_dns.config import settings
 from voidad_dns.dns_handler import VoidAdDNSHandler
 from voidad_dns.filter_engine import FilterEngine
@@ -28,7 +29,7 @@ class _ResolverAdapter(BaseResolver):
 
 
 class DNSService:
-    """Background DNS server bound to localhost only."""
+    """Background DNS server (localhost or LAN bind address)."""
 
     def __init__(
         self,
@@ -36,6 +37,7 @@ class DNSService:
         request_log: RequestLog,
         tenant_registry: TenantRegistry | None = None,
         stats_reporter: StatsReporter | None = None,
+        client_filter: ClientFilter | None = None,
     ) -> None:
         self._filter_engine = filter_engine
         self._dns_handler = VoidAdDNSHandler(
@@ -43,6 +45,7 @@ class DNSService:
             request_log,
             tenant_registry=tenant_registry,
             stats_reporter=stats_reporter,
+            client_filter=client_filter,
         )
         self._resolver = _ResolverAdapter(self._dns_handler)
         self._server: DNSServer | None = None

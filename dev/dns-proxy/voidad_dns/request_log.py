@@ -8,7 +8,7 @@ from typing import Literal
 
 from voidad_dns.config import settings
 
-Action = Literal["blocked", "forwarded", "error"]
+Action = Literal["blocked", "forwarded", "error", "rejected"]
 
 
 @dataclass(frozen=True)
@@ -47,7 +47,7 @@ class RequestLog:
         self._max_entries = max_entries or settings.log_max_entries
         self._lock = threading.RLock()
         self._entries: deque[RequestLogEntry] = deque(maxlen=self._max_entries)
-        self._stats = {"blocked": 0, "forwarded": 0, "error": 0}
+        self._stats = {"blocked": 0, "forwarded": 0, "error": 0, "rejected": 0}
 
     def add(self, entry: RequestLogEntry) -> None:
         with self._lock:
@@ -65,4 +65,4 @@ class RequestLog:
     def clear(self) -> None:
         with self._lock:
             self._entries.clear()
-            self._stats = {"blocked": 0, "forwarded": 0, "error": 0}
+            self._stats = {"blocked": 0, "forwarded": 0, "error": 0, "rejected": 0}

@@ -36,6 +36,22 @@ def main() -> None:
         "ON" if settings.learned_blocks_enabled else "OFF",
         settings.learned_blocks_path,
     )
+    logger.info(
+        "DNS bind: %s:%s | LAN mode: %s | Client filter: %s | Allowed: %s",
+        settings.dns_host,
+        settings.dns_port,
+        "ON" if settings.lan_mode else "OFF",
+        "ON" if settings.client_filter_enabled else "OFF",
+        settings.allowed_cidrs,
+    )
+    if settings.detected_lan_ip:
+        logger.info("Detected Mac LAN IP: %s", settings.detected_lan_ip)
+    if settings.lan_mode and settings.dns_host not in ("127.0.0.1", "::1"):
+        logger.info(
+            "Home network: set router Primary DNS to %s, Secondary to %s (fallback)",
+            settings.dns_host,
+            settings.upstream_dns_fallback,
+        )
 
     app = create_app()
     uvicorn.run(

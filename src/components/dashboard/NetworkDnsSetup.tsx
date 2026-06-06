@@ -16,6 +16,7 @@ import {
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { Link } from "@/i18n/navigation";
+import { LocalDnsProxyPanel } from "@/components/dashboard/LocalDnsProxyPanel";
 
 type DnsProfile = {
   token: string;
@@ -172,6 +173,8 @@ export function NetworkDnsSetup() {
         </div>
         <p className="mt-3 text-center text-[11px] text-void-muted">{t("whereToPut")}</p>
       </div>
+
+      <LocalDnsProxyPanel />
 
       {apiError === "NOT_AUTHENTICATED" && (
         <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">

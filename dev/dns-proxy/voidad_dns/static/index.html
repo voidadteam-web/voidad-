@@ -236,6 +236,7 @@
     .pill.blocked { background: #450a0a; color: var(--danger); }
     .pill.forwarded { background: #064e3b; color: var(--success); }
     .pill.error { background: #451a03; color: var(--warning); }
+    .pill.rejected { background: #312e81; color: #a5b4fc; }
 
     .empty {
       color: var(--muted);
@@ -259,6 +260,7 @@
   <header>
     <h1><span>VoidAd</span> DNS Proxy</h1>
     <span class="badge" id="dns-badge">127.0.0.1:53</span>
+    <span class="badge" id="lan-badge" style="display:none"></span>
   </header>
 
   <main>
@@ -276,6 +278,10 @@
       <div class="stat">
         <div class="stat-label">Errors</div>
         <div class="stat-value" id="stat-error">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Rejected</div>
+        <div class="stat-value" id="stat-rejected">0</div>
       </div>
       <div class="stat">
         <div class="stat-label">Blocklist</div>
@@ -308,7 +314,7 @@
                 <th>Domain</th>
                 <th>Type</th>
                 <th>Action</th>
-                <th>Client</th>
+                <th>Device IP</th>
               </tr>
             </thead>
             <tbody id="log-body"></tbody>
@@ -399,9 +405,17 @@
         ]);
 
         document.getElementById("dns-badge").textContent = stats.dns;
+        const lanBadge = document.getElementById("lan-badge");
+        if (stats.lan_mode && stats.lan_ip) {
+          lanBadge.style.display = "inline-block";
+          lanBadge.textContent = `LAN ${stats.lan_ip}`;
+        } else {
+          lanBadge.style.display = "none";
+        }
         document.getElementById("stat-blocked").textContent = stats.requests.blocked ?? 0;
         document.getElementById("stat-forwarded").textContent = stats.requests.forwarded ?? 0;
         document.getElementById("stat-error").textContent = stats.requests.error ?? 0;
+        document.getElementById("stat-rejected").textContent = stats.requests.rejected ?? 0;
         document.getElementById("stat-blocklist").textContent = stats.blocklist_count;
 
         renderBlocklist(blocklist);

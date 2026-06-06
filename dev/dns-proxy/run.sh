@@ -42,26 +42,56 @@ if [[ -f "$ROOT/.env" ]]; then
   echo "Loaded DNS proxy env (report → ${VOIDAD_REPORT_URL:-not set})"
 fi
 
+# Home LAN mode: bind DNS to Mac Wi‑Fi IP so phones/TVs can use it
+: "${VOIDAD_LAN_MODE:=0}"
+: "${VOIDAD_CLIENT_FILTER:=true}"
+: "${VOIDAD_ALLOWED_CIDRS:=127.0.0.0/8,192.168.0.0/24,10.0.0.0/8,172.16.0.0/12}"
+: "${VOIDAD_UPSTREAM_DNS_FALLBACK:=1.1.1.1}"
+
+if [[ "${VOIDAD_LAN_MODE}" == "1" || "${VOIDAD_LAN_MODE}" == "true" ]]; then
+  if [[ -z "${VOIDAD_DNS_HOST:-}" || "${VOIDAD_DNS_HOST}" == "127.0.0.1" ]]; then
+    VOIDAD_DNS_HOST="auto"
+  fi
+  LAN_IP="$(ipconfig getifaddr en0 2>/dev/null || true)"
+  echo ""
+  echo "  LAN mode ON — home devices can use this Mac as DNS"
+  if [[ -n "${LAN_IP}" ]]; then
+    echo "  Mac LAN IP: ${LAN_IP}  → set router Primary DNS to this address"
+    echo "  Router Secondary DNS: ${VOIDAD_UPSTREAM_DNS_FALLBACK} (fallback if Mac is off)"
+  else
+    echo "  Could not read en0 IP — set VOIDAD_DNS_HOST manually to your Mac LAN IP"
+  fi
+  echo "  Allowed clients: ${VOIDAD_ALLOWED_CIDRS}"
+  echo ""
+fi
+
 # Need sudo to stop root-owned DNS process — do it before re-exec
 stop_existing
 
 echo "Starting VoidAd DNS Proxy..."
 echo "  Dashboard: http://127.0.0.1:8053"
-echo "  DNS:       127.0.0.1:53 (requires sudo)"
+if [[ "${VOIDAD_DNS_HOST:-127.0.0.1}" == "auto" ]]; then
+  echo "  DNS:       auto-detect LAN IP:53 (requires sudo)"
+else
+  echo "  DNS:       ${VOIDAD_DNS_HOST:-127.0.0.1}:53 (requires sudo)"
+fi
 echo ""
+
+RUN_ENV=(
+  "PYTHONPATH=$ROOT"
+  "VOIDAD_SYNC_URL=${VOIDAD_SYNC_URL:-}"
+  "VOIDAD_REPORT_URL=${VOIDAD_REPORT_URL:-}"
+  "VOIDAD_DNS_SYNC_KEY=${VOIDAD_DNS_SYNC_KEY:-}"
+  "VOIDAD_LAN_MODE=${VOIDAD_LAN_MODE}"
+  "VOIDAD_DNS_HOST=${VOIDAD_DNS_HOST:-127.0.0.1}"
+  "VOIDAD_CLIENT_FILTER=${VOIDAD_CLIENT_FILTER}"
+  "VOIDAD_ALLOWED_CIDRS=${VOIDAD_ALLOWED_CIDRS}"
+  "VOIDAD_UPSTREAM_DNS_FALLBACK=${VOIDAD_UPSTREAM_DNS_FALLBACK}"
+)
 
 if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
   echo "Port 53 needs root privileges. Re-launching with sudo..."
-  exec sudo -E env "PATH=$PATH" "PYTHONPATH=$ROOT" \
-    "VOIDAD_SYNC_URL=${VOIDAD_SYNC_URL:-}" \
-    "VOIDAD_REPORT_URL=${VOIDAD_REPORT_URL:-}" \
-    "VOIDAD_DNS_SYNC_KEY=${VOIDAD_DNS_SYNC_KEY:-}" \
-    "$PYTHON" main.py
+  exec sudo -E env "PATH=$PATH" "${RUN_ENV[@]}" "$PYTHON" main.py
 fi
 
-# Preserve env vars through sudo (sync/report URLs)
-exec env "PYTHONPATH=$ROOT" \
-  "VOIDAD_SYNC_URL=${VOIDAD_SYNC_URL:-}" \
-  "VOIDAD_REPORT_URL=${VOIDAD_REPORT_URL:-}" \
-  "VOIDAD_DNS_SYNC_KEY=${VOIDAD_DNS_SYNC_KEY:-}" \
-  "$PYTHON" main.py
+exec env "${RUN_ENV[@]}" "$PYTHON" main.py

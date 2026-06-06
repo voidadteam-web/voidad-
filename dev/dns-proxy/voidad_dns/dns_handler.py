@@ -5,6 +5,7 @@ import logging
 from dnslib import A, AAAA, DNSRecord, QTYPE, RR, RCODE
 
 from voidad_dns.blocklist import normalize_domain
+from voidad_dns.client_filter import ClientFilter
 from voidad_dns.config import settings
 from voidad_dns.domain_classifier import classify_domain
 from voidad_dns.filter_engine import FilterEngine
@@ -28,16 +29,32 @@ class VoidAdDNSHandler:
         upstream: UpstreamResolver | None = None,
         tenant_registry: TenantRegistry | None = None,
         stats_reporter: StatsReporter | None = None,
+        client_filter: ClientFilter | None = None,
     ) -> None:
         self._filter = filter_engine
         self._request_log = request_log
         self._upstream = upstream or UpstreamResolver()
         self._tenant_registry = tenant_registry
         self._stats_reporter = stats_reporter
+        self._client_filter = client_filter or ClientFilter()
 
     def resolve(self, request: DNSRecord, client: str) -> DNSRecord:
         qname = normalize_domain(str(request.q.qname))
         qtype_name = QTYPE.get(request.q.qtype, str(request.q.qtype))
+
+        if not self._client_filter.allows(client):
+            self._request_log.add(
+                RequestLogEntry.now(
+                    domain=qname,
+                    qtype=qtype_name,
+                    action="rejected",
+                    client=client,
+                    detail="client_not_allowed",
+                )
+            )
+            reply = request.reply()
+            reply.header.rcode = RCODE.REFUSED
+            return reply
 
         match = self._evaluate(qname, client)
         if match.blocked:
