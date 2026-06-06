@@ -8,7 +8,8 @@
     "voidpoints": "VoidPoints",
     "about": "About",
     "login": "Sign In",
-    "signup": "Start Free Trial"
+    "signup": "Start Free Trial",
+    "logout": "Sign Out"
   },
   "status": {
     "activeProtection": "Active Protection",
@@ -60,7 +61,15 @@
     "viewCharities": "View Charities",
     "homeNetwork": "Home Network",
     "focusScheduler": "Focus Mode Scheduler",
-    "keywordFilter": "Keyword Filter"
+    "keywordFilter": "Keyword Filter",
+    "profile": "Your Profile",
+    "guestPrompt": "Sign in to sync protection settings and VoidPoints across devices.",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "loading": "Loading profile…",
+    "voidpoints": "VoidPoints",
+    "level": "Level",
+    "adsBlocked": "Ads Blocked"
   },
   "voidpoints": {
     "title": "Make a Difference with Your VoidPoints",

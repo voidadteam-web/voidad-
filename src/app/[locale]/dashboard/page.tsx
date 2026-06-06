@@ -20,6 +20,7 @@ import {
   Heart,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
 
 const LIVE_FEED = [
   "TRACKER: from AdServer1 → Chrome",
@@ -58,6 +59,10 @@ export default function DashboardPage() {
         <h1 className="mb-8 text-center text-2xl font-bold uppercase tracking-wider text-void-green void-glow-text sm:text-3xl">
           {t("title")}
         </h1>
+
+        <div className="mb-6">
+          <DashboardProfile />
+        </div>
 
         <div className="grid gap-4 lg:grid-cols-4">
           {/* Protection Rules */}

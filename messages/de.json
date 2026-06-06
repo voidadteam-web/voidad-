@@ -8,7 +8,8 @@
     "voidpoints": "VoidPoints",
     "about": "Über uns",
     "login": "Anmelden",
-    "signup": "Kostenlos testen"
+    "signup": "Kostenlos testen",
+    "logout": "Abmelden"
   },
   "status": {
     "activeProtection": "Aktiver Schutz",
@@ -60,7 +61,15 @@
     "viewCharities": "Wohltätigkeitsorganisationen",
     "homeNetwork": "Heimnetzwerk",
     "focusScheduler": "Fokus-Modus Planer",
-    "keywordFilter": "Schlüsselwort-Filter"
+    "keywordFilter": "Schlüsselwort-Filter",
+    "profile": "Ihr Profil",
+    "guestPrompt": "Melden Sie sich an, um Schutzeinstellungen und VoidPoints geräteübergreifend zu synchronisieren.",
+    "signIn": "Anmelden",
+    "createAccount": "Konto erstellen",
+    "loading": "Profil wird geladen…",
+    "voidpoints": "VoidPoints",
+    "level": "Level",
+    "adsBlocked": "Werbung blockiert"
   },
   "voidpoints": {
     "title": "Machen Sie einen Unterschied mit Ihren VoidPoints",
