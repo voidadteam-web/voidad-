@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoidAd — Install / تثبيت</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050a0a;
+      color: #e5e7eb;
+      min-width: 320px;
+    }
+    body.install-mode {
+      width: min(420px, 100vw);
+      padding: 18px;
+    }
+    body:not(.install-mode) {
+      width: 300px;
+      padding: 14px;
+    }
+    .logo {
+      color: #00ff99;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.02em;
+    }
+    .tagline {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #6b8f7a;
+    }
+    .install-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid #00ff99;
+      background: linear-gradient(180deg, #0d1f18 0%, #050a0a 100%);
+      box-shadow: 0 0 24px rgba(0, 255, 153, 0.12);
+    }
+    .install-title {
+      color: #00ff99;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .install-sub {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+    .steps {
+      margin-top: 12px;
+      padding-right: 18px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #d1d5db;
+    }
+    .steps li { margin-bottom: 6px; }
+    code {
+      background: #0a1512;
+      border: 1px solid #1a3a32;
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: #00ff99;
+      font-size: 11px;
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    button, .btn {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #00ff99;
+      color: #000;
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-secondary {
+      background: #0891b2;
+      color: #fff;
+    }
+    .btn-secondary:hover { background: #0ea5c9; }
+    .note {
+      margin-top: 10px;
+      font-size: 10px;
+      color: #6b8f7a;
+      line-height: 1.5;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #1a3a32;
+      background: #0d1f18;
+      font-size: 12px;
+    }
+    .on { color: #00ff99; }
+    .off { color: #f87171; }
+    .stat { margin-top: 8px; color: #6b8f7a; font-size: 11px; }
+    a.dashboard {
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+      color: #00ff99;
+      font-size: 11px;
+      text-decoration: none;
+    }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body class="install-mode">
+  <div class="logo">VoidAd</div>
+  <p class="tagline">Block Ads · Protect Privacy · VoidPoints</p>
+
+  <!-- Install guide — shown when opened from Finder or not yet loaded in browser -->
+  <section id="install-guide" class="install-box">
+    <p class="install-title">حمّل / ثبّت الامتداد هنا</p>
+    <p class="install-sub">
+      Install here — do <strong>not</strong> use this page as the extension.
+      Load the <strong>whole folder</strong> in Chrome or Edge.
+    </p>
+    <ol class="steps">
+      <li>افتح <code>chrome://extensions</code> أو <code>edge://extensions</code></li>
+      <li>فعّل <strong>Developer mode</strong> / وضع المطوّر</li>
+      <li><strong>Load unpacked</strong> → اختر مجلد <code>voidad-extension</code> (هذا المجلد)</li>
+      <li>اضغط أيقونة VoidAd في المتصفح — ليس هذا الملف مباشرة</li>
+      <li>سجّل دخول في <a href="https://voidad.com/en/dashboard" style="color:#00ff99">voidad.com</a></li>
+    </ol>
+    <div class="actions">
+      <button type="button" class="btn-primary" id="copy-extensions-url" data-copied="تم النسخ!">
+        نسخ chrome://extensions
+      </button>
+      <button type="button" class="btn-secondary" id="copy-folder-hint" data-copied="Copied!">
+        Copy this folder path
+      </button>
+      <a class="btn btn-secondary" href="https://voidad.com/en/dashboard" target="_blank" rel="noreferrer">
+        فتح لوحة التحكم — Dashboard
+      </a>
+    </div>
+    <p class="note">
+      بعد التثبيت: Chrome → Privacy → Secure DNS → <strong>Off</strong>
+    </p>
+  </section>
+
+  <!-- Extension popup UI — shown when running inside Chrome/Edge -->
+  <section id="extension-ui" hidden>
+    <div class="status">
+      <div id="protection">Loading…</div>
+      <div class="stat" id="stats"></div>
+    </div>
+    <button id="toggle" type="button" class="btn-secondary" style="margin-top:12px">Toggle Protection</button>
+    <a id="dashboard" class="dashboard" href="https://voidad.com/en/dashboard" target="_blank" rel="noreferrer">
+      Open Dashboard
+    </a>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
