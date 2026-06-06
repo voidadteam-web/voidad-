@@ -76,3 +76,57 @@ body {
 .animate-pulse-glow {
   animation: pulse-glow 2.5s ease-in-out infinite;
 }
+
+@keyframes void-pixel-flash {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translate(0, 0) scale(1);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-2px, -3px) scale(1.2);
+  }
+  30% {
+    opacity: 0.25;
+    transform: translate(1px, 2px) scale(0.9);
+  }
+  45% {
+    opacity: 0.95;
+    transform: translate(3px, -1px) scale(1.15);
+  }
+  60% {
+    opacity: 0.2;
+    transform: translate(-1px, 3px) scale(1);
+  }
+  75% {
+    opacity: 0.85;
+    transform: translate(2px, 1px) scale(1.1);
+  }
+}
+
+@keyframes void-pixel-scatter {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--px-dx, 4px), var(--px-dy, -6px));
+  }
+  100% {
+    transform: translate(calc(var(--px-dx, 4px) * 1.6), calc(var(--px-dy, -6px) * 1.6));
+  }
+}
+
+.void-pixel {
+  fill: #2dd4bf;
+  animation:
+    void-pixel-flash 2s ease-in-out infinite,
+    void-pixel-scatter 3s ease-in-out infinite alternate;
+}
+
+.void-pixel-alt {
+  fill: #39ff14;
+  animation:
+    void-pixel-flash 1.6s ease-in-out infinite reverse,
+    void-pixel-scatter 2.4s ease-in-out infinite alternate-reverse;
+}
