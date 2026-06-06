@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { DragonShield } from "@/components/leaderboard/DragonShield";
+import { GrandGuardianShield } from "@/components/leaderboard/GrandGuardianShield";
 import {
   getLeaderboardDisplayOrder,
   type VoidGuardian,
@@ -66,23 +67,15 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
           </span>
         </p>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-0 leading-none">
           {featured ? (
-            <Image
-              src="/grand-guardian-shield.png"
-              alt="Grand Guardian"
-              width={663}
-              height={862}
-              className="h-14 w-auto shrink-0 object-contain drop-shadow-[0_0_12px_rgba(192,192,192,0.45)] sm:h-16"
-              quality={100}
-              priority
-            />
+            <GrandGuardianShield className="-mr-0.5" />
           ) : (
             <DragonShield size="md" />
           )}
           <p
             className={cn(
-              "void-display text-void-green void-glow-text",
+              "void-display leading-none text-void-green void-glow-text",
               featured ? "text-xl sm:text-2xl" : "text-lg",
             )}
           >
