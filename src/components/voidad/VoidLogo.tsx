@@ -72,17 +72,20 @@ function VoidLogoGlobal({ showTagline = false }: { showTagline?: boolean }) {
         filter="url(#voidLogoSoftGlow)"
       />
 
-      {/* V mark */}
-      <path
-        d="M36 19 L29.5 44.5 H33 L36 33.5 L39 44.5 H42.5 L36 19 Z"
-        fill="#04100c"
-        fillOpacity="0.55"
-      />
-      <path
-        d="M36 22 L31 42 H34 L36 35 L38 42 H41 L36 22 Z"
-        fill="#ffffff"
-        fillOpacity="0.92"
-      />
+      {/* V padlock — shackle + V body + keyhole */}
+      <g filter="url(#voidLogoSoftGlow)">
+        <path
+          d="M 27 28.5 C 27 20.8 45 20.8 45 28.5"
+          stroke="#f5fffa"
+          strokeWidth="2.85"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path d="M 28 29 L 36 46.5 L 44 29 Z" fill="#f5fffa" />
+        <path d="M 31.2 29.4 L 36 41.2 L 40.8 29.4 Z" fill="#00b36b" />
+        <circle cx="36" cy="32" r="2.05" fill="#050a0a" />
+        <rect x="35.05" y="32.6" width="1.9" height="4.2" rx="0.45" fill="#050a0a" />
+      </g>
 
       {/* Node accents — global network */}
       <circle cx="12" cy="28" r="2" fill="#00ff99" fillOpacity="0.75" />
