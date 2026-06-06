@@ -12,11 +12,14 @@ import { useProfile } from "@/hooks/useProfile";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
-  { href: "/dashboard" as const, key: "dashboard" as const },
-  { href: "/voidpoints" as const, key: "voidpoints" as const },
+const publicNavItems = [
   { href: "/pricing" as const, key: "pricing" as const },
   { href: "/about" as const, key: "about" as const },
+];
+
+const authNavItems = [
+  { href: "/dashboard" as const, key: "dashboard" as const },
+  { href: "/voidpoints" as const, key: "voidpoints" as const },
 ];
 
 export function Header() {
@@ -33,6 +36,8 @@ export function Header() {
     "";
 
   const playerLevel = profile?.level ?? 0;
+
+  const navItems = user ? [...authNavItems, ...publicNavItems] : publicNavItems;
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);

@@ -17,6 +17,7 @@ import {
   formatEstimatedSavings,
 } from "@/lib/user-stats";
 import { Link } from "@/i18n/navigation";
+import { RequireAuth } from "@/components/auth/RequireAuth";
 
 const CHARITIES = [
   { slug: "green-servers", icon: Leaf, nameEn: "Green Servers Alliance" },
@@ -38,6 +39,7 @@ export default function VoidPointsPage() {
       : unlockedTreeLevel;
 
   return (
+    <RequireAuth>
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
       <VoidPageTitle>{t("title")}</VoidPageTitle>
 
@@ -177,5 +179,6 @@ export default function VoidPointsPage() {
         </VoidPanel>
       </div>
     </div>
+    </RequireAuth>
   );
 }

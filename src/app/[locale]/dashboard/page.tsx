@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { StatusBar } from "@/components/layout/StatusBar";
+import { RequireAuth } from "@/components/auth/RequireAuth";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidToggle } from "@/components/ui/VoidToggle";
 import { VoidButton } from "@/components/ui/VoidButton";
@@ -59,7 +60,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <>
+    <RequireAuth>
+      <>
       <StatusBar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -260,7 +262,8 @@ export default function DashboardPage() {
           </VoidPanel>
         </div>
       </div>
-    </>
+      </>
+    </RequireAuth>
   );
 }
 
