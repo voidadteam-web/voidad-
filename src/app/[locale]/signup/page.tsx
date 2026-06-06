@@ -8,6 +8,11 @@ import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getDeviceFingerprint } from "@/lib/device/fingerprint";
+import {
+  PASSWORD_MIN_LENGTH,
+  passwordRuleFailures,
+  passwordsMatch,
+} from "@/lib/auth/password";
 import { Mail, Lock, User, Shield, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export default function SignupPage() {
@@ -15,6 +20,7 @@ export default function SignupPage() {
   const locale = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -27,6 +33,19 @@ export default function SignupPage() {
 
     if (!isSupabaseConfigured()) {
       setMessage(t("notConfigured"));
+      setLoading(false);
+      return;
+    }
+
+    const ruleFailure = passwordRuleFailures(password)[0];
+    if (ruleFailure) {
+      setMessage(t(ruleFailure));
+      setLoading(false);
+      return;
+    }
+
+    if (!passwordsMatch(password, confirmPassword)) {
+      setMessage(t("passwordMismatch"));
       setLoading(false);
       return;
     }
@@ -169,7 +188,7 @@ export default function SignupPage() {
                   <input
                     type="password"
                     required
-                    minLength={8}
+                    minLength={PASSWORD_MIN_LENGTH}
                     autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -177,6 +196,23 @@ export default function SignupPage() {
                   />
                 </div>
                 <p className="mt-1 text-[10px] text-void-muted">{t("passwordHint")}</p>
+              </div>
+              <div>
+                <label className="void-section-title mb-1 block text-[10px] text-void-muted">
+                  {t("confirmPassword")}
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-void-green/60" />
+                  <input
+                    type="password"
+                    required
+                    minLength={PASSWORD_MIN_LENGTH}
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className={`${inputClass} pl-10`}
+                  />
+                </div>
               </div>
 
               {message && (
