@@ -1,4 +1,4 @@
-import { MAX_MILITARY_LEVEL } from "@/lib/military-ranks";
+import { MAX_PLAYER_LEVEL } from "@/lib/levels";
 
 export type ShieldTier = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
@@ -24,8 +24,8 @@ const MAX_TIER = (SHIELD_TIER_COUNT - 1) as ShieldTier;
 /** Map level 1–57 → shield tier 0–9 (higher level = higher tier) */
 export function shieldTierForLevel(level: number): ShieldTier {
   if (level <= 0) return 0;
-  const clamped = Math.min(MAX_MILITARY_LEVEL, Math.max(1, level));
-  const tier = Math.floor(((clamped - 1) / (MAX_MILITARY_LEVEL - 1)) * MAX_TIER);
+  const clamped = Math.min(MAX_PLAYER_LEVEL, Math.max(1, level));
+  const tier = Math.floor(((clamped - 1) / (MAX_PLAYER_LEVEL - 1)) * MAX_TIER);
   return Math.min(MAX_TIER, Math.max(0, tier)) as ShieldTier;
 }
 
@@ -57,3 +57,5 @@ export function shieldImageForTier(tier: ShieldTier): string {
 export function shieldImageForLevel(level: number): string {
   return shieldImageForTier(shieldTierForLevel(level));
 }
+
+export { MAX_PLAYER_LEVEL };

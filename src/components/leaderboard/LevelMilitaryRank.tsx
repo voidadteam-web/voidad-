@@ -26,5 +26,5 @@ export function LevelMilitaryRank({
   );
 }
 
-export { levelBadgeTitle } from "@/lib/military-ranks";
+export { shieldTitleForLevel as levelBadgeTitle } from "@/lib/shield-ranks";
 export { shieldTitleForLevel } from "@/lib/shield-ranks";

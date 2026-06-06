@@ -8,24 +8,15 @@ import {
   SHIELD_TIER_NAMES,
   type ShieldTier,
 } from "@/lib/shield-ranks";
-import type { MilitaryRank } from "@/lib/military-ranks";
 import { cn } from "@/lib/utils";
 
 export type ShieldPreview = {
-  kind: "shield";
   tier: ShieldTier;
   level: number;
 };
 
-export type MilitaryPreview = {
-  kind: "military";
-  rank: MilitaryRank;
-};
-
-export type BadgePreview = ShieldPreview | MilitaryPreview;
-
 type BadgePreviewModalProps = {
-  preview: BadgePreview | null;
+  preview: ShieldPreview | null;
   onClose: () => void;
   levelLabel: string;
   closeLabel: string;
@@ -51,8 +42,6 @@ export function BadgePreviewModal({
   }, [preview, onClose]);
 
   if (!preview) return null;
-
-  const isShield = preview.kind === "shield";
 
   return (
     <div
@@ -85,27 +74,15 @@ export function BadgePreviewModal({
 
         <div className="flex flex-col items-center gap-5 pt-2">
           <div className="relative flex min-h-[240px] w-full items-center justify-center sm:min-h-[320px]">
-            {isShield ? (
-              <Image
-                src={shieldImageForTier(preview.tier)}
-                alt=""
-                width={280}
-                height={350}
-                unoptimized
-                className="max-h-[min(60vh,360px)] w-auto object-contain drop-shadow-[0_0_24px_rgba(0,255,153,0.45)]"
-                priority
-              />
-            ) : (
-              <Image
-                src={preview.rank.image}
-                alt={preview.rank.name}
-                width={200}
-                height={280}
-                unoptimized
-                className="max-h-[min(60vh,360px)] w-auto object-contain drop-shadow-[0_0_24px_rgba(0,255,153,0.35)]"
-                priority
-              />
-            )}
+            <Image
+              src={shieldImageForTier(preview.tier)}
+              alt=""
+              width={280}
+              height={350}
+              unoptimized
+              className="max-h-[min(60vh,360px)] w-auto object-contain drop-shadow-[0_0_24px_rgba(0,255,153,0.45)]"
+              priority
+            />
           </div>
 
           <div className="text-center">
@@ -113,19 +90,11 @@ export function BadgePreviewModal({
               id="badge-preview-title"
               className="void-display text-lg tracking-[0.14em] text-void-green void-glow-text sm:text-xl"
             >
-              {levelLabel}{" "}
-              {isShield ? preview.level : preview.rank.level}
+              {levelLabel} {preview.level}
             </p>
             <p className="mt-1 text-sm uppercase tracking-wider text-void-text-mint">
-              {isShield
-                ? SHIELD_TIER_NAMES[preview.tier]
-                : preview.rank.grade}
+              {SHIELD_TIER_NAMES[preview.tier]}
             </p>
-            {!isShield && (
-              <p className="mt-0.5 text-xs uppercase tracking-wide text-void-muted">
-                {preview.rank.metal}
-              </p>
-            )}
           </div>
         </div>
       </div>

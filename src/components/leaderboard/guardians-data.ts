@@ -2,8 +2,7 @@ import { COUNTRIES } from "@/lib/countries";
 import {
   LEADERBOARD_RANK_COUNT,
   levelForLeaderboardRank,
-  rankForLevel,
-} from "@/lib/military-ranks";
+} from "@/lib/levels";
 import { shieldTitleForLevel } from "@/lib/shield-ranks";
 
 export type VoidGuardian = {
@@ -62,7 +61,6 @@ export const VOID_GUARDIANS: VoidGuardian[] = Array.from(
   (_, i) => {
     const rank = i + 1;
     const level = levelForLeaderboardRank(rank);
-    const military = rankForLevel(level);
     const country = COUNTRIES[i % COUNTRIES.length]!;
     const ads = Math.max(50_000, 1_550_000 - rank * 25_000);
     const donated = Math.max(5_000, 305_000 - rank * 5_000);

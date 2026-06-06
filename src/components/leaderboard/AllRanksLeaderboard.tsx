@@ -10,25 +10,24 @@ import { VoidPanel } from "@/components/ui/VoidPanel";
 import { HorizontalScrollStrip } from "@/components/ui/HorizontalScrollStrip";
 import {
   BadgePreviewModal,
-  type BadgePreview,
+  type ShieldPreview,
 } from "@/components/leaderboard/BadgePreviewModal";
 import { VoidRankShield } from "@/components/leaderboard/shields/VoidRankShield";
 import { TOP_CONTRIBUTORS } from "@/components/leaderboard/guardians-data";
 import { countryFlag } from "@/lib/countries";
+import { MAX_PLAYER_LEVEL } from "@/lib/levels";
 import {
-  MILITARY_RANKS,
-  MAX_MILITARY_LEVEL,
-  type MilitaryRank,
-} from "@/lib/military-ranks";
-import { shieldTierForLevel, SHIELD_TIER_COUNT, SHIELD_TIER_NAMES, type ShieldTier } from "@/lib/shield-ranks";
+  shieldTierForLevel,
+  SHIELD_TIER_COUNT,
+  SHIELD_TIER_NAMES,
+  type ShieldTier,
+} from "@/lib/shield-ranks";
 import { cn } from "@/lib/utils";
 
-/** Full ranks page — all 57 military ranks + community contributors (mockup layout) */
+/** Full ranks page — community contributors + cyber shield tiers */
 export function AllRanksLeaderboard() {
   const t = useTranslations("leaderboard");
-  const [preview, setPreview] = useState<BadgePreview | null>(null);
-
-  const ranksDescending = [...MILITARY_RANKS].sort((a, b) => b.level - a.level);
+  const [preview, setPreview] = useState<ShieldPreview | null>(null);
 
   return (
     <div className="space-y-8">
@@ -38,6 +37,7 @@ export function AllRanksLeaderboard() {
         levelLabel={t("level")}
         closeLabel={t("closePreview")}
       />
+
       <div className="text-center">
         <h1 className="void-display void-glow-text text-2xl tracking-[0.14em] text-void-green sm:text-3xl md:text-4xl">
           {t("pageTitle")}
@@ -49,7 +49,6 @@ export function AllRanksLeaderboard() {
 
       <VoidPanel glow="strong" className="overflow-hidden">
         <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
-          {/* Community contributors */}
           <div>
             <h2 className="void-display mb-4 text-sm tracking-[0.18em] text-void-green sm:text-base">
               {t("communityContributors")}
@@ -84,7 +83,6 @@ export function AllRanksLeaderboard() {
             </ul>
           </div>
 
-          {/* Next level progress */}
           <div className="space-y-4">
             <h2 className="void-display text-sm tracking-[0.18em] text-void-green sm:text-base">
               {t("nextLevel")}
@@ -109,24 +107,6 @@ export function AllRanksLeaderboard() {
           </div>
         </div>
 
-        {/* All 57 military ranks */}
-        <div className="mt-10 border-t border-void-green/15 pt-8">
-          <h2 className="void-display mb-5 text-center text-sm tracking-[0.18em] text-void-green sm:text-base">
-            {t("allRanksTitle")}
-          </h2>
-          <HorizontalScrollStrip hint={t("scrollAllRanks")}>
-            {ranksDescending.map((rank) => (
-              <MilitaryRankBadge
-                key={rank.index}
-                rank={rank}
-                levelLabel={t("level")}
-                onSelect={() => setPreview({ kind: "military", rank })}
-              />
-            ))}
-          </HorizontalScrollStrip>
-        </div>
-
-        {/* 10 cyber shield tiers */}
         <div className="mt-10 border-t border-void-green/15 pt-8">
           <h2 className="void-display mb-5 text-center text-sm tracking-[0.18em] text-void-green sm:text-base">
             {t("shieldTiersTitle")}
@@ -138,13 +118,13 @@ export function AllRanksLeaderboard() {
             {Array.from({ length: SHIELD_TIER_COUNT }, (_, tier) => {
               const shieldTier = tier as ShieldTier;
               const level = Math.round(
-                1 + (tier / (SHIELD_TIER_COUNT - 1)) * (MAX_MILITARY_LEVEL - 1),
+                1 + (tier / (SHIELD_TIER_COUNT - 1)) * (MAX_PLAYER_LEVEL - 1),
               );
               return (
                 <button
                   key={tier}
                   type="button"
-                  onClick={() => setPreview({ kind: "shield", tier: shieldTier, level })}
+                  onClick={() => setPreview({ tier: shieldTier, level })}
                   className={cn(
                     "flex w-[100px] shrink-0 snap-start cursor-pointer flex-col items-center gap-2 rounded-lg",
                     "border border-void-green/15 bg-void-black/40 px-3 py-3 transition",
@@ -177,44 +157,5 @@ export function AllRanksLeaderboard() {
         <p className="text-center text-xs text-void-muted">{t("signupNote")}</p>
       </div>
     </div>
-  );
-}
-
-function MilitaryRankBadge({
-  rank,
-  levelLabel,
-  onSelect,
-}: {
-  rank: MilitaryRank;
-  levelLabel: string;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={cn(
-        "flex w-[88px] shrink-0 snap-start cursor-pointer flex-col items-center gap-2 rounded-lg",
-        "border border-void-green/20 bg-void-black/60 px-2 py-3 transition sm:w-[96px]",
-        "hover:border-void-green/45 hover:bg-void-black/80 hover:shadow-[0_0_16px_rgba(0,255,153,0.12)]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-void-green/60",
-      )}
-    >
-      <Image
-        src={rank.image}
-        alt={rank.name}
-        width={52}
-        height={74}
-        unoptimized
-        className="h-[74px] w-[52px] object-contain object-center drop-shadow-[0_0_8px_rgba(0,255,153,0.25)]"
-      />
-      <p className="void-display text-center text-[9px] leading-tight tracking-wide text-void-green">
-        {levelLabel} {rank.level}
-      </p>
-      <p className="line-clamp-2 text-center text-[8px] uppercase leading-tight tracking-wide text-void-muted">
-        {rank.grade}
-      </p>
-      <p className="text-[8px] uppercase text-void-text-mint/80">{rank.metal}</p>
-    </button>
   );
 }
