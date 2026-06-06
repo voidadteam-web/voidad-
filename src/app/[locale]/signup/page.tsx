@@ -24,12 +24,14 @@ export default function SignupPage() {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [deviceBlocked, setDeviceBlocked] = useState(false);
   const [success, setSuccess] = useState(false);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
+    setDeviceBlocked(false);
 
     if (!isSupabaseConfigured()) {
       setMessage(t("notConfigured"));
@@ -63,7 +65,7 @@ export default function SignupPage() {
 
       if (!nonceRes.ok) {
         if (nonceData.error === "DEVICE_ALREADY_REGISTERED") {
-          setMessage(t("deviceAlreadyRegistered"));
+          setDeviceBlocked(true);
         } else if (nonceData.error === "SERVER_CONFIG") {
           setMessage(t("serverNotReady"));
         } else if (nonceData.error === "CHECK_FAILED" || nonceData.error === "NONCE_FAILED") {
@@ -101,7 +103,7 @@ export default function SignupPage() {
       if (error) {
         const msg = error.message.toLowerCase();
         if (msg.includes("device") || msg.includes("registered")) {
-          setMessage(t("deviceAlreadyRegistered"));
+          setDeviceBlocked(true);
         } else if (msg.includes("already")) {
           setMessage(t("emailExists"));
         } else {
@@ -215,7 +217,31 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              {message && (
+              {deviceBlocked && (
+                <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-3">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
+                    <div className="space-y-3 text-xs text-red-300">
+                      <p>{t("deviceAlreadyRegisteredTitle")}</p>
+                      <p>
+                        {t("deviceAlreadyRegisteredSignIn")}{" "}
+                        <Link href="/login" className="font-semibold text-void-green hover:underline">
+                          {t("loginButton")}
+                        </Link>
+                      </p>
+                      <p>{t("deviceAlreadyRegisteredUpgrade")}</p>
+                      <Link
+                        href="/pricing"
+                        className="inline-block font-semibold text-void-green hover:underline"
+                      >
+                        {t("upgradeToProLink")}
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {message && !deviceBlocked && (
                 <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2">
                   <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
                   <p className="text-xs text-red-300">{message}</p>
