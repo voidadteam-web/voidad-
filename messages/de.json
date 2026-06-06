@@ -357,7 +357,7 @@
     "featureBrowser": "Funktioniert in Chrome und Edge (Chromium) — keine Extra-Konfiguration",
     "step1": "Oben auf Extension herunterladen klicken und den Ordner entpacken",
     "step2": "Chrome öffnen → chrome://extensions in die Adresszeile einfügen (Kopieren-Button oben)",
-    "step3": "Entwicklermodus aktivieren → Entpackte laden → entpackten Ordner wählen",
+    "step3": "Entwicklermodus aktivieren → Entpackte laden → entpackten Ordner wählen (popup.html NICHT direkt öffnen)",
     "step4": "Bei voidad.com anmelden — Extension synchronisiert das Konto automatisch",
     "step5": "Chrome Einstellungen → Datenschutz → Sicherheit → „Sicheres DNS“ AUS",
     "step6": "YouTube oder Streaming-Seite neu laden — Werbung sollte verschwinden",

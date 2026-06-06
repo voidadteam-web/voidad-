@@ -357,7 +357,7 @@
     "featureBrowser": "Works in Chrome and Edge (Chromium) — no extra config",
     "step1": "Click Download Extension above and unzip the folder on your computer",
     "step2": "Open Chrome → paste chrome://extensions in the address bar (use Copy button above)",
-    "step3": "Enable Developer mode (top right) → Load unpacked → select the unzipped folder",
+    "step3": "Enable Developer mode (top right) → Load unpacked → select the unzipped folder (do NOT open popup.html directly)",
     "step4": "Sign in to voidad.com — the extension syncs your account automatically",
     "step5": "Chrome Settings → Privacy → Security → turn OFF “Use secure DNS”",
     "step6": "Refresh YouTube or any streaming site — ads should skip or disappear",

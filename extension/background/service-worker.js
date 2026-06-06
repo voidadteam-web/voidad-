@@ -168,6 +168,12 @@ chrome.runtime.onMessageExternal.addListener((message, _sender, sendResponse) =>
   return true;
 });
 
+if (chrome.declarativeNetRequest?.onRuleMatched) {
+  chrome.declarativeNetRequest.onRuleMatched.addListener((info) => {
+    void queueBlock(info.request.url);
+  });
+}
+
 if (chrome.declarativeNetRequest?.onRuleMatchedDebug) {
   chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
     void queueBlock(info.request.url);

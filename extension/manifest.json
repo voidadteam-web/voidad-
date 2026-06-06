@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "VoidAd — Block Ads & Protect Privacy",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Dual-layer protection: DNS network blocking + browser UI cleaner for streaming sites.",
   "permissions": [
     "declarativeNetRequest",

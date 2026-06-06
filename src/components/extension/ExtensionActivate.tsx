@@ -137,7 +137,7 @@ export function ExtensionActivate() {
           </a>
           <span className="text-void-green/40">·</span>
           <code className="rounded border border-void-green/20 bg-void-black/50 px-1.5 py-0.5 text-void-green">
-            v0.4.2
+            v0.4.3
           </code>
         </div>
       </div>
