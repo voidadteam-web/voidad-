@@ -267,6 +267,24 @@ body {
   overflow: visible;
 }
 
+@keyframes void-logo-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.void-logo-orbit {
+  transform-origin: 36px 36px;
+  animation: void-logo-orbit-spin 56s linear infinite;
+}
+
+.void-logo-emblem {
+  filter: drop-shadow(0 0 10px rgba(0, 255, 153, 0.18));
+}
+
 @keyframes void-logo-globe-spin {
   from {
     transform: rotate(0deg);
