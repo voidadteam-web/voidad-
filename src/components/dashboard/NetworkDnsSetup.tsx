@@ -4,13 +4,14 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
   Router,
-  Smartphone,
-  Monitor,
   Copy,
   CheckCircle2,
   Shield,
   RefreshCw,
   AlertCircle,
+  Apple,
+  Monitor,
+  Smartphone,
 } from "lucide-react";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
@@ -214,30 +215,55 @@ export function NetworkDnsSetup() {
       <div className="mt-6 border-t border-void-green/20 pt-5">
         <p className="mb-3 text-sm font-semibold text-void-green">{t("deviceStepsTitle")}</p>
         <div className="grid gap-4 lg:grid-cols-2">
-          <DeviceSteps
-            icon={<Smartphone className="h-4 w-4 text-void-green" />}
-            title={t("phoneTitle")}
-            steps={[
-              t("iphoneStep1"),
-              t("iphoneStep2", { primary }),
-              t("iphoneStep3"),
-              t("androidStep1"),
-              t("androidStep2", { primary }),
-              t("androidStep3"),
-            ]}
-          />
-          <DeviceSteps
-            icon={<Monitor className="h-4 w-4 text-void-green" />}
-            title={t("computerTitle")}
-            steps={[
-              t("macStep1"),
-              t("macStep2", { primary }),
-              t("macStep3"),
-              t("windowsStep1"),
-              t("windowsStep2", { primary }),
-              t("windowsStep3"),
-            ]}
-          />
+          <div className="space-y-3">
+            <p className="flex items-center gap-2 text-[12px] font-semibold text-void-green">
+              <Smartphone className="h-4 w-4" />
+              {t("phoneSectionTitle")}
+            </p>
+            <DeviceTypeCard
+              icon={<Apple className="h-4 w-4" />}
+              title={t("iphoneTitle")}
+              steps={[
+                t("iphoneStep1"),
+                t("iphoneStep2", { primary }),
+                t("iphoneStep3"),
+              ]}
+            />
+            <DeviceTypeCard
+              icon={<AndroidIcon />}
+              title={t("androidTitle")}
+              steps={[
+                t("androidStep1"),
+                t("androidStep2", { primary }),
+                t("androidStep3"),
+              ]}
+            />
+          </div>
+
+          <div className="space-y-3">
+            <p className="flex items-center gap-2 text-[12px] font-semibold text-void-green">
+              <Monitor className="h-4 w-4" />
+              {t("computerSectionTitle")}
+            </p>
+            <DeviceTypeCard
+              icon={<Apple className="h-4 w-4" />}
+              title={t("macTitle")}
+              steps={[
+                t("macStep1"),
+                t("macStep2", { primary }),
+                t("macStep3"),
+              ]}
+            />
+            <DeviceTypeCard
+              icon={<WindowsIcon />}
+              title={t("windowsTitle")}
+              steps={[
+                t("windowsStep1"),
+                t("windowsStep2", { primary }),
+                t("windowsStep3"),
+              ]}
+            />
+          </div>
         </div>
 
         <details className="mt-4 rounded-lg border border-void-green/20 bg-void-black/40 px-3 py-2">
@@ -256,7 +282,7 @@ export function NetworkDnsSetup() {
   );
 }
 
-function DeviceSteps({
+function DeviceTypeCard({
   icon,
   title,
   steps,
@@ -268,7 +294,9 @@ function DeviceSteps({
   return (
     <div className="rounded-lg border border-void-green/25 bg-void-green/5 p-3">
       <p className="flex items-center gap-2 text-[12px] font-semibold text-void-green">
-        {icon}
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-void-green/30 bg-void-black/60 text-void-green">
+          {icon}
+        </span>
         {title}
       </p>
       <ol className="mt-2 list-decimal space-y-1.5 ps-4 text-[11px] leading-relaxed text-void-muted">
@@ -277,6 +305,22 @@ function DeviceSteps({
         ))}
       </ol>
     </div>
+  );
+}
+
+function AndroidIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden fill="currentColor">
+      <path d="M17.6 9.5l1.4-2.4a.5.5 0 00-.9-.5l-1.5 2.6a7.9 7.9 0 00-9.2 0L6 6.6a.5.5 0 00-.9.5l1.4 2.4A7.8 7.8 0 004 14h16a7.8 7.8 0 00-3.5-4.5zM8 16.5a1 1 0 110-2 1 1 0 010 2zm8 0a1 1 0 110-2 1 1 0 010 2z" />
+    </svg>
+  );
+}
+
+function WindowsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden fill="currentColor">
+      <path d="M3 5.5l7.5-1v7.2H3V5.5zm8.5-1.2L21 3v8.7h-9.5V4.3zM3 12.8h7.5v7.7L3 19.5v-6.7zm9.5 0H21V21l-8.5-1.5v-6.7z" />
+    </svg>
   );
 }
 
