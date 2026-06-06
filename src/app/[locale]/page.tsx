@@ -12,6 +12,7 @@ import {
   Zap,
   Router,
   ChevronRight,
+  Globe,
 } from "lucide-react";
 import { LeaderboardPreview } from "@/components/voidad/LeaderboardPreview";
 import { HeroBrand } from "@/components/voidad/HeroBrand";
@@ -38,41 +39,66 @@ export default async function HomePage({ params }: Props) {
     <>
       <StatusBar />
 
-      {/* Hero */}
-      <section className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
-        <HeroBrand />
+      {/* Hero — mockup 3-column layout */}
+      <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
+          {/* Left copy */}
+          <div className="order-2 text-center lg:order-1 lg:text-left">
+            <p className="void-display text-xs tracking-[0.25em] text-void-green void-glow-text">
+              {t("hero.badge")}
+            </p>
+            <h1 className="void-display mt-4 text-3xl font-bold leading-tight text-white sm:text-4xl">
+              {t("hero.titleLine1")}
+            </h1>
+            <p className="void-display mt-3 text-sm leading-relaxed tracking-[0.12em] text-void-text-mint sm:text-base">
+              {t("hero.titleLine2")}
+              <br />
+              {t("hero.titleLine3")}
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+              <Link href="/signup">
+                <VoidButton className="w-full min-w-[220px] sm:w-auto">
+                  {t("hero.ctaPrimary")}
+                  <ChevronRight className="h-4 w-4" />
+                </VoidButton>
+              </Link>
+              <Link href="/pricing">
+                <VoidButton variant="secondary" className="w-full min-w-[220px] sm:w-auto">
+                  {t("hero.ctaSecondary")}
+                </VoidButton>
+              </Link>
+            </div>
+          </div>
 
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-block rounded-full border border-void-green/30 bg-void-green/5 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-void-green">
-            {t("hero.badge")}
-          </span>
-          <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-            {t("hero.title")}
-            <br />
-            <span className="text-void-green void-glow-text">
-              {t("hero.titleHighlight")}
-            </span>
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-void-muted">
-            {t("hero.subtitle")}
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/signup">
-              <VoidButton className="w-full min-w-[240px] sm:w-auto">
-                {t("hero.ctaPrimary")}
-                <ChevronRight className="h-4 w-4" />
-              </VoidButton>
-            </Link>
-            <Link href="/dashboard">
-              <VoidButton variant="secondary" className="w-full min-w-[240px] sm:w-auto">
-                {t("hero.ctaSecondary")}
-              </VoidButton>
-            </Link>
+          {/* Center logo */}
+          <div className="order-1 lg:order-2">
+            <HeroBrand />
+          </div>
+
+          {/* Right network visual */}
+          <div className="order-3 hidden lg:block">
+            <div className="relative flex h-64 items-center justify-center">
+              <Globe className="h-48 w-48 text-void-green/20" strokeWidth={0.5} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-40 w-40 rounded-full border border-void-green/20 shadow-[0_0_60px_rgba(0,255,153,0.15)]" />
+              </div>
+              {[0, 1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="absolute h-2 w-2 rounded-sm bg-void-green shadow-[0_0_8px_rgba(0,255,153,0.8)]"
+                  style={{
+                    top: `${20 + i * 18}%`,
+                    left: `${60 + (i % 2) * 15}%`,
+                    opacity: 0.4 + i * 0.15,
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Stats row */}
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           <VoidPanel className="text-center">
             <VoidStat label={t("stats.adsBlocked")} value="1.5M+" />
           </VoidPanel>
@@ -89,16 +115,16 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <VoidPanel title={t("features.title")}>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {features.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center gap-2 rounded-xl border border-void-green/10 bg-void-black/40 p-4 text-center transition-colors hover:border-void-green/30"
+                className="flex flex-col items-center gap-2 rounded-lg border border-void-green/10 bg-void-black/50 p-4 text-center transition-all hover:border-void-green/35 hover:shadow-[0_0_16px_rgba(0,255,153,0.08)]"
               >
                 <Icon className="h-6 w-6 text-void-green" />
-                <span className="text-xs font-medium text-void-text">{label}</span>
+                <span className="text-xs font-medium text-void-text-mint">{label}</span>
               </div>
             ))}
           </div>
@@ -106,10 +132,9 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Leaderboard preview */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <LeaderboardPreview />
       </section>
     </>
   );
 }
-

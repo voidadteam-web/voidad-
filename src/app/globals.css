@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --void-black: #030806;
+  --void-black: #050a0a;
   --void-dark: #0a1410;
-  --void-panel: #0d1a14;
-  --void-green: #39ff14;
-  --void-green-dim: #1a9930;
-  --void-green-glow: rgba(57, 255, 20, 0.35);
-  --void-text: #e8ffe8;
-  --void-muted: #7a9a7a;
+  --void-panel: #0d1f18;
+  --void-panel-glass: rgba(13, 31, 24, 0.75);
+  --void-green: #00ff99;
+  --void-green-bright: #4ade80;
+  --void-green-dim: #2d5a4c;
+  --void-green-muted: #1a3a32;
+  --void-green-glow: rgba(0, 255, 153, 0.45);
+  --void-green-glow-soft: rgba(0, 255, 153, 0.12);
+  --void-text: #ffffff;
+  --void-text-mint: #a0ffd0;
+  --void-muted: #6b8f7a;
   --background: var(--void-black);
   --foreground: var(--void-text);
 }
@@ -20,9 +25,14 @@
   --color-void-dark: var(--void-dark);
   --color-void-panel: var(--void-panel);
   --color-void-green: var(--void-green);
+  --color-void-green-bright: var(--void-green-bright);
   --color-void-green-dim: var(--void-green-dim);
+  --color-void-green-muted: var(--void-green-muted);
+  --color-void-text: var(--void-text);
+  --color-void-text-mint: var(--void-text-mint);
   --color-void-muted: var(--void-muted);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-rajdhani);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -38,35 +48,76 @@ body {
   background: var(--void-black);
   color: var(--void-text);
   min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 ::selection {
-  background: rgba(57, 255, 20, 0.25);
+  background: rgba(0, 255, 153, 0.25);
   color: #fff;
 }
 
+/* Typography — mockup style: uppercase display headings */
+.void-display {
+  font-family: var(--font-rajdhani), var(--font-inter), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.void-page-title {
+  font-family: var(--font-rajdhani), var(--font-inter), sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--void-green);
+  text-shadow: 0 0 24px var(--void-green-glow);
+}
+
+.void-section-title {
+  font-family: var(--font-rajdhani), var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--void-green);
+}
+
 .void-glow-border {
-  border: 1px solid rgba(57, 255, 20, 0.45);
+  border: 1px solid rgba(0, 255, 153, 0.4);
   box-shadow:
-    0 0 20px rgba(57, 255, 20, 0.08),
-    inset 0 0 30px rgba(57, 255, 20, 0.03);
+    0 0 20px var(--void-green-glow-soft),
+    inset 0 0 30px rgba(0, 255, 153, 0.03);
+}
+
+.void-glow-border-strong {
+  border: 1px solid rgba(0, 255, 153, 0.65);
+  box-shadow:
+    0 0 30px rgba(0, 255, 153, 0.2),
+    0 0 60px rgba(0, 255, 153, 0.08),
+    inset 0 0 40px rgba(0, 255, 153, 0.04);
 }
 
 .void-glow-text {
-  text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+  text-shadow: 0 0 20px var(--void-green-glow);
 }
 
 .void-grid-bg {
   background-image:
-    linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 153, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 153, 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
+}
+
+.void-glass-panel {
+  background: var(--void-panel-glass);
+  backdrop-filter: blur(12px);
 }
 
 @keyframes pulse-glow {
   0%,
   100% {
-    opacity: 0.6;
+    opacity: 0.5;
   }
   50% {
     opacity: 1;
@@ -98,11 +149,27 @@ body {
 }
 
 .void-pixel-trail {
-  fill: #2dd4bf;
+  fill: var(--void-green);
   animation: void-pixel-trail 2.8s ease-in-out infinite;
 }
 
 .void-pixel-trail-bright {
-  fill: #5eead4;
-  filter: drop-shadow(0 0 2px rgba(94, 234, 212, 0.8));
+  fill: var(--void-green-bright);
+  filter: drop-shadow(0 0 3px var(--void-green-glow));
+}
+
+@keyframes void-scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.void-pricing-popular {
+  border-color: rgba(0, 255, 153, 0.8);
+  box-shadow:
+    0 0 40px rgba(0, 255, 153, 0.25),
+    0 0 80px rgba(0, 255, 153, 0.1);
 }

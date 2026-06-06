@@ -6,9 +6,11 @@
   "nav": {
     "dashboard": "Dashboard",
     "voidpoints": "VoidPoints",
+    "pricing": "Pricing",
     "about": "About",
+    "settings": "Settings",
     "login": "Sign In",
-    "signup": "Start Free Trial",
+    "signup": "Get Protected",
     "logout": "Sign Out"
   },
   "status": {
@@ -18,12 +20,15 @@
     "unscheduled": "Unscheduled"
   },
   "hero": {
-    "badge": "DNS-Level Network Security",
+    "badge": "VoidAd",
+    "titleLine1": "VoidAd",
+    "titleLine2": "The Ads Vanish.",
+    "titleLine3": "Your Privacy Remains. Securing Your Digital Space.",
     "title": "Reclaim Your Internet.",
     "titleHighlight": "Block Ads. Protect Privacy.",
-    "subtitle": "VoidAd filters threats at the network level — every device on your router is protected automatically. No apps to install. No ads to fund us.",
+    "subtitle": "VoidAd filters threats at the network level — every device on your router is protected automatically.",
     "ctaPrimary": "Start Your Protection Journey",
-    "ctaSecondary": "View Dashboard Demo"
+    "ctaSecondary": "View Pricing"
   },
   "features": {
     "title": "Features & Control",
@@ -44,13 +49,115 @@
   "leaderboard": {
     "title": "Meet the Void Guardians",
     "subtitle": "Global Reclaimers",
+    "pageTitle": "Void Points Leaderboard",
+    "pageSubtitle": "Community Contributors",
+    "communityContributors": "Community Contributors",
     "joinElite": "Join the Elite",
+    "viewFull": "View Full Leaderboard",
     "rank": "Rank",
     "level": "Level",
-    "donated": "Donated Points"
+    "donated": "Donated Points",
+    "nextLevel": "Next Level",
+    "tierGoal": "Next Tier Goal: Carbon Offset 500 KG",
+    "dataBlocked": "Data Blocked Ads",
+    "adsBlocked": "Ads Blocked",
+    "adsBlockedLabel": "Ads Blocked",
+    "signupNote": "Sign up for VoidPoints!"
+  },
+  "pricing": {
+    "title": "Choose Your Protection",
+    "subtitle": "The Ads Vanish. Your Privacy Remains.",
+    "mostPopular": "Most Popular",
+    "stats": {
+      "adsBlocked": "Ads Blocked",
+      "trackers": "Trackers Neutralized",
+      "dataSaved": "Data Saved"
+    },
+    "highlights": {
+      "network": "Network-wide protection for every device",
+      "voidpoints": "Earn VoidPoints with every block",
+      "zeroLog": "Zero-log policy — privacy first"
+    },
+    "tiers": {
+      "trial": {
+        "name": "Trial",
+        "price": "Free",
+        "period": "14 days",
+        "cta": "Start Trial",
+        "features": [
+          "Full DNS protection",
+          "Anti-adware & anti-tracker",
+          "1 router / network",
+          "VoidPoints rewards"
+        ]
+      },
+      "free": {
+        "name": "Free",
+        "price": "€0",
+        "period": "forever",
+        "cta": "Get Started",
+        "features": [
+          "Basic ad blocking",
+          "Anti-phishing shield",
+          "Community support",
+          "Limited VoidPoints"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€3.99",
+        "period": "/ month",
+        "cta": "Upgrade Now",
+        "features": [
+          "Full protection suite",
+          "IoT Guard control",
+          "Parental controls",
+          "Unlimited VoidPoints",
+          "Priority support"
+        ]
+      },
+      "ultimate": {
+        "name": "Ultimate",
+        "price": "€9.99",
+        "period": "/ month",
+        "cta": "Go Ultimate",
+        "features": [
+          "Everything in Pro",
+          "Mental health filter",
+          "Multi-network support",
+          "VoidAd-Box ready",
+          "VIP community badge"
+        ]
+      }
+    }
+  },
+  "settings": {
+    "title": "Account & Profile Settings",
+    "guestPrompt": "Sign in to manage your account, privacy, and notification preferences.",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "voidpoints": "Total VoidPoints",
+    "level": "Current Level",
+    "changeAvatar": "Change Profile Picture",
+    "accountDetails": "Account Details",
+    "username": "Username",
+    "email": "Email",
+    "country": "Country",
+    "privacySecurity": "Privacy & Security",
+    "twoFactor": "Two-Factor Authentication",
+    "zeroLog": "Zero-Log Policy",
+    "notifications": "Notification Preferences",
+    "charityAlerts": "New Charity Alerts",
+    "levelUpAlerts": "Level Up Congratulations",
+    "community": "Community Settings",
+    "profilePublic": "Make Profile Public",
+    "hideLeaderboard": "Hide VoidPoints on Leaderboard",
+    "language": "Language",
+    "saveChanges": "Save All Changes",
+    "cancel": "Cancel"
   },
   "dashboard": {
-    "title": "System-Wide Protection",
+    "title": "Features & Control",
     "protectionRules": "Protection Rules",
     "iotGuard": "IoT Guard Control",
     "voidpointsDonate": "VoidPoints & Donate",
@@ -81,7 +188,8 @@
     "charitiesTitle": "Registered Digital Carbon Offset Charities",
     "donate": "Donate Points",
     "totalBandwidth": "Total Bandwidth Saved",
-    "carbonOffset": "Carbon Offset"
+    "carbonOffset": "Carbon Offset",
+    "recentActivity": "Recent Donations"
   },
   "about": {
     "title": "About VoidAd",

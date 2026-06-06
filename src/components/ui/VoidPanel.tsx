@@ -4,21 +4,25 @@ interface VoidPanelProps {
   children: React.ReactNode;
   className?: string;
   title?: string;
+  glow?: "default" | "strong" | "none";
 }
 
-export function VoidPanel({ children, className, title }: VoidPanelProps) {
+export function VoidPanel({
+  children,
+  className,
+  title,
+  glow = "default",
+}: VoidPanelProps) {
   return (
     <section
       className={cn(
-        "void-glow-border rounded-2xl bg-void-panel/80 p-5 backdrop-blur-sm",
+        "rounded-xl void-glass-panel p-5 backdrop-blur-sm",
+        glow === "strong" && "void-glow-border-strong",
+        glow === "default" && "void-glow-border",
         className,
       )}
     >
-      {title && (
-        <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-void-green">
-          {title}
-        </h2>
-      )}
+      {title && <h2 className="void-section-title mb-4">{title}</h2>}
       {children}
     </section>
   );

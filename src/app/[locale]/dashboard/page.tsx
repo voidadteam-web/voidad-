@@ -20,6 +20,7 @@ import {
   Heart,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
 
 const LIVE_FEED = [
@@ -56,9 +57,7 @@ export default function DashboardPage() {
       <StatusBar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <h1 className="mb-8 text-center text-2xl font-bold uppercase tracking-wider text-void-green void-glow-text sm:text-3xl">
-          {t("title")}
-        </h1>
+        <VoidPageTitle>{t("title")}</VoidPageTitle>
 
         <div className="mb-6">
           <DashboardProfile />
@@ -250,7 +249,7 @@ function FocusGrid() {
               key={`${d}-${h}`}
               className={`h-5 w-5 rounded-sm ${
                 active.has(`${d}-${h}`)
-                  ? "bg-void-green shadow-[0_0_6px_rgba(57,255,20,0.6)]"
+                  ? "bg-void-green shadow-[0_0_6px_rgba(0,255,153,0.6)]"
                   : "bg-void-black/60 border border-void-green/10"
               }`}
             />

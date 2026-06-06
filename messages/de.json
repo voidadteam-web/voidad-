@@ -6,9 +6,11 @@
   "nav": {
     "dashboard": "Dashboard",
     "voidpoints": "VoidPoints",
+    "pricing": "Preise",
     "about": "Über uns",
+    "settings": "Einstellungen",
     "login": "Anmelden",
-    "signup": "Kostenlos testen",
+    "signup": "Schutz aktivieren",
     "logout": "Abmelden"
   },
   "status": {
@@ -18,12 +20,15 @@
     "unscheduled": "Nicht geplant"
   },
   "hero": {
-    "badge": "DNS-basierte Netzwerksicherheit",
+    "badge": "VoidAd",
+    "titleLine1": "VoidAd",
+    "titleLine2": "Die Werbung verschwindet.",
+    "titleLine3": "Ihre Privatsphäre bleibt. Ihr digitaler Raum ist geschützt.",
     "title": "Erobern Sie Ihr Internet zurück.",
     "titleHighlight": "Werbung blockieren. Privatsphäre schützen.",
-    "subtitle": "VoidAd filtert Bedrohungen auf Netzwerkebene — jedes Gerät an Ihrem Router wird automatisch geschützt. Keine Apps. Keine Werbung finanziert uns.",
+    "subtitle": "VoidAd filtert Bedrohungen auf Netzwerkebene — jedes Gerät an Ihrem Router wird automatisch geschützt.",
     "ctaPrimary": "Schutzreise starten",
-    "ctaSecondary": "Dashboard-Demo ansehen"
+    "ctaSecondary": "Preise ansehen"
   },
   "features": {
     "title": "Funktionen & Steuerung",
@@ -44,13 +49,115 @@
   "leaderboard": {
     "title": "Treffen Sie die Void Guardians",
     "subtitle": "Globale Reclaimer",
+    "pageTitle": "VoidPoints Bestenliste",
+    "pageSubtitle": "Community-Mitwirkende",
+    "communityContributors": "Community-Mitwirkende",
     "joinElite": "Werden Sie Elite",
+    "viewFull": "Vollständige Bestenliste",
     "rank": "Rang",
     "level": "Level",
-    "donated": "Gespendete Punkte"
+    "donated": "Gespendete Punkte",
+    "nextLevel": "Nächstes Level",
+    "tierGoal": "Nächstes Ziel: CO2-Ausgleich 500 KG",
+    "dataBlocked": "Blockierte Daten",
+    "adsBlocked": "Werbung blockiert",
+    "adsBlockedLabel": "Werbung blockiert",
+    "signupNote": "Melden Sie sich für VoidPoints an!"
+  },
+  "pricing": {
+    "title": "Wählen Sie Ihren Schutz",
+    "subtitle": "Die Werbung verschwindet. Ihre Privatsphäre bleibt.",
+    "mostPopular": "Am beliebtesten",
+    "stats": {
+      "adsBlocked": "Werbung blockiert",
+      "trackers": "Tracker neutralisiert",
+      "dataSaved": "Daten gespart"
+    },
+    "highlights": {
+      "network": "Netzweiter Schutz für jedes Gerät",
+      "voidpoints": "VoidPoints bei jedem Block verdienen",
+      "zeroLog": "Zero-Log-Richtlinie — Datenschutz zuerst"
+    },
+    "tiers": {
+      "trial": {
+        "name": "Test",
+        "price": "Kostenlos",
+        "period": "14 Tage",
+        "cta": "Test starten",
+        "features": [
+          "Voller DNS-Schutz",
+          "Anti-Adware & Anti-Tracker",
+          "1 Router / Netzwerk",
+          "VoidPoints Belohnungen"
+        ]
+      },
+      "free": {
+        "name": "Free",
+        "price": "0 €",
+        "period": "für immer",
+        "cta": "Loslegen",
+        "features": [
+          "Basis-Werbeblocker",
+          "Anti-Phishing-Schild",
+          "Community-Support",
+          "Begrenzte VoidPoints"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "3,99 €",
+        "period": "/ Monat",
+        "cta": "Jetzt upgraden",
+        "features": [
+          "Voller Schutz",
+          "IoT-Schutz Steuerung",
+          "Kindersicherung",
+          "Unbegrenzte VoidPoints",
+          "Priority-Support"
+        ]
+      },
+      "ultimate": {
+        "name": "Ultimate",
+        "price": "9,99 €",
+        "period": "/ Monat",
+        "cta": "Ultimate wählen",
+        "features": [
+          "Alles aus Pro",
+          "Mental-Health-Filter",
+          "Multi-Netzwerk-Support",
+          "VoidAd-Box bereit",
+          "VIP Community-Abzeichen"
+        ]
+      }
+    }
+  },
+  "settings": {
+    "title": "Konto & Profileinstellungen",
+    "guestPrompt": "Melden Sie sich an, um Konto, Datenschutz und Benachrichtigungen zu verwalten.",
+    "signIn": "Anmelden",
+    "createAccount": "Konto erstellen",
+    "voidpoints": "VoidPoints gesamt",
+    "level": "Aktuelles Level",
+    "changeAvatar": "Profilbild ändern",
+    "accountDetails": "Kontodaten",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "country": "Land",
+    "privacySecurity": "Datenschutz & Sicherheit",
+    "twoFactor": "Zwei-Faktor-Authentifizierung",
+    "zeroLog": "Zero-Log-Richtlinie",
+    "notifications": "Benachrichtigungen",
+    "charityAlerts": "Neue Wohltätigkeits-Alerts",
+    "levelUpAlerts": "Level-Up Glückwünsche",
+    "community": "Community-Einstellungen",
+    "profilePublic": "Profil öffentlich machen",
+    "hideLeaderboard": "VoidPoints in Bestenliste verbergen",
+    "language": "Sprache",
+    "saveChanges": "Alle Änderungen speichern",
+    "cancel": "Abbrechen"
   },
   "dashboard": {
-    "title": "Systemweiter Schutz",
+    "title": "Funktionen & Steuerung",
     "protectionRules": "Schutzregeln",
     "iotGuard": "IoT-Schutz Steuerung",
     "voidpointsDonate": "VoidPoints & Spenden",
@@ -81,7 +188,8 @@
     "charitiesTitle": "Registrierte digitale CO2-Ausgleichs-Organisationen",
     "donate": "Punkte spenden",
     "totalBandwidth": "Gesparte Bandbreite gesamt",
-    "carbonOffset": "CO2-Ausgleich"
+    "carbonOffset": "CO2-Ausgleich",
+    "recentActivity": "Letzte Spenden"
   },
   "about": {
     "title": "Über VoidAd",

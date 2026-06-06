@@ -10,14 +10,14 @@ export function StatusBar() {
   const [protectionOn, setProtectionOn] = useState(true);
 
   return (
-    <div className="border-b border-void-green/10 bg-void-panel/50">
+    <div className="border-b border-void-green/15 bg-void-panel/60 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-4 py-2.5 sm:flex-row sm:items-center sm:px-6">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Shield className="h-4 w-4 text-void-green" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-void-muted">
+          <span className="void-section-title text-[10px] text-void-muted">
             {t("activeProtection")}:
           </span>
-          <span className="text-xs font-medium text-void-green">
+          <span className="text-xs font-medium text-void-text-mint">
             {t("systemWide")}
           </span>
           <VoidToggle
@@ -29,10 +29,8 @@ export function StatusBar() {
 
         <div className="flex items-center gap-2 text-xs text-void-muted">
           <Clock className="h-3.5 w-3.5 text-void-green" />
-          <span className="font-semibold uppercase tracking-wider">
-            {t("focusMode")}:
-          </span>
-          <span className="text-void-green">[{t("unscheduled")}]</span>
+          <span className="void-section-title text-[10px]">{t("focusMode")}:</span>
+          <span className="font-mono text-void-green">[{t("unscheduled")}]</span>
         </div>
       </div>
     </div>

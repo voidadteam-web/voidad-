@@ -89,7 +89,7 @@ export function VoidLogo({
         className={cn(
           "relative z-0 w-auto object-contain",
           heights[size],
-          isHero && "drop-shadow-[0_0_40px_rgba(45,212,191,0.12)]",
+          isHero && "drop-shadow-[0_0_40px_rgba(0,255,153,0.15)]",
         )}
       />
     </div>

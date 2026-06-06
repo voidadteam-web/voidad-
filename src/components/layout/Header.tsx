@@ -7,11 +7,13 @@ import { VoidButton } from "@/components/ui/VoidButton";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUser";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { LogOut, User } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
+import { useState } from "react";
 
 const navItems = [
   { href: "/dashboard" as const, key: "dashboard" as const },
   { href: "/voidpoints" as const, key: "voidpoints" as const },
+  { href: "/pricing" as const, key: "pricing" as const },
   { href: "/about" as const, key: "about" as const },
 ];
 
@@ -20,6 +22,7 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading } = useUser();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const displayName =
     user?.user_metadata?.display_name ?? user?.email?.split("@")[0] ?? "";
@@ -32,22 +35,25 @@ export function Header() {
     router.refresh();
   }
 
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-void-green/10 bg-void-black/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-void-green/15 bg-void-black/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="transition-opacity hover:opacity-90">
           <VoidLogo size="md" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {navItems.map(({ href, key }) => (
             <Link
               key={href}
               href={href}
               className={cn(
-                "text-sm font-medium transition-colors",
-                pathname === href || pathname.startsWith(`${href}/`)
-                  ? "border-b-2 border-void-green pb-0.5 text-void-green"
+                "void-display text-xs font-semibold tracking-[0.15em] transition-colors",
+                isActive(href)
+                  ? "border-b-2 border-void-green pb-1 text-void-green void-glow-text"
                   : "text-void-muted hover:text-void-green",
               )}
             >
@@ -59,16 +65,23 @@ export function Header() {
         <div className="flex items-center gap-3">
           {!loading && user ? (
             <>
-              <Link href="/dashboard" className="hidden sm:block">
-                <span className="text-xs font-medium text-void-green">
+              <Link href="/settings" className="hidden sm:block">
+                <span className="text-xs font-medium text-void-text-mint">
                   {displayName}
                 </span>
+              </Link>
+              <Link
+                href="/settings"
+                aria-label={t("settings")}
+                className="hidden h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel sm:flex"
+              >
+                <User className="h-4 w-4 text-void-green" />
               </Link>
               <button
                 type="button"
                 onClick={handleSignOut}
                 aria-label={t("logout")}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel text-void-green transition-colors hover:border-void-green/60"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel text-void-green transition-colors hover:border-void-green/60 hover:shadow-[0_0_12px_rgba(0,255,153,0.2)]"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -83,17 +96,48 @@ export function Header() {
               <Link href="/signup">
                 <VoidButton className="py-2 text-xs">{t("signup")}</VoidButton>
               </Link>
-              <Link
-                href="/login"
-                aria-label={t("login")}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel text-void-green sm:hidden"
-              >
-                <User className="h-4 w-4" />
-              </Link>
             </>
           )}
+
+          <button
+            type="button"
+            aria-label="Menu"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-void-green/20 text-void-green lg:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
+
+      {mobileOpen && (
+        <nav className="border-t border-void-green/10 bg-void-dark/95 px-4 py-4 lg:hidden">
+          <div className="flex flex-col gap-3">
+            {navItems.map(({ href, key }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "void-display py-2 text-sm tracking-wider",
+                  isActive(href) ? "text-void-green" : "text-void-muted",
+                )}
+              >
+                {t(key)}
+              </Link>
+            ))}
+            {user && (
+              <Link
+                href="/settings"
+                onClick={() => setMobileOpen(false)}
+                className="void-display py-2 text-sm tracking-wider text-void-muted"
+              >
+                {t("settings")}
+              </Link>
+            )}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

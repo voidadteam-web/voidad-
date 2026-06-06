@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { Shield, Heart, Globe, Cpu } from "lucide-react";
 
@@ -20,9 +21,7 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <h1 className="text-center text-3xl font-bold uppercase tracking-wider text-void-green void-glow-text">
-        {t("title")}
-      </h1>
+      <VoidPageTitle>{t("title")}</VoidPageTitle>
 
       <VoidPanel title={t("mission")} className="mt-10">
         <p className="leading-relaxed text-void-muted">{t("missionText")}</p>

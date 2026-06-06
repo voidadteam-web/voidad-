@@ -1,59 +1,87 @@
 export function WorldMapBackground() {
+  const nodes = [
+    [180, 180],
+    [320, 140],
+    [480, 200],
+    [620, 160],
+    [780, 220],
+    [900, 180],
+    [260, 320],
+    [420, 360],
+    [580, 340],
+    [720, 380],
+    [860, 320],
+    [540, 260],
+  ];
+
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 overflow-hidden opacity-30"
+      className="pointer-events-none fixed inset-0 overflow-hidden"
     >
+      <div className="absolute inset-0 bg-gradient-to-b from-void-black via-transparent to-void-black opacity-80" />
       <svg
-        className="absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full opacity-25"
         viewBox="0 0 1200 600"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(57,255,20,0.08)" />
+          <radialGradient id="mapGlow" cx="50%" cy="45%" r="55%">
+            <stop offset="0%" stopColor="rgba(0,255,153,0.12)" />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
         </defs>
         <rect width="1200" height="600" fill="url(#mapGlow)" />
-        {/* Simplified world wireframe */}
-        <g
-          stroke="rgba(57,255,20,0.15)"
-          strokeWidth="0.8"
-          fill="none"
-        >
-          <ellipse cx="600" cy="300" rx="480" ry="220" />
-          <path d="M120 300 Q600 180 1080 300" />
-          <path d="M120 300 Q600 420 1080 300" />
-          <path d="M600 80 L600 520" />
-          <path d="M200 200 Q400 250 600 220 T1000 200" />
-          <path d="M200 400 Q400 350 600 380 T1000 400" />
+
+        {/* Dotted world map silhouette */}
+        <g fill="rgba(0,255,153,0.25)">
+          {Array.from({ length: 40 }, (_, row) =>
+            Array.from({ length: 80 }, (_, col) => {
+              const x = col * 15 + 60;
+              const y = row * 12 + 40;
+              const inMap =
+                Math.sin(col * 0.15) * 80 +
+                  Math.cos(row * 0.2) * 60 +
+                  300 <
+                  y &&
+                y < 480 &&
+                x > 100 &&
+                x < 1100;
+              if (!inMap) return null;
+              return <circle key={`${row}-${col}`} cx={x} cy={y} r="1.2" />;
+            }),
+          )}
         </g>
-        {/* Network nodes */}
-        {[
-          [280, 220],
-          [420, 180],
-          [580, 240],
-          [720, 200],
-          [880, 260],
-          [340, 340],
-          [520, 380],
-          [760, 360],
-          [640, 280],
-        ].map(([cx, cy], i) => (
+
+        {/* Wireframe arcs */}
+        <g stroke="rgba(0,255,153,0.12)" strokeWidth="0.8" fill="none">
+          <ellipse cx="600" cy="300" rx="460" ry="200" />
+          <path d="M140 300 Q600 160 1060 300" />
+          <path d="M140 300 Q600 440 1060 300" />
+          <path d="M600 100 L600 500" />
+        </g>
+
+        {/* Glowing nodes */}
+        {nodes.map(([cx, cy], i) => (
           <g key={i}>
             <circle
               cx={cx}
               cy={cy}
-              r="4"
-              fill="rgba(57,255,20,0.4)"
+              r="3"
+              fill="rgba(0,255,153,0.5)"
               className="animate-pulse-glow"
             />
-            <circle cx={cx} cy={cy} r="8" stroke="rgba(57,255,20,0.2)" />
+            <circle
+              cx={cx}
+              cy={cy}
+              r="10"
+              stroke="rgba(0,255,153,0.15)"
+              fill="none"
+            />
           </g>
         ))}
       </svg>
-      <div className="absolute inset-0 void-grid-bg opacity-40" />
+      <div className="absolute inset-0 void-grid-bg opacity-30" />
     </div>
   );
 }
