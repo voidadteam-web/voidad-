@@ -4,10 +4,12 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { VoidLogo } from "@/components/voidad/VoidLogo";
 import { VoidButton } from "@/components/ui/VoidButton";
+import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUser";
+import { useProfile } from "@/hooks/useProfile";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { LogOut, Menu, User, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
@@ -22,10 +24,14 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading } = useUser();
+  const { profile } = useProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const displayName =
-    user?.user_metadata?.display_name ?? user?.email?.split("@")[0] ?? "";
+    profile?.display_name ??
+    user?.user_metadata?.display_name ??
+    user?.email?.split("@")[0] ??
+    "";
 
   async function handleSignOut() {
     if (!isSupabaseConfigured()) return;
@@ -73,9 +79,13 @@ export function Header() {
               <Link
                 href="/settings"
                 aria-label={t("settings")}
-                className="hidden h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel sm:flex"
+                className="hidden sm:block"
               >
-                <User className="h-4 w-4 text-void-green" />
+                <ProfileAvatar
+                  name={displayName || "?"}
+                  avatarUrl={profile?.avatar_url}
+                  size="xs"
+                />
               </Link>
               <button
                 type="button"
@@ -130,9 +140,16 @@ export function Header() {
               <Link
                 href="/settings"
                 onClick={() => setMobileOpen(false)}
-                className="void-display py-2 text-sm tracking-wider text-void-muted"
+                className="flex items-center gap-3 py-2"
               >
-                {t("settings")}
+                <ProfileAvatar
+                  name={displayName || "?"}
+                  avatarUrl={profile?.avatar_url}
+                  size="xs"
+                />
+                <span className="void-display text-sm tracking-wider text-void-muted">
+                  {t("settings")}
+                </span>
               </Link>
             )}
           </div>

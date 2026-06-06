@@ -32,7 +32,7 @@ export function CountrySelect({
         <option value="">{placeholder}</option>
         {COUNTRIES.map((c) => (
           <option key={c.code} value={c.code}>
-            {countryFlag(c.code)} {c.name}
+            {c.name}
           </option>
         ))}
       </select>

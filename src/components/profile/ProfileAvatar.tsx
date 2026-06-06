@@ -7,11 +7,12 @@ import { cn } from "@/lib/utils";
 type ProfileAvatarProps = {
   name: string;
   avatarUrl?: string | null;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   className?: string;
 };
 
 const sizes = {
+  xs: "h-9 w-9 text-sm border",
   sm: "h-12 w-12 text-lg",
   md: "h-28 w-28 text-3xl",
   lg: "h-32 w-32 text-4xl",
@@ -29,7 +30,10 @@ export function ProfileAvatar({
   return (
     <div
       className={cn(
-        "relative shrink-0 overflow-hidden rounded-full border-2 border-void-green bg-void-panel shadow-[0_0_30px_rgba(0,255,153,0.25)]",
+        "relative shrink-0 overflow-hidden rounded-full border-void-green bg-void-panel",
+        size === "xs"
+          ? "border shadow-none"
+          : "border-2 shadow-[0_0_30px_rgba(0,255,153,0.25)]",
         dim,
         className,
       )}
@@ -44,7 +48,7 @@ export function ProfileAvatar({
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center font-bold text-void-green">
-          {size === "sm" ? (
+          {size === "xs" || size === "sm" ? (
             initial
           ) : (
             <User className={size === "lg" ? "h-14 w-14" : "h-12 w-12"} />

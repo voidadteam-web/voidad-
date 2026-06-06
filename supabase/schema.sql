@@ -33,6 +33,12 @@ create table if not exists public.user_settings (
   notify_charity boolean default true not null,
   notify_level_up boolean default true not null,
   notify_protection boolean default true not null,
+  enhanced_ad_blocking boolean default false not null,
+  data_compression boolean default false not null,
+  zero_day_discovery boolean default false not null,
+  share_voidpoints boolean default false not null,
+  show_leaderboard_rank boolean default false not null,
+  two_factor_enabled boolean default false not null,
   updated_at timestamptz default now() not null
 );
 

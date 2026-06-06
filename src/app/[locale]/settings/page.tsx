@@ -11,6 +11,7 @@ import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { CountrySelect } from "@/components/profile/CountrySelect";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
+import { useUserSettings } from "@/hooks/useUserSettings";
 import { Link } from "@/i18n/navigation";
 import { Shield, Heart } from "lucide-react";
 
@@ -19,6 +20,11 @@ export default function SettingsPage() {
   const { user, loading: authLoading } = useUser();
   const { profile, loading: profileLoading, updateProfile, uploadAvatar } =
     useProfile();
+  const {
+    settings: userSettings,
+    loading: settingsLoading,
+    updateSettings,
+  } = useUserSettings();
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [displayName, setDisplayName] = useState("");
@@ -48,7 +54,19 @@ export default function SettingsPage() {
     setHideLeaderboard(profile.hide_leaderboard);
   }, [profile]);
 
-  const loading = authLoading || profileLoading;
+  useEffect(() => {
+    if (!userSettings) return;
+    setCharityAlerts(userSettings.notify_charity);
+    setLevelUp(userSettings.notify_level_up);
+    setTwoFactor(userSettings.two_factor_enabled);
+    setEnhancedBlocking(userSettings.enhanced_ad_blocking);
+    setDataCompression(userSettings.data_compression);
+    setZeroDayDiscovery(userSettings.zero_day_discovery);
+    setShareVoidpoints(userSettings.share_voidpoints);
+    setShowLeaderboardRank(userSettings.show_leaderboard_rank);
+  }, [userSettings]);
+
+  const loading = authLoading || profileLoading || settingsLoading;
 
   const resolvedName =
     displayName ||
@@ -82,14 +100,26 @@ export default function SettingsPage() {
     setSaving(true);
     setMessage(null);
     try {
-      await updateProfile({
-        display_name: displayName.trim() || null,
-        username: username.trim() || null,
-        country_code: countryCode || null,
-        bio: bio.trim() || null,
-        is_public: isPublic,
-        hide_leaderboard: hideLeaderboard,
-      });
+      await Promise.all([
+        updateProfile({
+          display_name: displayName.trim() || null,
+          username: username.trim() || null,
+          country_code: countryCode || null,
+          bio: bio.trim() || null,
+          is_public: isPublic,
+          hide_leaderboard: hideLeaderboard,
+        }),
+        updateSettings({
+          notify_charity: charityAlerts,
+          notify_level_up: levelUp,
+          two_factor_enabled: twoFactor,
+          enhanced_ad_blocking: enhancedBlocking,
+          data_compression: dataCompression,
+          zero_day_discovery: zeroDayDiscovery,
+          share_voidpoints: shareVoidpoints,
+          show_leaderboard_rank: showLeaderboardRank,
+        }),
+      ]);
       setMessage(t("saved"));
     } catch {
       setMessage(t("saveFailed"));
@@ -99,13 +129,24 @@ export default function SettingsPage() {
   }
 
   function handleCancel() {
-    if (!profile) return;
-    setDisplayName(profile.display_name ?? "");
-    setUsername(profile.username ?? "");
-    setCountryCode(profile.country_code ?? "");
-    setBio(profile.bio ?? "");
-    setIsPublic(profile.is_public);
-    setHideLeaderboard(profile.hide_leaderboard);
+    if (profile) {
+      setDisplayName(profile.display_name ?? "");
+      setUsername(profile.username ?? "");
+      setCountryCode(profile.country_code ?? "");
+      setBio(profile.bio ?? "");
+      setIsPublic(profile.is_public);
+      setHideLeaderboard(profile.hide_leaderboard);
+    }
+    if (userSettings) {
+      setCharityAlerts(userSettings.notify_charity);
+      setLevelUp(userSettings.notify_level_up);
+      setTwoFactor(userSettings.two_factor_enabled);
+      setEnhancedBlocking(userSettings.enhanced_ad_blocking);
+      setDataCompression(userSettings.data_compression);
+      setZeroDayDiscovery(userSettings.zero_day_discovery);
+      setShareVoidpoints(userSettings.share_voidpoints);
+      setShowLeaderboardRank(userSettings.show_leaderboard_rank);
+    }
     setMessage(null);
   }
 
