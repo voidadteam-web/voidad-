@@ -184,3 +184,5 @@ insert into public.charities (slug, name_en, name_de, description_en, descriptio
   ('plant-a-bit', 'Plant-A-Bit Initiative', 'Plant-A-Bit Initiative', 'Fund reforestation through tech savings.', 'Aufforstung durch Tech-Einsparungen finanzieren.'),
   ('digital-freedom', 'Digital Freedom Foundation', 'Digital Freedom Foundation', 'Support online privacy rights.', 'Online-Privatsphäre-Rechte unterstützen.')
 on conflict (slug) do nothing;
+
+-- See supabase/migrations/002_device_auth.sql for device/network anti-abuse & subscription plans

@@ -14,95 +14,45 @@ export interface Database {
           id: string;
           username: string | null;
           display_name: string | null;
-          avatar_url: string | null;
-          country_code: string | null;
-          bio: string | null;
-          voidpoints_total: number;
-          voidpoints_donated: number;
-          level: number;
-          ads_blocked: number;
-          is_public: boolean;
-          hide_leaderboard: boolean;
+          subscription_plan: string;
+          trial_ends_at: string | null;
           locale: string | null;
-          created_at: string;
-          updated_at: string;
+          voidpoints_total: number;
+          level: number;
         };
         Insert: {
           id: string;
-          username?: string | null;
           display_name?: string | null;
-          avatar_url?: string | null;
-          country_code?: string | null;
-          bio?: string | null;
-          voidpoints_total?: number;
-          voidpoints_donated?: number;
-          level?: number;
-          ads_blocked?: number;
-          is_public?: boolean;
-          hide_leaderboard?: boolean;
+          subscription_plan?: string;
           locale?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
       };
-      user_settings: {
+      signup_network_nonces: {
         Row: {
-          user_id: string;
-          protection_enabled: boolean;
-          anti_adware: boolean;
-          anti_tracker: boolean;
-          anti_phishing: boolean;
-          false_positive_filter: boolean;
-          geo_block: boolean;
-          focus_mode_enabled: boolean;
-          notify_charity: boolean;
-          notify_level_up: boolean;
-          notify_protection: boolean;
-          updated_at: string;
+          id: string;
+          fingerprint_hash: string;
+          network_hash: string;
+          expires_at: string;
+          used_at: string | null;
         };
         Insert: {
-          user_id: string;
-          protection_enabled?: boolean;
-          anti_adware?: boolean;
-          anti_tracker?: boolean;
-          anti_phishing?: boolean;
-          false_positive_filter?: boolean;
-          geo_block?: boolean;
-          focus_mode_enabled?: boolean;
-          notify_charity?: boolean;
-          notify_level_up?: boolean;
-          notify_protection?: boolean;
+          fingerprint_hash: string;
+          network_hash: string;
+          expires_at: string;
+          used_at?: string | null;
         };
-        Update: Partial<Database["public"]["Tables"]["user_settings"]["Insert"]>;
-      };
-      charities: {
-        Row: {
-          id: string;
-          slug: string;
-          name_en: string;
-          name_de: string;
-          description_en: string | null;
-          description_de: string | null;
-          logo_url: string | null;
-          is_verified: boolean;
-          is_active: boolean;
-          created_at: string;
-        };
+        Update: Partial<Database["public"]["Tables"]["signup_network_nonces"]["Insert"]>;
       };
     };
-    Views: {
-      leaderboard: {
-        Row: {
-          id: string;
-          username: string | null;
-          display_name: string | null;
-          avatar_url: string | null;
-          country_code: string | null;
-          voidpoints_total: number;
-          voidpoints_donated: number;
-          level: number;
-          ads_blocked: number;
-          global_rank: number;
-        };
+    Functions: {
+      check_free_tier_device_available: {
+        Args: { p_fingerprint_hash: string; p_network_hash: string };
+        Returns: boolean;
+      };
+      verify_user_device: {
+        Args: { p_fingerprint_hash: string; p_network_hash: string };
+        Returns: Json;
       };
     };
   };
