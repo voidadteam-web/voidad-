@@ -203,20 +203,34 @@ export default function DashboardPage() {
 
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           <VoidPanel title={t("liveFeed")} className="lg:col-span-1">
-            {activity.length === 0 ? (
-              <p className="text-xs text-void-muted">{t("noActivity")}</p>
-            ) : (
-              <ul className="space-y-2">
-                {activity.map((entry) => (
-                  <li
-                    key={`${entry.created_at}-${entry.domain}`}
-                    className="rounded-lg border border-void-green/15 bg-void-black/50 px-3 py-2 font-mono text-[11px] text-void-green"
-                  >
-                    {formatActivityLine(entry, t)}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="rounded-lg border border-void-green/30 bg-void-black/50 p-2">
+              <div className="mb-2 flex items-center justify-between border-b border-void-green/15 px-2 pb-2">
+                <span className="text-[10px] uppercase tracking-wider text-void-muted">
+                  {t("liveFeedBox")}
+                </span>
+                <span className="font-mono text-[10px] text-void-green">
+                  {activity.length.toLocaleString(locale)}
+                </span>
+              </div>
+              <div className="max-h-64 overflow-y-auto overscroll-contain rounded-md border border-void-green/15 bg-void-black/60 p-2 sm:max-h-72">
+                {activity.length === 0 ? (
+                  <p className="flex min-h-32 items-center justify-center px-2 text-center text-xs text-void-muted">
+                    {t("noActivity")}
+                  </p>
+                ) : (
+                  <ul className="space-y-1.5">
+                    {activity.map((entry) => (
+                      <li
+                        key={`${entry.created_at}-${entry.domain}`}
+                        className="rounded-md border border-void-green/15 bg-void-black/50 px-2.5 py-1.5 font-mono text-[10px] leading-relaxed text-void-green sm:text-[11px]"
+                      >
+                        {formatActivityLine(entry, t)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </VoidPanel>
 
           <VoidPanel className="lg:col-span-2" title={t("impactStats")}>
