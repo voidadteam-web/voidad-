@@ -1,47 +1,122 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { StatusBar } from "@/components/layout/StatusBar";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidToggle } from "@/components/ui/VoidToggle";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
-import { useState } from "react";
+import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
+import { CountrySelect } from "@/components/profile/CountrySelect";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
 import { Link } from "@/i18n/navigation";
-import { User, Shield, Globe } from "lucide-react";
+import { Shield, Heart } from "lucide-react";
 
 export default function SettingsPage() {
   const t = useTranslations("settings");
   const { user, loading: authLoading } = useUser();
-  const { profile, loading: profileLoading } = useProfile();
-  const [settings, setSettings] = useState({
-    charityAlerts: true,
-    levelUp: true,
-    profilePublic: true,
-    hideLeaderboard: false,
-    twoFactor: false,
-    notifications: true,
-  });
+  const { profile, loading: profileLoading, updateProfile, uploadAvatar } =
+    useProfile();
 
-  const toggle = (key: keyof typeof settings) =>
-    setSettings((s) => ({ ...s, [key]: !s[key] }));
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [bio, setBio] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+  const [hideLeaderboard, setHideLeaderboard] = useState(false);
+  const [charityAlerts, setCharityAlerts] = useState(true);
+  const [levelUp, setLevelUp] = useState(true);
+  const [twoFactor, setTwoFactor] = useState(false);
+  const [enhancedBlocking, setEnhancedBlocking] = useState(false);
+  const [dataCompression, setDataCompression] = useState(false);
+  const [zeroDayDiscovery, setZeroDayDiscovery] = useState(false);
+  const [shareVoidpoints, setShareVoidpoints] = useState(false);
+  const [showLeaderboardRank, setShowLeaderboardRank] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  useEffect(() => {
+    if (!profile) return;
+    setDisplayName(profile.display_name ?? "");
+    setUsername(profile.username ?? "");
+    setCountryCode(profile.country_code ?? "");
+    setBio(profile.bio ?? "");
+    setIsPublic(profile.is_public);
+    setHideLeaderboard(profile.hide_leaderboard);
+  }, [profile]);
 
-  const displayName =
-    profile?.display_name ??
-    user?.user_metadata?.display_name ??
-    user?.email?.split("@")[0] ??
+  const loading = authLoading || profileLoading;
+
+  const resolvedName =
+    displayName ||
+    profile?.display_name ||
+    user?.user_metadata?.display_name ||
+    user?.email?.split("@")[0] ||
     "Guest";
+
+  const voidpoints = profile?.voidpoints_total ?? 0;
+  const level = profile?.level ?? 0;
+  const communityRank = voidpoints > 0 ? t("ranked") : t("unranked");
+
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setMessage(null);
+    try {
+      await uploadAvatar(file);
+      setMessage(t("avatarSaved"));
+    } catch {
+      setMessage(t("avatarFailed"));
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  async function handleSave() {
+    setSaving(true);
+    setMessage(null);
+    try {
+      await updateProfile({
+        display_name: displayName.trim() || null,
+        username: username.trim() || null,
+        country_code: countryCode || null,
+        bio: bio.trim() || null,
+        is_public: isPublic,
+        hide_leaderboard: hideLeaderboard,
+      });
+      setMessage(t("saved"));
+    } catch {
+      setMessage(t("saveFailed"));
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function handleCancel() {
+    if (!profile) return;
+    setDisplayName(profile.display_name ?? "");
+    setUsername(profile.username ?? "");
+    setCountryCode(profile.country_code ?? "");
+    setBio(profile.bio ?? "");
+    setIsPublic(profile.is_public);
+    setHideLeaderboard(profile.hide_leaderboard);
+    setMessage(null);
+  }
 
   return (
     <>
       <StatusBar />
 
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <VoidPageTitle>{t("title")}</VoidPageTitle>
 
-        {!authLoading && !user ? (
+        {!loading && !user ? (
           <VoidPanel className="text-center">
             <p className="text-void-text-mint">{t("guestPrompt")}</p>
             <div className="mt-6 flex justify-center gap-3">
@@ -55,56 +130,92 @@ export default function SettingsPage() {
           </VoidPanel>
         ) : (
           <VoidPanel glow="strong">
-            <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
-              {/* Profile sidebar */}
+            <div className="grid gap-8 lg:grid-cols-3">
+              {/* Left — profile photo */}
               <div className="flex flex-col items-center text-center">
-                <div className="flex h-28 w-28 items-center justify-center rounded-full border-2 border-void-green bg-void-panel shadow-[0_0_30px_rgba(0,255,153,0.25)]">
-                  <User className="h-12 w-12 text-void-green" />
-                </div>
+                <ProfileAvatar
+                  name={resolvedName}
+                  avatarUrl={profile?.avatar_url}
+                  size="lg"
+                />
                 <p className="void-display mt-4 text-xl text-void-green void-glow-text">
-                  {displayName}
+                  {resolvedName}
                 </p>
-                {!profileLoading && profile && (
-                  <>
-                    <p className="mt-2 text-sm text-void-text-mint">
-                      {t("voidpoints")}:{" "}
-                      <span className="text-void-green">
-                        {profile.voidpoints_total?.toLocaleString() ?? "0"}
-                      </span>
-                    </p>
-                    <p className="text-sm text-void-muted">
-                      {t("level")}: {profile.level ?? 1}
-                    </p>
-                  </>
-                )}
-                <VoidButton variant="secondary" className="mt-4 w-full text-xs">
-                  {t("changeAvatar")}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+                <VoidButton
+                  variant="secondary"
+                  className="mt-4 w-full text-xs"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  {uploading ? t("uploading") : t("changeAvatar")}
                 </VoidButton>
-                <div className="mt-6 flex h-16 w-16 items-center justify-center rounded-lg border border-void-green/30 text-2xl">
+                <div
+                  className={`mt-6 flex h-16 w-16 items-center justify-center rounded-lg border border-void-green/30 text-2xl ${
+                    level > 0 ? "opacity-100" : "opacity-40"
+                  }`}
+                >
                   🐉
                 </div>
-                <p className="mt-2 text-xs text-void-green">Level {profile?.level ?? 38}</p>
+                <p className="mt-2 text-xs text-void-green">
+                  {level > 0 ? t("levelBadge", { level }) : t("levelStarter")}
+                </p>
               </div>
 
-              {/* Settings grid */}
-              <div className="space-y-6">
-                <VoidPanel title={t("accountDetails")}>
+              {/* Middle — profile fields */}
+              <div className="space-y-4">
+                <VoidPanel title={t("yourProfile")}>
                   <div className="space-y-3">
-                    <SettingsField label={t("username")} value={displayName} />
-                    <SettingsField
-                      label={t("email")}
-                      value={user?.email ?? "—"}
+                    <SettingsInput
+                      label={t("usernameVisible")}
+                      value={displayName}
+                      onChange={setDisplayName}
+                      placeholder={t("usernamePlaceholder")}
                     />
-                    <SettingsField label={t("country")} value="🇩🇪 Germany" />
+                    <SettingsInput
+                      label={t("username")}
+                      value={username}
+                      onChange={setUsername}
+                      placeholder="@username"
+                    />
+                    <div>
+                      <label className="mb-1.5 block text-[10px] uppercase tracking-wider text-void-muted">
+                        {t("country")}
+                      </label>
+                      <CountrySelect
+                        value={countryCode}
+                        onChange={setCountryCode}
+                        placeholder={t("selectCountry")}
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1.5 block text-[10px] uppercase tracking-wider text-void-muted">
+                        {t("bio")}
+                      </label>
+                      <textarea
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        rows={3}
+                        placeholder={t("bioPlaceholder")}
+                        className="w-full resize-none rounded-lg border border-void-green/20 bg-void-black/60 px-3 py-2.5 text-sm text-void-text-mint outline-none focus:border-void-green/50"
+                      />
+                    </div>
                   </div>
                 </VoidPanel>
 
                 <VoidPanel title={t("privacySecurity")}>
                   <div className="space-y-2">
+                    <SettingsField label={t("password")} value="••••••••" />
                     <VoidToggle
                       label={t("twoFactor")}
-                      checked={settings.twoFactor}
-                      onChange={() => toggle("twoFactor")}
+                      checked={twoFactor}
+                      onChange={() => setTwoFactor(!twoFactor)}
                     />
                     <div className="flex items-center gap-2 rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2.5">
                       <Shield className="h-4 w-4 text-void-green" />
@@ -115,18 +226,52 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 </VoidPanel>
+              </div>
+
+              {/* Right — VoidPoints & community */}
+              <div className="space-y-4">
+                <VoidPanel title={t("voidpointsCommunity")}>
+                  <div className="space-y-2 text-sm">
+                    <StatRow label={t("voidpoints")} value={voidpoints.toLocaleString()} />
+                    <StatRow label={t("level")} value={String(level)} />
+                    <StatRow label={t("communityRank")} value={communityRank} />
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <VoidToggle
+                      label={t("enhancedBlocking")}
+                      checked={enhancedBlocking}
+                      onChange={() => setEnhancedBlocking(!enhancedBlocking)}
+                    />
+                    <VoidToggle
+                      label={t("dataCompression")}
+                      checked={dataCompression}
+                      onChange={() => setDataCompression(!dataCompression)}
+                    />
+                    <VoidToggle
+                      label={t("zeroDayDiscovery")}
+                      checked={zeroDayDiscovery}
+                      onChange={() => setZeroDayDiscovery(!zeroDayDiscovery)}
+                    />
+                  </div>
+                  <Link href="/voidpoints" className="mt-4 block">
+                    <VoidButton variant="secondary" className="w-full text-xs">
+                      <Heart className="h-3.5 w-3.5" />
+                      {t("viewCharities")}
+                    </VoidButton>
+                  </Link>
+                </VoidPanel>
 
                 <VoidPanel title={t("notifications")}>
                   <div className="space-y-2">
                     <VoidToggle
                       label={t("charityAlerts")}
-                      checked={settings.charityAlerts}
-                      onChange={() => toggle("charityAlerts")}
+                      checked={charityAlerts}
+                      onChange={() => setCharityAlerts(!charityAlerts)}
                     />
                     <VoidToggle
                       label={t("levelUpAlerts")}
-                      checked={settings.levelUp}
-                      onChange={() => toggle("levelUp")}
+                      checked={levelUp}
+                      onChange={() => setLevelUp(!levelUp)}
                     />
                   </div>
                 </VoidPanel>
@@ -134,34 +279,77 @@ export default function SettingsPage() {
                 <VoidPanel title={t("community")}>
                   <div className="space-y-2">
                     <VoidToggle
+                      label={t("showLeaderboardRank")}
+                      checked={showLeaderboardRank}
+                      onChange={() => setShowLeaderboardRank(!showLeaderboardRank)}
+                    />
+                    <VoidToggle
+                      label={t("shareVoidpoints")}
+                      checked={shareVoidpoints}
+                      onChange={() => setShareVoidpoints(!shareVoidpoints)}
+                    />
+                    <VoidToggle
                       label={t("profilePublic")}
-                      checked={settings.profilePublic}
-                      onChange={() => toggle("profilePublic")}
+                      checked={isPublic}
+                      onChange={() => setIsPublic(!isPublic)}
                     />
                     <VoidToggle
                       label={t("hideLeaderboard")}
-                      checked={settings.hideLeaderboard}
-                      onChange={() => toggle("hideLeaderboard")}
+                      checked={hideLeaderboard}
+                      onChange={() => setHideLeaderboard(!hideLeaderboard)}
                     />
-                    <div className="flex items-center gap-2 rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2.5">
-                      <Globe className="h-4 w-4 text-void-green" />
-                      <span className="text-sm text-void-text-mint">
-                        {t("language")}: English (Global)
-                      </span>
-                    </div>
                   </div>
                 </VoidPanel>
               </div>
             </div>
 
+            {message && (
+              <p className="mt-6 text-center text-sm text-void-green">{message}</p>
+            )}
+
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <VoidButton className="min-w-[200px]">{t("saveChanges")}</VoidButton>
-              <VoidButton variant="ghost">{t("cancel")}</VoidButton>
+              <VoidButton
+                className="min-w-[200px]"
+                disabled={saving}
+                onClick={handleSave}
+              >
+                {saving ? t("saving") : t("saveChanges")}
+              </VoidButton>
+              <VoidButton variant="ghost" onClick={handleCancel}>
+                {t("cancel")}
+              </VoidButton>
             </div>
           </VoidPanel>
         )}
       </div>
     </>
+  );
+}
+
+function SettingsInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-[10px] uppercase tracking-wider text-void-muted">
+        {label}
+      </label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-void-green/20 bg-void-black/60 px-3 py-2.5 text-sm text-void-text-mint outline-none focus:border-void-green/50"
+      />
+    </div>
   );
 }
 
@@ -172,9 +360,15 @@ function SettingsField({ label, value }: { label: string; value: string }) {
         <p className="text-[10px] uppercase tracking-wider text-void-muted">{label}</p>
         <p className="text-sm text-void-text-mint">{value}</p>
       </div>
-      <VoidButton variant="ghost" className="py-1 text-[10px]">
-        EDIT
-      </VoidButton>
+    </div>
+  );
+}
+
+function StatRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2">
+      <span className="text-xs text-void-muted">{label}</span>
+      <span className="text-sm font-medium text-void-green">{value}</span>
     </div>
   );
 }

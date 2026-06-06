@@ -5,6 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidStat } from "@/components/ui/VoidStat";
+import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
+import { CountryBadge } from "@/components/profile/CountrySelect";
 import { useProfile } from "@/hooks/useProfile";
 
 export function DashboardProfile() {
@@ -46,11 +48,16 @@ export function DashboardProfile() {
   return (
     <VoidPanel title={t("profile")}>
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-void-green/40 bg-void-black/60 text-lg font-bold text-void-green">
-          {name.charAt(0).toUpperCase()}
-        </div>
+        <ProfileAvatar
+          name={name}
+          avatarUrl={profile?.avatar_url}
+          size="sm"
+        />
         <div>
-          <p className="font-semibold text-void-text">{name}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-semibold text-void-text">{name}</p>
+            <CountryBadge code={profile?.country_code} />
+          </div>
           <p className="text-xs text-void-muted">{user.email}</p>
         </div>
       </div>
@@ -59,7 +66,7 @@ export function DashboardProfile() {
           label={t("voidpoints")}
           value={profile?.voidpoints_total ?? 0}
         />
-        <VoidStat label={t("level")} value={profile?.level ?? 1} />
+        <VoidStat label={t("level")} value={profile?.level ?? 0} />
         <VoidStat label={t("adsBlocked")} value={profile?.ads_blocked ?? 0} />
       </div>
     </VoidPanel>

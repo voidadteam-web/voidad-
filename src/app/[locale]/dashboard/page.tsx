@@ -22,18 +22,17 @@ import {
 import { Link } from "@/i18n/navigation";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
-
-const LIVE_FEED = [
-  "TRACKER: from AdServer1 → Chrome",
-  "AD-REJECT: from DoubleClick",
-  "AD-REJECT: from IP_Camera",
-  "IoT_ANOMALY: from SmartTV → blocked",
-  "PHISHING: from suspicious-domain.net → blocked",
-];
+import { useProfile } from "@/hooks/useProfile";
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const ts = useTranslations("stats");
+  const { profile } = useProfile();
+
+  const voidpoints = profile?.voidpoints_total ?? 0;
+  const level = profile?.level ?? 0;
+  const adsBlocked = profile?.ads_blocked ?? 0;
+  const isNewAccount = voidpoints === 0 && adsBlocked === 0;
 
   const [settings, setSettings] = useState({
     antiAdware: true,
@@ -64,7 +63,6 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-4">
-          {/* Protection Rules */}
           <VoidPanel title={t("protectionRules")}>
             <div className="space-y-2">
               <VoidToggle
@@ -95,7 +93,6 @@ export default function DashboardPage() {
             </div>
           </VoidPanel>
 
-          {/* IoT Guard */}
           <VoidPanel title={t("iotGuard")}>
             <div className="space-y-2">
               <VoidToggle
@@ -138,17 +135,18 @@ export default function DashboardPage() {
             </div>
           </VoidPanel>
 
-          {/* VoidPoints */}
           <VoidPanel title={t("voidpointsDonate")}>
-            <VoidStat label={ts("voidpoints")} value={101230} />
+            <VoidStat label={ts("voidpoints")} value={voidpoints} />
             <div className="mt-4 space-y-2 text-xs text-void-muted">
               <div className="flex justify-between">
                 <span>Ads Blocked</span>
-                <span className="text-void-green">60,000 pts</span>
+                <span className="text-void-green">
+                  {adsBlocked.toLocaleString()} pts
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Data Saving</span>
-                <span className="text-void-green">41,230 pts</span>
+                <span className="text-void-green">0 pts</span>
               </div>
             </div>
             <div className="mt-4 flex flex-col gap-2">
@@ -165,14 +163,13 @@ export default function DashboardPage() {
               </Link>
             </div>
             <p className="mt-3 text-center text-xs text-void-green">
-              Level 4 — Dragon Shield
+              {level > 0 ? t("levelShield", { level }) : t("levelStarter")}
             </p>
           </VoidPanel>
 
-          {/* Mental Health Filter */}
           <VoidPanel title={t("mentalHealth")}>
             <p className="mb-3 text-xs text-void-muted">{t("focusScheduler")}</p>
-            <FocusGrid />
+            <FocusGrid empty={isNewAccount} />
             <div className="mt-4">
               <VoidToggle
                 label={t("keywordFilter")}
@@ -183,27 +180,30 @@ export default function DashboardPage() {
           </VoidPanel>
         </div>
 
-        {/* Bottom row: live feed + stats */}
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           <VoidPanel title={t("liveFeed")} className="lg:col-span-1">
-            <ul className="space-y-2">
-              {LIVE_FEED.map((entry) => (
-                <li
-                  key={entry}
-                  className="rounded-lg border border-void-green/15 bg-void-black/50 px-3 py-2 font-mono text-[11px] text-void-green"
-                >
-                  {entry}
-                </li>
-              ))}
-            </ul>
+            {isNewAccount ? (
+              <p className="text-xs text-void-muted">{t("noActivity")}</p>
+            ) : (
+              <ul className="space-y-2">
+                {LIVE_FEED.map((entry) => (
+                  <li
+                    key={entry}
+                    className="rounded-lg border border-void-green/15 bg-void-black/50 px-3 py-2 font-mono text-[11px] text-void-green"
+                  >
+                    {entry}
+                  </li>
+                ))}
+              </ul>
+            )}
           </VoidPanel>
 
           <VoidPanel className="lg:col-span-2">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              <VoidStat label={ts("adsBlocked")} value={1280} />
-              <VoidStat label={ts("trackersBlocked")} value={374} />
-              <VoidStat label="Malicious Domains" value={330} />
-              <VoidStat label={ts("carbonOffset")} value={415} unit="KG" />
+              <VoidStat label={ts("adsBlocked")} value={adsBlocked} />
+              <VoidStat label={ts("trackersBlocked")} value={0} />
+              <VoidStat label="Malicious Domains" value={0} />
+              <VoidStat label={ts("carbonOffset")} value={0} unit="KG" />
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
               {[Shield, Eye, AlertTriangle, Filter, Globe].map((Icon, i) => (
@@ -226,10 +226,20 @@ export default function DashboardPage() {
   );
 }
 
-function FocusGrid() {
+const LIVE_FEED = [
+  "TRACKER: from AdServer1 → Chrome",
+  "AD-REJECT: from DoubleClick",
+  "AD-REJECT: from IP_Camera",
+  "IoT_ANOMALY: from SmartTV → blocked",
+  "PHISHING: from suspicious-domain.net → blocked",
+];
+
+function FocusGrid({ empty }: { empty: boolean }) {
   const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
   const hours = [0, 6, 12, 18];
-  const active = new Set(["Mo-0", "Tu-0", "We-12", "Th-18", "Fr-0", "Sa-12"]);
+  const active = empty
+    ? new Set<string>()
+    : new Set(["Mo-0", "Tu-0", "We-12", "Th-18", "Fr-0", "Sa-12"]);
 
   return (
     <div className="overflow-x-auto">
