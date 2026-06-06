@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
@@ -10,13 +9,12 @@ import { VoidStat } from "@/components/ui/VoidStat";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { CountryBadge } from "@/components/profile/CountrySelect";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
+import { LevelProgressBridge } from "@/components/dashboard/LevelProgressBridge";
 import { useUserStats } from "@/hooks/useUserStats";
-import { nextLevelProgress, voidpointsForLevel } from "@/lib/levels";
 import { Heart } from "lucide-react";
 
 export function DashboardProfile() {
   const t = useTranslations("dashboard");
-  const locale = useLocale();
   const { user, profile, stats, loading, refetch } = useUserStats();
 
   useEffect(() => {
@@ -58,9 +56,6 @@ export function DashboardProfile() {
 
   const level = stats.level;
   const donateable = Math.max(0, stats.voidpoints - stats.voidpointsDonated);
-  const progress = nextLevelProgress(stats.voidpoints, level);
-  const nextLevel = Math.min(level + 1, 57);
-  const pointsToNext = Math.max(0, voidpointsForLevel(nextLevel) - stats.voidpoints);
 
   return (
     <VoidPanel title={t("profile")}>
@@ -94,28 +89,7 @@ export function DashboardProfile() {
         <VoidStat label={t("donateBalance")} value={donateable} />
       </div>
 
-      <div className="mt-4 rounded-lg border border-void-green/20 bg-void-black/40 p-3">
-        <div className="mb-2 flex items-center justify-between text-[11px]">
-          <span className="text-void-muted">
-            {level >= 57 ? t("maxLevel") : t("nextLevelProgress", { level: nextLevel })}
-          </span>
-          <span className="font-semibold text-void-green">{progress}%</span>
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-void-black/80">
-          <div
-            className="h-full rounded-full bg-void-green shadow-[0_0_8px_rgba(0,255,153,0.5)] transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        {level < 57 && (
-          <p className="mt-2 text-[10px] text-void-muted">
-            {t("pointsToNextLevel", {
-              points: pointsToNext.toLocaleString(locale),
-              level: nextLevel,
-            })}
-          </p>
-        )}
-      </div>
+      <LevelProgressBridge level={level} voidpoints={stats.voidpoints} />
 
       <p className="mt-3 text-[11px] leading-relaxed text-void-muted">{t("donateHint")}</p>
 

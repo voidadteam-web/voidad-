@@ -33,3 +33,14 @@ export function nextLevelProgress(voidpoints: number, level: number): number {
   const pct = ((voidpoints - current) / (next - current)) * 100;
   return Math.min(100, Math.max(0, Math.round(pct)));
 }
+
+/** VoidPoints required to cross from `level` to `level + 1` */
+export function voidpointsNeededForNextLevel(level: number): number {
+  if (level >= MAX_PLAYER_LEVEL) return 0;
+  return voidpointsForLevel(level + 1) - voidpointsForLevel(level);
+}
+
+/** VoidPoints earned inside the current level band */
+export function voidpointsEarnedInLevelBand(voidpoints: number, level: number): number {
+  return Math.max(0, voidpoints - voidpointsForLevel(level));
+}
