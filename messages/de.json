@@ -182,7 +182,8 @@
     "saved": "Alle Änderungen gespeichert.",
     "saveFailed": "Speichern fehlgeschlagen. Bitte erneut versuchen.",
     "avatarSaved": "Profilbild aktualisiert.",
-    "avatarFailed": "Bild konnte nicht hochgeladen werden."
+    "avatarFailed": "Bild konnte nicht hochgeladen werden.",
+    "signOut": "Abmelden"
   },
   "dashboard": {
     "title": "Funktionen & Steuerung",

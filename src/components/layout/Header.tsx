@@ -1,15 +1,14 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { VoidLogo } from "@/components/voidad/VoidLogo";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { LogOut, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
@@ -22,7 +21,6 @@ const navItems = [
 export function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const router = useRouter();
   const { user, loading } = useUser();
   const { profile } = useProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,14 +30,6 @@ export function Header() {
     user?.user_metadata?.display_name ??
     user?.email?.split("@")[0] ??
     "";
-
-  async function handleSignOut() {
-    if (!isSupabaseConfigured()) return;
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
-  }
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -79,7 +69,7 @@ export function Header() {
               <Link
                 href="/settings"
                 aria-label={t("settings")}
-                className="hidden sm:block"
+                className="hidden outline-none sm:block"
               >
                 <ProfileAvatar
                   name={displayName || "?"}
@@ -87,14 +77,6 @@ export function Header() {
                   size="xs"
                 />
               </Link>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                aria-label={t("logout")}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-void-green/30 bg-void-panel text-void-green transition-colors hover:border-void-green/60 hover:shadow-[0_0_12px_rgba(0,255,153,0.2)]"
-              >
-                <LogOut className="h-4 w-4" />
-              </button>
             </>
           ) : (
             <>

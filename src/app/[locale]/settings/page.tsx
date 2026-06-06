@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { StatusBar } from "@/components/layout/StatusBar";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidToggle } from "@/components/ui/VoidToggle";
@@ -13,10 +14,12 @@ import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserSettings } from "@/hooks/useUserSettings";
 import { Link } from "@/i18n/navigation";
-import { Shield, Heart } from "lucide-react";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { Shield, Heart, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
   const t = useTranslations("settings");
+  const router = useRouter();
   const { user, loading: authLoading } = useUser();
   const { profile, loading: profileLoading, updateProfile, uploadAvatar } =
     useProfile();
@@ -78,6 +81,14 @@ export default function SettingsPage() {
   const voidpoints = profile?.voidpoints_total ?? 0;
   const level = profile?.level ?? 0;
   const communityRank = voidpoints > 0 ? t("ranked") : t("unranked");
+
+  async function handleSignOut() {
+    if (!isSupabaseConfigured()) return;
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -207,6 +218,14 @@ export default function SettingsPage() {
                 <p className="mt-2 text-xs text-void-green">
                   {level > 0 ? t("levelBadge", { level }) : t("levelStarter")}
                 </p>
+                <VoidButton
+                  variant="ghost"
+                  className="mt-6 w-full text-xs text-void-muted hover:text-red-400"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  {t("signOut")}
+                </VoidButton>
               </div>
 
               {/* Middle — profile fields */}

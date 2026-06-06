@@ -182,7 +182,8 @@
     "saved": "All changes saved.",
     "saveFailed": "Could not save changes. Try again.",
     "avatarSaved": "Profile picture updated.",
-    "avatarFailed": "Could not upload picture. Try again."
+    "avatarFailed": "Could not upload picture. Try again.",
+    "signOut": "Sign Out"
   },
   "dashboard": {
     "title": "Features & Control",
