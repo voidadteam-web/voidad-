@@ -243,6 +243,31 @@ body {
   filter: drop-shadow(0 0 3px var(--void-green-glow));
 }
 
+.void-logo-wrap {
+  filter: drop-shadow(0 0 14px rgba(0, 255, 153, 0.28));
+}
+
+.void-logo-svg {
+  overflow: visible;
+}
+
+@keyframes void-logo-aura-pulse {
+  0%,
+  100% {
+    stroke-opacity: 0.15;
+    transform: scale(0.98);
+  }
+  50% {
+    stroke-opacity: 0.38;
+    transform: scale(1.02);
+  }
+}
+
+.void-logo-aura {
+  transform-origin: 36px 36px;
+  animation: void-logo-aura-pulse 3.5s ease-in-out infinite;
+}
+
 .void-pricing-popular {
   border-color: rgba(0, 255, 153, 0.8);
   box-shadow:
