@@ -64,6 +64,7 @@
     "pageSubtitle": "Community-Mitwirkende",
     "communityContributors": "Community-Mitwirkende",
     "joinElite": "Werden Sie Elite",
+    "meetGuardians": "Void Guardians kennenlernen",
     "viewFull": "Vollständige Bestenliste",
     "rank": "Rang",
     "level": "Level",
@@ -74,7 +75,10 @@
     "adsBlocked": "Werbung blockiert",
     "adsBlockedLabel": "Werbung blockiert",
     "signupNote": "Melden Sie sich für VoidPoints an!",
-    "scrollRanks": "← Alle 57 Militärränge scrollen →"
+    "scrollRanks": "← Nach links & rechts scrollen — alle 57 Ränge →",
+    "allRanksTitle": "Alle Militärränge auf VoidAd",
+    "scrollAllRanks": "← Alle 57 Militärränge scrollen →",
+    "shieldTiersTitle": "Cyber-Schild-Stufen"
   },
   "pricing": {
     "heroTitle": "VoidAd",

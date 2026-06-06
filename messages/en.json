@@ -64,6 +64,7 @@
     "pageSubtitle": "Community Contributors",
     "communityContributors": "Community Contributors",
     "joinElite": "Join the Elite",
+    "meetGuardians": "Meet the Void Guardians",
     "viewFull": "View Full Leaderboard",
     "rank": "Rank",
     "level": "Level",
@@ -74,7 +75,10 @@
     "adsBlocked": "Ads Blocked",
     "adsBlockedLabel": "Ads Blocked",
     "signupNote": "Sign up for VoidPoints!",
-    "scrollRanks": "← Scroll to browse all 57 military ranks →"
+    "scrollRanks": "← Scroll left & right to browse all 57 ranks →",
+    "allRanksTitle": "All Military Ranks on VoidAd",
+    "scrollAllRanks": "← Scroll to browse all 57 military ranks →",
+    "shieldTiersTitle": "Cyber Shield Tiers"
   },
   "pricing": {
     "heroTitle": "VoidAd",

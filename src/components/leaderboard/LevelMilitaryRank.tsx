@@ -1,25 +1,22 @@
 import { VoidRankShield } from "@/components/leaderboard/shields/VoidRankShield";
-import { shieldTierForLevel, shieldTierForRank } from "@/lib/shield-ranks";
+import { shieldTierForLevel } from "@/lib/shield-ranks";
 import { cn } from "@/lib/utils";
 
 type LevelMilitaryRankProps = {
   level: number;
-  /** When set, shield follows leaderboard rank (#1 = Grand Guardian) */
-  rank?: number;
   size?: "sm" | "md" | "lg";
   className?: string;
 };
 
 const HEIGHT = { sm: 42, md: 52, lg: 64 } as const;
 
-/** Cyber shield badge — by rank (leaderboard) or level (profile) */
+/** Cyber shield badge — selected by player level */
 export function LevelMilitaryRank({
   level,
-  rank,
   size = "md",
   className,
 }: LevelMilitaryRankProps) {
-  const tier = rank != null ? shieldTierForRank(rank) : shieldTierForLevel(level);
+  const tier = shieldTierForLevel(level);
   const h = HEIGHT[size];
 
   return (

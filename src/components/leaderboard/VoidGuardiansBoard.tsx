@@ -7,6 +7,7 @@ import {
   getLeaderboardDisplayOrder,
   type VoidGuardian,
 } from "@/components/leaderboard/guardians-data";
+import { HorizontalScrollStrip } from "@/components/ui/HorizontalScrollStrip";
 import { countryFlag } from "@/lib/countries";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
   return (
     <article
       className={cn(
-        "void-glow-border flex shrink-0 flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
+        "void-glow-border flex shrink-0 snap-start flex-col overflow-visible rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
         featured
           ? "void-glow-border-strong z-10 w-[200px] scale-105 sm:w-[220px]"
           : "w-[160px] shrink-0 opacity-95 sm:w-[175px]",
@@ -69,7 +70,6 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         <div className="flex min-w-0 items-center gap-1 overflow-visible leading-none">
           <LevelMilitaryRank
             level={player.level}
-            rank={player.rank}
             size={featured ? "lg" : "md"}
           />
           <p
@@ -165,18 +165,11 @@ export function VoidGuardiansBoard({
         )}
       </div>
 
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-void-black/90 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-void-black/90 to-transparent" />
-        <div className="flex items-end justify-start gap-2 overflow-x-auto pb-3 scroll-smooth sm:gap-3 [scrollbar-width:thin]">
-          {list.map((player) => (
-            <VoidGuardianCard key={player.rank} player={player} labels={labels} />
-          ))}
-        </div>
-        <p className="mt-2 text-center text-[10px] uppercase tracking-widest text-void-muted">
-          {t("scrollRanks")}
-        </p>
-      </div>
+      <HorizontalScrollStrip hint={t("scrollRanks")}>
+        {list.map((player) => (
+          <VoidGuardianCard key={player.rank} player={player} labels={labels} />
+        ))}
+      </HorizontalScrollStrip>
     </div>
   );
 }

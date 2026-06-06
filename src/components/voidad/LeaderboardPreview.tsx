@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { VoidButton } from "@/components/ui/VoidButton";
 import { Link } from "@/i18n/navigation";
+import { ChevronRight } from "lucide-react";
+import { VoidButton } from "@/components/ui/VoidButton";
 import { LeaderboardMapBackdrop } from "@/components/leaderboard/LeaderboardMapBackdrop";
 import { VoidGuardiansBoard } from "@/components/leaderboard/VoidGuardiansBoard";
 import { VOID_GUARDIANS } from "@/components/leaderboard/guardians-data";
@@ -19,10 +20,13 @@ export function LeaderboardPreview() {
 
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link href="/leaderboard">
-            <VoidButton variant="secondary">{t("viewFull")}</VoidButton>
+            <VoidButton className="min-w-[240px]">
+              {t("meetGuardians")}
+              <ChevronRight className="h-4 w-4" />
+            </VoidButton>
           </Link>
           <Link href="/signup">
-            <VoidButton>{t("joinElite")}</VoidButton>
+            <VoidButton variant="secondary">{t("joinElite")}</VoidButton>
           </Link>
         </div>
       </div>
