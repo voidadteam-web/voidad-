@@ -14,7 +14,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { LeaderboardPreview } from "@/components/voidad/LeaderboardPreview";
-import { HeroBrand } from "@/components/voidad/HeroBrand";
 import { HeroWorldMapBackdrop } from "@/components/voidad/HeroWorldMapBackdrop";
 
 type Props = {
@@ -39,13 +38,13 @@ export default async function HomePage({ params }: Props) {
     <>
       <StatusBar />
 
-      {/* Hero — mockup 3-column layout */}
-      <section className="relative mx-auto min-h-[420px] max-w-7xl overflow-hidden px-4 py-10 sm:min-h-[480px] sm:px-6 sm:py-16">
+      {/* Hero — copy + glowing world map (no logo overlay) */}
+      <section className="relative mx-auto min-h-[420px] max-w-7xl overflow-hidden px-4 py-10 sm:min-h-[520px] sm:px-6 sm:py-16">
         <HeroWorldMapBackdrop />
 
-        <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
+        <div className="relative z-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-8">
           {/* Left copy */}
-          <div className="order-2 text-center lg:order-1 lg:text-left">
+          <div className="text-center lg:text-left">
             <p className="void-display text-xs tracking-[0.25em] text-void-green void-glow-text">
               {t("hero.badge")}
             </p>
@@ -71,14 +70,6 @@ export default async function HomePage({ params }: Props) {
               </Link>
             </div>
           </div>
-
-          {/* Center logo + world map */}
-          <div className="order-1 lg:order-2">
-            <HeroBrand />
-          </div>
-
-          {/* Spacer for 3-column balance on desktop */}
-          <div className="order-3 hidden lg:block" aria-hidden />
         </div>
 
         {/* Stats row */}

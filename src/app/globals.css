@@ -306,14 +306,74 @@ body {
 
 /* Hero world map — black areas blend away on dark bg */
 .void-hero-map {
-  opacity: 0.88;
+  opacity: 0.92;
   mix-blend-mode: screen;
-  filter: drop-shadow(0 0 28px rgba(0, 255, 153, 0.18));
+  filter:
+    drop-shadow(0 0 16px rgba(0, 255, 153, 0.45))
+    drop-shadow(0 0 36px rgba(0, 255, 153, 0.28))
+    brightness(1.12)
+    saturate(1.25);
 }
 
 .void-hero-map-large {
-  opacity: 0.72;
-  filter: drop-shadow(0 0 40px rgba(0, 255, 153, 0.22));
+  opacity: 0.85;
+}
+
+.void-hero-map-neon {
+  animation: void-map-neon-pulse 5s ease-in-out infinite;
+}
+
+.void-map-neon-wrap {
+  isolation: isolate;
+}
+
+.void-map-neon-aura {
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 255, 153, 0.22) 0%,
+    rgba(0, 255, 153, 0.08) 42%,
+    transparent 72%
+  );
+  filter: blur(28px);
+  animation: void-map-aura-pulse 4s ease-in-out infinite;
+}
+
+.void-map-neon-aura-delay {
+  animation-delay: 2s;
+  opacity: 0.7;
+}
+
+@keyframes void-map-neon-pulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 20px rgba(0, 255, 153, 0.5))
+      drop-shadow(0 0 50px rgba(0, 255, 153, 0.32))
+      drop-shadow(0 0 90px rgba(0, 255, 153, 0.15))
+      brightness(1.1)
+      saturate(1.2);
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 28px rgba(0, 255, 153, 0.75))
+      drop-shadow(0 0 64px rgba(0, 255, 153, 0.48))
+      drop-shadow(0 0 110px rgba(0, 255, 153, 0.22))
+      brightness(1.22)
+      saturate(1.35);
+  }
+}
+
+@keyframes void-map-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
 }
 
 @keyframes void-route-flow {
@@ -336,33 +396,82 @@ body {
 @keyframes void-route-pulse {
   0%,
   100% {
-    opacity: 0.45;
-    r: 3;
+    opacity: 0.65;
+    transform: scale(1);
   }
   50% {
     opacity: 1;
-    r: 5;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes void-route-halo {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.28);
+  }
+}
+
+@keyframes void-route-ring {
+  0%,
+  100% {
+    opacity: 0.25;
+    stroke-width: 1;
+  }
+  50% {
+    opacity: 0.7;
+    stroke-width: 2;
   }
 }
 
 .void-route-base {
-  stroke: rgba(0, 255, 153, 0.12);
-  stroke-width: 1;
+  stroke: rgba(0, 255, 153, 0.22);
+  stroke-width: 1.25;
   fill: none;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 153, 0.35));
 }
 
 .void-route-flow {
   stroke: #00ff99;
-  stroke-width: 1.5;
+  stroke-width: 2;
   fill: none;
-  stroke-dasharray: 12 18;
+  stroke-dasharray: 14 16;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 4px rgba(0, 255, 153, 0.8));
+  filter: drop-shadow(0 0 6px rgba(0, 255, 153, 0.95)) drop-shadow(0 0 14px rgba(0, 255, 153, 0.55));
   animation: void-route-flow 3.5s ease-in-out infinite;
+}
+
+.void-route-particle {
+  fill: #00ff99;
+}
+
+.void-route-node-halo {
+  fill: rgba(0, 255, 153, 0.12);
+  filter: blur(1px);
+  animation: void-route-halo 3s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.void-route-node-ring {
+  fill: none;
+  stroke: rgba(0, 255, 153, 0.55);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 153, 0.8));
+  animation: void-route-ring 2.8s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
 }
 
 .void-route-node {
   fill: #00ff99;
-  filter: drop-shadow(0 0 6px rgba(0, 255, 153, 0.9));
-  animation: void-route-pulse 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 153, 1)) drop-shadow(0 0 18px rgba(0, 255, 153, 0.65));
+  animation: void-route-pulse 2.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
 }

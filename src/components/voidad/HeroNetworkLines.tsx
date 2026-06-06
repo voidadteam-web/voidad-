@@ -39,8 +39,23 @@ export function HeroNetworkLines({ className }: HeroNetworkLinesProps) {
       aria-hidden
     >
       <defs>
-        <filter id="routeGlow">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter id="routeGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="particleGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -50,18 +65,14 @@ export function HeroNetworkLines({ className }: HeroNetworkLinesProps) {
 
       {ROUTES.map(({ id, d, delay, dur }) => (
         <g key={id}>
-          <path
-            d={d}
-            className="void-route-base"
-            pathLength={100}
-          />
+          <path d={d} className="void-route-base" pathLength={100} />
           <path
             d={d}
             className="void-route-flow"
             pathLength={100}
             style={{ animationDelay: `${delay}s`, animationDuration: `${dur}s` }}
           />
-          <circle r="3" fill="#00ff99" filter="url(#routeGlow)">
+          <circle r="4" fill="#00ff99" filter="url(#particleGlow)" className="void-route-particle">
             <animateMotion
               dur={`${dur}s`}
               repeatCount="indefinite"
@@ -70,7 +81,14 @@ export function HeroNetworkLines({ className }: HeroNetworkLinesProps) {
             />
             <animate
               attributeName="opacity"
-              values="0.3;1;0.3"
+              values="0.2;1;0.2"
+              dur={`${dur}s`}
+              repeatCount="indefinite"
+              begin={`${delay}s`}
+            />
+            <animate
+              attributeName="r"
+              values="3;5;3"
               dur={`${dur}s`}
               repeatCount="indefinite"
               begin={`${delay}s`}
@@ -80,14 +98,30 @@ export function HeroNetworkLines({ className }: HeroNetworkLinesProps) {
       ))}
 
       {NODES.map(({ id, cx, cy }, i) => (
-        <circle
-          key={id}
-          cx={cx}
-          cy={cy}
-          r="4"
-          className="void-route-node"
-          style={{ animationDelay: `${i * 0.25}s` }}
-        />
+        <g key={id}>
+          <circle
+            cx={cx}
+            cy={cy}
+            r="14"
+            className="void-route-node-halo"
+            style={{ animationDelay: `${i * 0.3}s` }}
+          />
+          <circle
+            cx={cx}
+            cy={cy}
+            r="8"
+            className="void-route-node-ring"
+            style={{ animationDelay: `${i * 0.3 + 0.15}s` }}
+          />
+          <circle
+            cx={cx}
+            cy={cy}
+            r="5"
+            className="void-route-node"
+            filter="url(#nodeGlow)"
+            style={{ animationDelay: `${i * 0.25}s` }}
+          />
+        </g>
       ))}
     </svg>
   );
