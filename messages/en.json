@@ -79,7 +79,9 @@
     "allRanksTitle": "All Military Ranks on VoidAd",
     "scrollAllRanks": "← Scroll to browse all 57 military ranks →",
     "shieldTiersTitle": "Cyber Shield Tiers",
-    "scrollShieldTiers": "← Scroll to browse all 10 shield tiers →"
+    "scrollShieldTiers": "← Scroll to browse all 10 shield tiers →",
+    "clickToEnlarge": "Tap a badge to enlarge",
+    "closePreview": "Close preview"
   },
   "pricing": {
     "heroTitle": "VoidAd",

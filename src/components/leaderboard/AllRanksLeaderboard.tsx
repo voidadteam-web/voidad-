@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -7,6 +8,10 @@ import { ChevronRight } from "lucide-react";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { HorizontalScrollStrip } from "@/components/ui/HorizontalScrollStrip";
+import {
+  BadgePreviewModal,
+  type BadgePreview,
+} from "@/components/leaderboard/BadgePreviewModal";
 import { VoidRankShield } from "@/components/leaderboard/shields/VoidRankShield";
 import { TOP_CONTRIBUTORS } from "@/components/leaderboard/guardians-data";
 import { countryFlag } from "@/lib/countries";
@@ -21,11 +26,18 @@ import { cn } from "@/lib/utils";
 /** Full ranks page — all 57 military ranks + community contributors (mockup layout) */
 export function AllRanksLeaderboard() {
   const t = useTranslations("leaderboard");
+  const [preview, setPreview] = useState<BadgePreview | null>(null);
 
   const ranksDescending = [...MILITARY_RANKS].sort((a, b) => b.level - a.level);
 
   return (
     <div className="space-y-8">
+      <BadgePreviewModal
+        preview={preview}
+        onClose={() => setPreview(null)}
+        levelLabel={t("level")}
+        closeLabel={t("closePreview")}
+      />
       <div className="text-center">
         <h1 className="void-display void-glow-text text-2xl tracking-[0.14em] text-void-green sm:text-3xl md:text-4xl">
           {t("pageTitle")}
@@ -104,7 +116,12 @@ export function AllRanksLeaderboard() {
           </h2>
           <HorizontalScrollStrip hint={t("scrollAllRanks")}>
             {ranksDescending.map((rank) => (
-              <MilitaryRankBadge key={rank.index} rank={rank} levelLabel={t("level")} />
+              <MilitaryRankBadge
+                key={rank.index}
+                rank={rank}
+                levelLabel={t("level")}
+                onSelect={() => setPreview({ kind: "military", rank })}
+              />
             ))}
           </HorizontalScrollStrip>
         </div>
@@ -114,6 +131,9 @@ export function AllRanksLeaderboard() {
           <h2 className="void-display mb-5 text-center text-sm tracking-[0.18em] text-void-green sm:text-base">
             {t("shieldTiersTitle")}
           </h2>
+          <p className="mb-4 text-center text-[10px] uppercase tracking-widest text-void-muted">
+            {t("clickToEnlarge")}
+          </p>
           <HorizontalScrollStrip hint={t("scrollShieldTiers")}>
             {Array.from({ length: SHIELD_TIER_COUNT }, (_, tier) => {
               const shieldTier = tier as ShieldTier;
@@ -121,9 +141,17 @@ export function AllRanksLeaderboard() {
                 1 + (tier / (SHIELD_TIER_COUNT - 1)) * (MAX_MILITARY_LEVEL - 1),
               );
               return (
-                <div
+                <button
                   key={tier}
-                  className="flex w-[100px] shrink-0 snap-start flex-col items-center gap-2 rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-3 sm:w-[110px]"
+                  type="button"
+                  onClick={() => setPreview({ kind: "shield", tier: shieldTier, level })}
+                  className={cn(
+                    "flex w-[100px] shrink-0 snap-start cursor-pointer flex-col items-center gap-2 rounded-lg",
+                    "border border-void-green/15 bg-void-black/40 px-3 py-3 transition",
+                    "hover:border-void-green/45 hover:bg-void-black/70 hover:shadow-[0_0_20px_rgba(0,255,153,0.15)]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-void-green/60",
+                    "sm:w-[110px]",
+                  )}
                 >
                   <VoidRankShield tier={shieldTier} size={64} />
                   <p className="void-display text-[10px] tracking-wider text-void-green">
@@ -132,7 +160,7 @@ export function AllRanksLeaderboard() {
                   <p className="text-center text-[8px] uppercase leading-tight tracking-wide text-void-muted">
                     {SHIELD_TIER_NAMES[shieldTier]}
                   </p>
-                </div>
+                </button>
               );
             })}
           </HorizontalScrollStrip>
@@ -155,15 +183,21 @@ export function AllRanksLeaderboard() {
 function MilitaryRankBadge({
   rank,
   levelLabel,
+  onSelect,
 }: {
   rank: MilitaryRank;
   levelLabel: string;
+  onSelect: () => void;
 }) {
   return (
-    <article
+    <button
+      type="button"
+      onClick={onSelect}
       className={cn(
-        "flex w-[88px] shrink-0 snap-start flex-col items-center gap-2 rounded-lg",
-        "border border-void-green/20 bg-void-black/60 px-2 py-3 sm:w-[96px]",
+        "flex w-[88px] shrink-0 snap-start cursor-pointer flex-col items-center gap-2 rounded-lg",
+        "border border-void-green/20 bg-void-black/60 px-2 py-3 transition sm:w-[96px]",
+        "hover:border-void-green/45 hover:bg-void-black/80 hover:shadow-[0_0_16px_rgba(0,255,153,0.12)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-void-green/60",
       )}
     >
       <Image
@@ -181,6 +215,6 @@ function MilitaryRankBadge({
         {rank.grade}
       </p>
       <p className="text-[8px] uppercase text-void-text-mint/80">{rank.metal}</p>
-    </article>
+    </button>
   );
 }
