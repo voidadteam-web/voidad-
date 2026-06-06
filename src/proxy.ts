@@ -1,7 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
-import { routing } from "./src/i18n/routing";
-import { updateSession } from "./src/lib/supabase/middleware";
+import { routing } from "@/i18n/routing";
+import { updateSession } from "@/lib/supabase/middleware";
 
 const handleI18nRouting = createMiddleware(routing);
 
@@ -31,7 +31,7 @@ function redirectToGermanLocale(request: NextRequest) {
   return null;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const hostname = getHostname(request);
 
   if (hostname === "voidad.de" || hostname === "www.voidad.de") {
