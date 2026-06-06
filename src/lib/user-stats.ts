@@ -1,4 +1,8 @@
 import { carbonTreeLevelForPlayerLevel } from "@/lib/carbon-trees";
+import {
+  bandwidthGbFromBlocks,
+  carbonOffsetKgFromActivity,
+} from "@/lib/carbon-offset";
 import { MAX_PLAYER_LEVEL, voidpointsToCents, voidpointsToEuro } from "@/lib/levels";
 
 export type UserStatsInput = {
@@ -25,11 +29,28 @@ export type UserStats = {
   estimatedSavingsCents: number;
 };
 
-/** Shared impact formulas — ads blocked + donations → bandwidth & carbon */
-export function deriveImpactMetrics(adsBlocked: number, voidpointsDonated: number) {
-  const bandwidthGb = Math.round(adsBlocked / 850);
-  const carbonOffsetKg = Math.round(bandwidthGb * 0.28 + voidpointsDonated / 1200);
-  const trackersBlocked = Math.round(adsBlocked * 0.62);
+/** Shared impact formulas — blocks + donations → bandwidth & carbon */
+export function deriveImpactMetrics(
+  adsBlocked: number,
+  voidpointsDonated: number,
+  options?: {
+    trackersBlocked?: number;
+    maliciousBlocked?: number;
+    voidpointsTotal?: number;
+  },
+) {
+  const input = {
+    adsBlocked,
+    voidpointsDonated,
+    trackersBlocked: options?.trackersBlocked,
+    maliciousBlocked: options?.maliciousBlocked,
+    voidpointsTotal: options?.voidpointsTotal,
+  };
+  const bandwidthGb = bandwidthGbFromBlocks(input);
+  const carbonOffsetKg = carbonOffsetKgFromActivity(input);
+  const trackersBlocked =
+    options?.trackersBlocked ?? Math.round(Math.max(adsBlocked, options?.voidpointsTotal ?? 0) * 0.62);
+
   return { bandwidthGb, carbonOffsetKg, trackersBlocked };
 }
 
@@ -39,7 +60,11 @@ export function clampPlayerLevel(level: number): number {
 }
 
 export function buildUserStats(input: UserStatsInput): UserStats {
-  const derived = deriveImpactMetrics(input.adsBlocked, input.voidpointsDonated);
+  const derived = deriveImpactMetrics(input.adsBlocked, input.voidpointsDonated, {
+    trackersBlocked: input.trackersBlocked,
+    maliciousBlocked: input.maliciousBlocked,
+    voidpointsTotal: input.voidpointsTotal,
+  });
   const trackersBlocked = input.trackersBlocked ?? derived.trackersBlocked;
   const maliciousBlocked = input.maliciousBlocked ?? 0;
 
@@ -59,11 +84,28 @@ export function buildUserStats(input: UserStatsInput): UserStats {
 }
 
 export function formatBandwidthGb(gb: number, locale = "en"): string {
-  return `${gb.toLocaleString(locale)} GB`;
+  if (gb > 0 && gb < 0.01) {
+    const mb = gb * 1024;
+    return `${mb.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MB`;
+  }
+  if (gb < 1) {
+    return `${gb.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} GB`;
+  }
+  return `${gb.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} GB`;
 }
 
 export function formatCarbonKg(kg: number, locale = "en"): string {
-  return `${kg.toLocaleString(locale)} KG CO₂`;
+  if (kg <= 0) {
+    return `0 KG CO₂`;
+  }
+  if (kg < 0.01) {
+    const grams = kg * 1000;
+    return `${grams.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} g CO₂`;
+  }
+  if (kg < 1) {
+    return `${kg.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} KG CO₂`;
+  }
+  return `${kg.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} KG CO₂`;
 }
 
 export function formatEuro(amount: number, locale = "en"): string {

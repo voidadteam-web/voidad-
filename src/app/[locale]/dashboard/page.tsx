@@ -242,8 +242,7 @@ export default function DashboardPage() {
               <VoidStat label={t("maliciousDomains")} value={stats.maliciousBlocked} />
               <VoidStat
                 label={ts("carbonOffset")}
-                value={stats.carbonOffsetKg}
-                unit="KG"
+                value={formatCarbonKg(stats.carbonOffsetKg, locale)}
               />
             </div>
             <p className="mt-4 text-xs text-void-muted">
