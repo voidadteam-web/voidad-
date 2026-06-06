@@ -65,68 +65,71 @@
     "signupNote": "Melden Sie sich für VoidPoints an!"
   },
   "pricing": {
-    "title": "Wählen Sie Ihren Schutz",
-    "subtitle": "Die Werbung verschwindet. Ihre Privatsphäre bleibt.",
+    "heroTitle": "VoidAd",
+    "heroLine1": "Die Werbung verschwindet.",
+    "heroLine2": "Ihre Privatsphäre bleibt.",
+    "heroLine3": "Ihr digitaler Raum ist geschützt.",
     "mostPopular": "Am beliebtesten",
+    "spyRadar": "Spy-Radar",
     "stats": {
       "adsBlocked": "Werbung blockiert",
+      "adsBlockedValue": "2.083.771",
       "trackers": "Tracker neutralisiert",
-      "dataSaved": "Daten gespart"
-    },
-    "highlights": {
-      "network": "Netzweiter Schutz für jedes Gerät",
-      "voidpoints": "VoidPoints bei jedem Block verdienen",
-      "zeroLog": "Zero-Log-Richtlinie — Datenschutz zuerst"
+      "trackersValue": "3.390.470",
+      "dataSaved": "Daten gespart",
+      "dataSavedValue": "3.732.243"
     },
     "tiers": {
       "trial": {
-        "name": "Test",
-        "price": "Kostenlos",
-        "period": "14 Tage",
-        "cta": "Test starten",
+        "name": "Trial",
+        "price": "FREE 24H",
+        "period": "",
+        "cta": "Demo starten",
         "features": [
-          "Voller DNS-Schutz",
-          "Anti-Adware & Anti-Tracker",
-          "1 Router / Netzwerk",
-          "VoidPoints Belohnungen"
+          "1 Gerät geschützt",
+          "Basis-DNS-Filter",
+          "24h Voller Zugang"
         ]
       },
       "free": {
         "name": "Free",
-        "price": "0 €",
-        "period": "für immer",
-        "cta": "Loslegen",
+        "price": "0€",
+        "period": "/ Monat",
+        "cta": "Registrieren",
         "features": [
-          "Basis-Werbeblocker",
-          "Anti-Phishing-Schild",
-          "Community-Support",
-          "Begrenzte VoidPoints"
+          "1 Gerät",
+          "Anti-Adware-Schild",
+          "100K Anfragen / Tag",
+          "Community-Support"
         ]
       },
       "pro": {
         "name": "Pro",
-        "price": "3,99 €",
+        "price": "3,99€",
         "period": "/ Monat",
         "cta": "Jetzt upgraden",
         "features": [
-          "Voller Schutz",
+          "Heimnetzwerk-Abdeckung",
+          "Bis zu 5 Geräte",
+          "Voller DNS-Schutz",
+          "Anti-Tracker & Phishing",
           "IoT-Schutz Steuerung",
-          "Kindersicherung",
-          "Unbegrenzte VoidPoints",
-          "Priority-Support"
+          "VoidPoints Belohnungen"
         ]
       },
       "ultimate": {
         "name": "Ultimate",
-        "price": "9,99 €",
+        "price": "7,99€",
         "period": "/ Monat",
         "cta": "Ultimate wählen",
         "features": [
-          "Alles aus Pro",
-          "Mental-Health-Filter",
+          "Unbegrenzte Geräte",
           "Multi-Netzwerk-Support",
-          "VoidAd-Box bereit",
-          "VIP Community-Abzeichen"
+          "Kindersicherung",
+          "Mental-Health-Filter",
+          "Priority-Support",
+          "VIP Community-Abzeichen",
+          "VoidAd-Box bereit"
         ]
       }
     }
