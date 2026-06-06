@@ -36,6 +36,25 @@
     }
   },
   {
+    "id": 9005,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||googleads.g.doubleclick.net/",
+      "initiatorDomains": ["youtube.com", "www.youtube.com", "m.youtube.com"],
+      "resourceTypes": ["script", "xmlhttprequest", "image", "media", "sub_frame", "other"]
+    }
+  },
+  {
+    "id": 9006,
+    "priority": 3,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube.com/ptracking",
+      "resourceTypes": ["xmlhttprequest", "ping", "other"]
+    }
+  },
+  {
     "id": 9007,
     "priority": 2,
     "action": { "type": "block" },

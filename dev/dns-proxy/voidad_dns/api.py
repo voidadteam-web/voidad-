@@ -13,6 +13,7 @@ from voidad_dns.config import settings
 from voidad_dns.dns_server import DNSService
 from voidad_dns.filter_engine import FilterEngine
 from voidad_dns.page_reports import PageReportStore
+from voidad_dns.request_log import RequestLog
 from voidad_dns.streaming_rules import all_rules, rules_for_host
 from voidad_dns.stats_flush import StatsFlushWorker
 from voidad_dns.stats_reporter import StatsReporter

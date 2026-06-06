@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node extension/scripts/build-zip.mjs && next build",
+    "extension:zip": "node extension/scripts/build-zip.mjs",
     "start": "next start",
     "lint": "eslint",
     "extension:rules": "node extension/scripts/generate-rules.mjs"
