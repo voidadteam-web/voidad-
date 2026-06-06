@@ -244,7 +244,50 @@ body {
 }
 
 .void-logo-wrap {
-  filter: drop-shadow(0 0 14px rgba(0, 255, 153, 0.28));
+  filter: drop-shadow(0 0 18px rgba(0, 255, 153, 0.35));
+}
+
+.void-logo-neon-halo {
+  background: radial-gradient(
+    ellipse at 28% 50%,
+    rgba(0, 255, 153, 0.28) 0%,
+    rgba(0, 255, 153, 0.08) 38%,
+    transparent 68%
+  );
+  filter: blur(14px);
+  animation: void-logo-aura-pulse 4s ease-in-out infinite;
+}
+
+.void-logo-brand {
+  opacity: 0.98;
+  filter:
+    drop-shadow(0 0 12px rgba(0, 255, 153, 0.45))
+    drop-shadow(0 0 28px rgba(0, 255, 153, 0.22))
+    brightness(1.06)
+    contrast(1.04);
+  animation: void-logo-brand-pulse 5s ease-in-out infinite;
+}
+
+.void-logo-brand-hero {
+  filter:
+    drop-shadow(0 0 24px rgba(0, 255, 153, 0.4))
+    drop-shadow(0 0 48px rgba(0, 255, 153, 0.18));
+}
+
+@keyframes void-logo-brand-pulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 10px rgba(0, 255, 153, 0.38))
+      drop-shadow(0 0 24px rgba(0, 255, 153, 0.18))
+      brightness(1.04);
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 16px rgba(0, 255, 153, 0.62))
+      drop-shadow(0 0 36px rgba(0, 255, 153, 0.32))
+      brightness(1.1);
+  }
 }
 
 .void-logo-svg {
@@ -254,12 +297,12 @@ body {
 @keyframes void-logo-aura-pulse {
   0%,
   100% {
-    stroke-opacity: 0.15;
-    transform: scale(0.98);
+    opacity: 0.55;
+    transform: scale(0.94);
   }
   50% {
-    stroke-opacity: 0.38;
-    transform: scale(1.02);
+    opacity: 1;
+    transform: scale(1.06);
   }
 }
 
