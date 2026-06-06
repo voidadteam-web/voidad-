@@ -11,17 +11,7 @@ export const routing = defineRouting({
       locales: ["en"],
     },
     {
-      domain: "www.voidad.com",
-      defaultLocale: "en",
-      locales: ["en"],
-    },
-    {
       domain: "voidad.de",
-      defaultLocale: "de",
-      locales: ["de"],
-    },
-    {
-      domain: "www.voidad.de",
       defaultLocale: "de",
       locales: ["de"],
     },

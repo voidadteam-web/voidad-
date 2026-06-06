@@ -3,20 +3,13 @@ import { type NextRequest } from "next/server";
 import { routing } from "./src/i18n/routing";
 import { updateSession } from "./src/lib/supabase/middleware";
 
-const intlMiddleware = createMiddleware(routing);
+const handleI18nRouting = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  const supabaseResponse = await updateSession(request);
-
-  const intlResponse = intlMiddleware(request);
-
-  supabaseResponse.cookies.getAll().forEach((cookie) => {
-    intlResponse.cookies.set(cookie.name, cookie.value);
-  });
-
-  return intlResponse;
+  const response = handleI18nRouting(request);
+  return updateSession(request, response);
 }
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
