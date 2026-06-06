@@ -42,7 +42,7 @@ export default function VoidPointsPage() {
       <VoidPageTitle>{t("title")}</VoidPageTitle>
 
       <div className="relative mb-10 flex flex-col items-center">
-        <CarbonWireframeTree level={treeLevel} size="lg" className="max-w-lg" />
+        <CarbonWireframeTree level={treeLevel} size="md" className="max-w-md" />
         <div className="mt-6 flex flex-wrap justify-center gap-8 text-center">
           <div>
             <p className="void-section-title text-[10px] text-void-muted">

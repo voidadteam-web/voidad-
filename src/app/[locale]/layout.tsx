@@ -5,6 +5,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WorldMapBackground } from "@/components/voidad/WorldMapBackground";
+import { ExtensionRoot } from "@/components/extension/ExtensionRoot";
 
 type Props = {
   children: React.ReactNode;
@@ -37,6 +38,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <ExtensionRoot />
       <WorldMapBackground />
       <div className="relative flex min-h-screen flex-col">
         <Header />

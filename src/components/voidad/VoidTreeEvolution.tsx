@@ -97,21 +97,31 @@ export function VoidTreeEvolution({
                     />
                   </>
                 )}
-                <Image
-                  src={carbonTreeImageForLevel(level)}
-                  alt=""
-                  width={90}
-                  height={110}
-                  unoptimized
-                  className={cn(
-                    "relative z-10 object-contain object-bottom transition",
-                    isLocked && "scale-95 opacity-35 grayscale",
-                    isActive && isUnlocked
-                      ? "void-tree-glow-art"
-                      : !isLocked && "drop-shadow-[0_0_6px_rgba(0,255,153,0.18)]",
-                  )}
-                  style={{ height: isActive && isUnlocked ? 110 : 95, width: "auto" }}
-                />
+                {isUnlocked ? (
+                  <Image
+                    src={carbonTreeImageForLevel(level)}
+                    alt=""
+                    width={90}
+                    height={110}
+                    loading={isActive ? "eager" : "lazy"}
+                    unoptimized
+                    className={cn(
+                      "relative z-10 object-contain object-bottom transition",
+                      isActive
+                        ? "void-tree-glow-art"
+                        : "drop-shadow-[0_0_6px_rgba(0,255,153,0.18)]",
+                    )}
+                    style={{ height: isActive ? 110 : 95, width: "auto" }}
+                  />
+                ) : (
+                  <div
+                    className="relative z-10 flex items-end justify-center opacity-35 grayscale"
+                    style={{ height: 95, width: 70 }}
+                    aria-hidden
+                  >
+                    <div className="h-full w-full rounded-md border border-void-green/15 bg-void-black/60" />
+                  </div>
+                )}
                 {isLocked && (
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-lg bg-void-black/55 backdrop-blur-[1px]">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full border border-void-green/35 bg-void-black/80 shadow-[0_0_12px_rgba(0,255,153,0.15)] sm:h-11 sm:w-11">

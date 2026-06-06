@@ -8,6 +8,7 @@ from voidad_dns.blocklist import normalize_domain
 from voidad_dns.config import settings
 from voidad_dns.domain_classifier import classify_domain
 from voidad_dns.filter_engine import FilterEngine
+from voidad_dns.never_block import is_never_block
 from voidad_dns.pattern_filter import BlockReason, FilterMatch
 from voidad_dns.request_log import RequestLog, RequestLogEntry
 from voidad_dns.resolver import UpstreamResolver
@@ -91,6 +92,8 @@ class VoidAdDNSHandler:
             raise
 
     def _evaluate(self, domain: str, client: str) -> FilterMatch:
+        if is_never_block(domain):
+            return FilterMatch(blocked=False)
         # Maximum mode: always use aggressive rotator + long-domain heuristics
         aggressive = True
         if self._tenant_registry:

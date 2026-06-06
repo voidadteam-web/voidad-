@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "VoidAd — Block Ads & Protect Privacy",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Dual-layer protection: DNS network blocking + browser UI cleaner for streaming sites.",
   "permissions": [
     "declarativeNetRequest",
@@ -23,6 +23,12 @@
     },
     {
       "matches": ["http://*/*", "https://*/*"],
+      "exclude_matches": [
+        "*://voidad.com/*",
+        "*://*.voidad.com/*",
+        "*://voidad.de/*",
+        "*://*.voidad.de/*"
+      ],
       "js": ["content/popup-guard.js"],
       "run_at": "document_start",
       "world": "MAIN",
@@ -30,6 +36,12 @@
     },
     {
       "matches": ["http://*/*", "https://*/*"],
+      "exclude_matches": [
+        "*://voidad.com/*",
+        "*://*.voidad.com/*",
+        "*://voidad.de/*",
+        "*://*.voidad.de/*"
+      ],
       "js": ["content/generic-blocker.js"],
       "css": ["content/cosmetic.css"],
       "run_at": "document_start",

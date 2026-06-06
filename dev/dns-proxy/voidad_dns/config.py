@@ -55,7 +55,7 @@ class Settings:
             dns_host=os.getenv("VOIDAD_DNS_HOST", "127.0.0.1"),
             dns_port=int(os.getenv("VOIDAD_DNS_PORT", "53")),
             upstream_dns=os.getenv("VOIDAD_UPSTREAM_DNS", "8.8.8.8"),
-            upstream_timeout=float(os.getenv("VOIDAD_UPSTREAM_TIMEOUT", "2.0")),
+            upstream_timeout=float(os.getenv("VOIDAD_UPSTREAM_TIMEOUT", "4.0")),
             api_host=os.getenv("VOIDAD_API_HOST", "127.0.0.1"),
             api_port=int(os.getenv("VOIDAD_API_PORT", "8053")),
             block_ttl=int(os.getenv("VOIDAD_BLOCK_TTL", "300")),

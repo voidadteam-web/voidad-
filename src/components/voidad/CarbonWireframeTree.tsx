@@ -74,6 +74,7 @@ export function CarbonWireframeTree({
             alt=""
             width={Math.round(h * 0.85)}
             height={h}
+            loading="lazy"
             unoptimized
             className={cn(
               "relative z-10 max-h-full w-auto object-contain object-bottom",
