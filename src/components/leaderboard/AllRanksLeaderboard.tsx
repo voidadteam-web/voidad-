@@ -15,7 +15,7 @@ import {
   MAX_MILITARY_LEVEL,
   type MilitaryRank,
 } from "@/lib/military-ranks";
-import { shieldTierForLevel, SHIELD_TIER_COUNT } from "@/lib/shield-ranks";
+import { shieldTierForLevel, SHIELD_TIER_COUNT, SHIELD_TIER_NAMES, type ShieldTier } from "@/lib/shield-ranks";
 import { cn } from "@/lib/utils";
 
 /** Full ranks page — all 57 military ranks + community contributors (mockup layout) */
@@ -109,29 +109,33 @@ export function AllRanksLeaderboard() {
           </HorizontalScrollStrip>
         </div>
 
-        {/* 8 cyber shield tiers */}
+        {/* 10 cyber shield tiers */}
         <div className="mt-10 border-t border-void-green/15 pt-8">
           <h2 className="void-display mb-5 text-center text-sm tracking-[0.18em] text-void-green sm:text-base">
             {t("shieldTiersTitle")}
           </h2>
-          <div className="flex flex-wrap items-end justify-center gap-4 sm:gap-6">
+          <HorizontalScrollStrip hint={t("scrollShieldTiers")}>
             {Array.from({ length: SHIELD_TIER_COUNT }, (_, tier) => {
+              const shieldTier = tier as ShieldTier;
               const level = Math.round(
                 1 + (tier / (SHIELD_TIER_COUNT - 1)) * (MAX_MILITARY_LEVEL - 1),
               );
               return (
                 <div
                   key={tier}
-                  className="flex flex-col items-center gap-2 rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-3"
+                  className="flex w-[100px] shrink-0 snap-start flex-col items-center gap-2 rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-3 sm:w-[110px]"
                 >
-                  <VoidRankShield tier={tier as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7} size={56} />
+                  <VoidRankShield tier={shieldTier} size={64} />
                   <p className="void-display text-[10px] tracking-wider text-void-green">
                     {t("level")} {level}
+                  </p>
+                  <p className="text-center text-[8px] uppercase leading-tight tracking-wide text-void-muted">
+                    {SHIELD_TIER_NAMES[shieldTier]}
                   </p>
                 </div>
               );
             })}
-          </div>
+          </HorizontalScrollStrip>
         </div>
       </VoidPanel>
 

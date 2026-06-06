@@ -78,7 +78,8 @@
     "scrollRanks": "← Nach links & rechts scrollen — alle 57 Ränge →",
     "allRanksTitle": "Alle Militärränge auf VoidAd",
     "scrollAllRanks": "← Alle 57 Militärränge scrollen →",
-    "shieldTiersTitle": "Cyber-Schild-Stufen"
+    "shieldTiersTitle": "Cyber-Schild-Stufen",
+    "scrollShieldTiers": "← Alle 10 Schild-Stufen scrollen →"
   },
   "pricing": {
     "heroTitle": "VoidAd",
