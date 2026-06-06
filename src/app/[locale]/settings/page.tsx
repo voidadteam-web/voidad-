@@ -15,6 +15,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useUserSettings } from "@/hooks/useUserSettings";
 import { Link } from "@/i18n/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { LevelDragonShield, levelBadgeTitle } from "@/components/leaderboard/LevelDragonShield";
 import { Shield, Heart, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
@@ -209,14 +210,16 @@ export default function SettingsPage() {
                   {uploading ? t("uploading") : t("changeAvatar")}
                 </VoidButton>
                 <div
-                  className={`mt-6 flex h-16 w-16 items-center justify-center rounded-lg border border-void-green/30 text-2xl ${
+                  className={`mt-6 flex flex-col items-center ${
                     level > 0 ? "opacity-100" : "opacity-40"
                   }`}
                 >
-                  🐉
+                  <LevelDragonShield level={Math.max(level, 1)} size="lg" />
                 </div>
                 <p className="mt-2 text-xs text-void-green">
-                  {level > 0 ? t("levelBadge", { level }) : t("levelStarter")}
+                  {level > 0
+                    ? `${levelBadgeTitle(level)} — ${t("level")} ${level}`
+                    : t("levelStarter")}
                 </p>
                 <VoidButton
                   variant="ghost"

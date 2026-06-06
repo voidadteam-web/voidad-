@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { DragonShield } from "@/components/leaderboard/DragonShield";
-import { GrandGuardianShield } from "@/components/leaderboard/GrandGuardianShield";
+import { LevelDragonShield } from "@/components/leaderboard/LevelDragonShield";
 import {
   getLeaderboardDisplayOrder,
   type VoidGuardian,
@@ -68,11 +67,11 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
 
         <div className="flex items-center gap-0 leading-none">
-          {featured ? (
-            <GrandGuardianShield className="-mr-0.5" />
-          ) : (
-            <DragonShield size="md" />
-          )}
+          <LevelDragonShield
+            level={player.level}
+            size={featured ? "lg" : "md"}
+            className={featured ? "-mr-0.5" : undefined}
+          />
           <p
             className={cn(
               "void-display leading-none text-void-green void-glow-text",

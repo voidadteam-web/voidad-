@@ -23,6 +23,7 @@ import { Link } from "@/i18n/navigation";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
 import { useProfile } from "@/hooks/useProfile";
+import { LevelDragonShield, levelBadgeTitle } from "@/components/leaderboard/LevelDragonShield";
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
@@ -162,9 +163,14 @@ export default function DashboardPage() {
                 </VoidButton>
               </Link>
             </div>
-            <p className="mt-3 text-center text-xs text-void-green">
-              {level > 0 ? t("levelShield", { level }) : t("levelStarter")}
-            </p>
+            <div className="mt-3 flex flex-col items-center gap-1">
+              {level > 0 && <LevelDragonShield level={level} size="sm" />}
+              <p className="text-center text-xs text-void-green">
+                {level > 0
+                  ? `${levelBadgeTitle(level)} — Level ${level}`
+                  : t("levelStarter")}
+              </p>
+            </div>
           </VoidPanel>
 
           <VoidPanel title={t("mentalHealth")}>
