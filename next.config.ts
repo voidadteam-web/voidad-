@@ -13,6 +13,30 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: "/",
+          has: [{ type: "host", value: "(www\\.)?voidad\\.de" }],
+          destination: "/de",
+        },
+        {
+          source: "/:path((?!de|en|_next|api).*)",
+          has: [{ type: "host", value: "(www\\.)?voidad\\.de" }],
+          destination: "/de/:path",
+        },
+        {
+          source: "/",
+          destination: "/en",
+        },
+        {
+          source: "/:path((?!de|en|_next|api).*)",
+          destination: "/en/:path",
+        },
+      ],
+    };
+  },
 };
 
 export default withNextIntl(nextConfig);
