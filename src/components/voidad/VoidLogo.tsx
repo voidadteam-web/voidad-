@@ -41,7 +41,7 @@ function VoidLogoGlobal({ showTagline = false }: { showTagline?: boolean }) {
           <stop offset="0.72" stopColor="#e8fff5" />
           <stop offset="1" stopColor="#00ff99" />
         </linearGradient>
-        <linearGradient id="voidLockFill" x1="36" y1="22" x2="36" y2="46" gradientUnits="userSpaceOnUse">
+        <linearGradient id="voidLockFill" x1="36" y1="18" x2="36" y2="52" gradientUnits="userSpaceOnUse">
           <stop stopColor="#ffffff" />
           <stop offset="1" stopColor="#e6fff4" />
         </linearGradient>
@@ -76,25 +76,25 @@ function VoidLogoGlobal({ showTagline = false }: { showTagline?: boolean }) {
         filter="url(#voidLogoSoftGlow)"
       />
 
-      {/* V padlock — balanced proportions, rounded shackle + wide V body */}
+      {/* V padlock — large, proportional lock mark */}
       <g filter="url(#voidLogoSoftGlow)">
         <path
-          d="M 27.5 31.2 C 27.5 23.2 44.5 23.2 44.5 31.2"
+          d="M 24.5 29.8 C 24.5 18.5 47.5 18.5 47.5 29.8"
           stroke="url(#voidLockFill)"
-          strokeWidth="2.35"
+          strokeWidth="2.6"
           fill="none"
           strokeLinecap="round"
         />
         <path
-          d="M 27 31.4 L 34.2 44.2 Q 36 46.2 37.8 44.2 L 45 31.4 L 41.2 31.4 L 36 40.2 L 30.8 31.4 Z"
+          d="M 23.8 30.2 L 32.8 50.2 Q 36 52.4 39.2 50.2 L 48.2 30.2 L 43.2 30.2 L 36 44.8 L 28.8 30.2 Z"
           fill="url(#voidLockFill)"
         />
         <path
-          d="M 30.6 31.8 L 36 39.8 L 41.4 31.8 L 39.2 31.8 L 36 36.4 L 32.8 31.8 Z"
+          d="M 28 31 L 36 43.2 L 44 31 L 40.4 31 L 36 38.6 L 31.6 31 Z"
           fill="#00a86b"
         />
-        <circle cx="36" cy="33.6" r="1.75" fill="#050a0a" />
-        <rect x="35.15" y="34.1" width="1.7" height="3.6" rx="0.4" fill="#050a0a" />
+        <circle cx="36" cy="34.4" r="2.15" fill="#050a0a" />
+        <rect x="34.95" y="35" width="2.1" height="4.4" rx="0.45" fill="#050a0a" />
       </g>
 
       {/* Node accents — global network */}
