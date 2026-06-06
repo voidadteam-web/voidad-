@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isAdminConfigured } from "@/lib/supabase/admin";
-
-type BlockEvent = {
-  domain: string;
-  type?: "ad" | "tracker" | "phishing";
-  client_ip?: string | null;
-};
+import { recordBlocks, type BlockEventInput } from "@/lib/dns-stats";
 
 /** Extension or browser reports blocked ads/trackers → updates profile stats */
 export async function POST(request: Request) {
@@ -25,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const events = (body.events ?? []) as BlockEvent[];
+    const events = (body.events ?? []) as BlockEventInput[];
 
     if (!Array.isArray(events) || events.length === 0) {
       return NextResponse.json({ error: "INVALID_INPUT" }, { status: 400 });
@@ -36,27 +31,24 @@ export async function POST(request: Request) {
       .slice(0, 100)
       .map((e) => ({
         domain: String(e.domain),
-        type: ["ad", "tracker", "phishing"].includes(String(e.type))
+        type: (["ad", "tracker", "phishing"].includes(String(e.type))
           ? e.type
-          : "ad",
+          : "ad") as "ad" | "tracker" | "phishing",
         client_ip: e.client_ip ?? null,
       }));
 
     const admin = createAdminClient();
-    const { data, error } = await admin.rpc("record_dns_blocks", {
-      p_user_id: user.id,
-      p_events: normalized,
-    });
+    const result = await recordBlocks(admin, user.id, normalized);
 
-    if (error) {
-      console.error("record_dns_blocks:", error.message);
+    if (!result.ok) {
+      console.error("record_dns_blocks:", result.detail ?? result.error);
       return NextResponse.json(
-        { error: "RECORD_FAILED", detail: error.message },
+        { error: result.error ?? "RECORD_FAILED", detail: result.detail },
         { status: 500 },
       );
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(result);
   } catch {
     return NextResponse.json({ error: "INTERNAL" }, { status: 500 });
   }

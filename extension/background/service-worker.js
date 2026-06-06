@@ -80,15 +80,13 @@ async function queueBlock(url) {
   const blockedCount = (state.blockedCount ?? 0) + 1;
   const pendingEvents = [...(state.pendingEvents ?? [])];
 
-  if (state.userId) {
-    pendingEvents.push({
-      domain,
-      type: classifyDomain(domain),
-      client_ip: null,
-    });
-    if (pendingEvents.length > 100) {
-      pendingEvents.splice(0, pendingEvents.length - 100);
-    }
+  pendingEvents.push({
+    domain,
+    type: classifyDomain(domain),
+    client_ip: null,
+  });
+  if (pendingEvents.length > 100) {
+    pendingEvents.splice(0, pendingEvents.length - 100);
   }
 
   await setState({ blockedCount, pendingEvents });

@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isAdminConfigured } from "@/lib/supabase/admin";
-
-type BlockEvent = {
-  domain: string;
-  type: "ad" | "tracker" | "phishing";
-  client_ip?: string;
-};
+import { recordBlocks, type BlockEventInput } from "@/lib/dns-stats";
 
 /** DNS server reports blocked domains → updates stats & VoidPoints */
 export async function POST(request: Request) {
@@ -23,7 +18,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const userId = String(body.userId ?? "").trim();
-    const events = (body.events ?? []) as BlockEvent[];
+    const events = (body.events ?? []) as BlockEventInput[];
 
     if (!userId || !Array.isArray(events) || events.length === 0) {
       return NextResponse.json({ error: "INVALID_INPUT" }, { status: 400 });
@@ -34,22 +29,25 @@ export async function POST(request: Request) {
       .slice(0, 200)
       .map((e) => ({
         domain: String(e.domain),
-        type: ["ad", "tracker", "phishing"].includes(e.type) ? e.type : "ad",
+        type: (["ad", "tracker", "phishing"].includes(e.type) ? e.type : "ad") as
+          | "ad"
+          | "tracker"
+          | "phishing",
         client_ip: e.client_ip ?? null,
       }));
 
     const admin = createAdminClient();
-    const { data, error } = await admin.rpc("record_dns_blocks", {
-      p_user_id: userId,
-      p_events: normalized,
-    });
+    const result = await recordBlocks(admin, userId, normalized);
 
-    if (error) {
-      console.error("record_dns_blocks:", error.message);
-      return NextResponse.json({ error: "RECORD_FAILED", detail: error.message }, { status: 500 });
+    if (!result.ok) {
+      console.error("record_dns_blocks:", result.detail ?? result.error);
+      return NextResponse.json(
+        { error: result.error ?? "RECORD_FAILED", detail: result.detail },
+        { status: 500 },
+      );
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(result);
   } catch (err) {
     const detail = err instanceof Error ? err.message : "unknown";
     return NextResponse.json({ error: "INTERNAL", detail }, { status: 500 });
