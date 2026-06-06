@@ -1,25 +1,23 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { isSupabaseEnvReady, resolveSupabaseAnonKey, resolveSupabaseUrl } from "./env";
 
 export function isSupabaseConfigured() {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
+  return isSupabaseEnvReady();
 }
 
 let client: SupabaseClient | undefined;
 
 export function createClient() {
-  if (!isSupabaseConfigured()) {
+  const url = resolveSupabaseUrl();
+  const key = resolveSupabaseAnonKey();
+
+  if (!url || !key) {
     throw new Error("Supabase is not configured");
   }
 
   if (!client) {
-    client = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    );
+    client = createBrowserClient(url, key);
   }
 
   return client;

@@ -229,7 +229,7 @@
     "emailExists": "This email is already registered.",
     "invalidCredentials": "Invalid email or password.",
     "signupFailed": "Signup failed. Please try again.",
-    "serverNotReady": "Server auth is not ready. Redeploy Vercel after adding SUPABASE_SERVICE_ROLE_KEY.",
+    "serverNotReady": "Server auth is not ready. Set NEXT_PUBLIC_SUPABASE_URL on Vercel (or fix anon key) and redeploy.",
     "databaseNotReady": "Database not ready. Run supabase/migrations/002 and 003 in SQL Editor.",
     "notConfigured": "Authentication is not configured on this server.",
     "unexpectedError": "Something went wrong. Please try again."

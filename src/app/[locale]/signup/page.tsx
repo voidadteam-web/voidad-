@@ -48,7 +48,12 @@ export default function SignupPage() {
         } else if (nonceData.error === "SERVER_CONFIG") {
           setMessage(t("serverNotReady"));
         } else if (nonceData.error === "CHECK_FAILED" || nonceData.error === "NONCE_FAILED") {
-          setMessage(t("databaseNotReady"));
+          const detail = String(nonceData.detail ?? "").toLowerCase();
+          if (detail.includes("fetch failed") || detail.includes("enotfound")) {
+            setMessage(t("serverNotReady"));
+          } else {
+            setMessage(t("databaseNotReady"));
+          }
         } else {
           setMessage(nonceData.detail ? `${t("signupFailed")} (${nonceData.detail})` : t("signupFailed"));
         }
