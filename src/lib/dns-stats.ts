@@ -77,7 +77,11 @@ export async function recordBlocksFallback(
     .from("dns_activity_log")
     .insert(activityRows);
 
-  if (activityError && !activityError.message.includes("does not exist")) {
+  const activityMissing =
+    activityError &&
+    (/does not exist|Could not find the table|schema cache/i.test(activityError.message));
+
+  if (activityError && !activityMissing) {
     return { ok: false, error: "ACTIVITY_FAILED", detail: activityError.message };
   }
 
