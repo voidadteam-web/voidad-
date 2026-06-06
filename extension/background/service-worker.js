@@ -15,6 +15,28 @@ const DEFAULT_STATE = {
   dnsProxyOnline: false,
 };
 
+function registerBlockListeners() {
+  try {
+    if (chrome.declarativeNetRequest?.onRuleMatched?.addListener) {
+      chrome.declarativeNetRequest.onRuleMatched.addListener((info) => {
+        void queueBlock(info.request.url);
+      });
+    }
+  } catch (error) {
+    console.warn("[VoidAd] onRuleMatched unavailable:", error);
+  }
+
+  try {
+    if (chrome.declarativeNetRequest?.onRuleMatchedDebug?.addListener) {
+      chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
+        void queueBlock(info.request.url);
+      });
+    }
+  } catch (error) {
+    console.warn("[VoidAd] onRuleMatchedDebug unavailable:", error);
+  }
+}
+
 function classifyDomain(domain) {
   const d = domain.toLowerCase();
   if (d.includes("tracker") || d.includes("analytics") || d.includes("pixel.")) {
@@ -85,6 +107,14 @@ async function syncUser(payload) {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
+  await bootstrap();
+});
+
+chrome.runtime.onStartup.addListener(async () => {
+  await bootstrap();
+});
+
+async function bootstrap() {
   const state = await getState();
   if (state.blockedCount === undefined) {
     await setState({ protectionEnabled: true, blockedCount: 0, pendingEvents: [] });
@@ -92,7 +122,10 @@ chrome.runtime.onInstalled.addListener(async () => {
   const online = await pingDnsProxy();
   await setState({ dnsProxyOnline: online });
   await updateBadge();
-});
+}
+
+registerBlockListeners();
+bootstrap().catch((error) => console.error("[VoidAd] bootstrap failed:", error));
 
 setInterval(async () => {
   const online = await pingDnsProxy();
@@ -167,15 +200,3 @@ chrome.runtime.onMessageExternal.addListener((message, _sender, sendResponse) =>
   })();
   return true;
 });
-
-if (chrome.declarativeNetRequest?.onRuleMatched) {
-  chrome.declarativeNetRequest.onRuleMatched.addListener((info) => {
-    void queueBlock(info.request.url);
-  });
-}
-
-if (chrome.declarativeNetRequest?.onRuleMatchedDebug) {
-  chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
-    void queueBlock(info.request.url);
-  });
-}
