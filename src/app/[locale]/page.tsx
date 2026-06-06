@@ -12,7 +12,6 @@ import {
   Zap,
   Router,
   ChevronRight,
-  Globe,
 } from "lucide-react";
 import { LeaderboardPreview } from "@/components/voidad/LeaderboardPreview";
 import { HeroBrand } from "@/components/voidad/HeroBrand";
@@ -70,31 +69,13 @@ export default async function HomePage({ params }: Props) {
             </div>
           </div>
 
-          {/* Center logo */}
+          {/* Center logo + world map */}
           <div className="order-1 lg:order-2">
             <HeroBrand />
           </div>
 
-          {/* Right network visual */}
-          <div className="order-3 hidden lg:block">
-            <div className="relative flex h-64 items-center justify-center">
-              <Globe className="h-48 w-48 text-void-green/20" strokeWidth={0.5} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-40 w-40 rounded-full border border-void-green/20 shadow-[0_0_60px_rgba(0,255,153,0.15)]" />
-              </div>
-              {[0, 1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="absolute h-2 w-2 rounded-sm bg-void-green shadow-[0_0_8px_rgba(0,255,153,0.8)]"
-                  style={{
-                    top: `${20 + i * 18}%`,
-                    left: `${60 + (i % 2) * 15}%`,
-                    opacity: 0.4 + i * 0.15,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          {/* Spacer for 3-column balance on desktop */}
+          <div className="order-3 hidden lg:block" aria-hidden />
         </div>
 
         {/* Stats row */}
