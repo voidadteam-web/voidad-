@@ -11,6 +11,28 @@ export type VoidGuardian = {
   featured?: boolean;
 };
 
+/** Podium layout — rank #1 centered, others by rank descending outward */
+export function getLeaderboardDisplayOrder(players: VoidGuardian[]): VoidGuardian[] {
+  const sorted = [...players].sort((a, b) => a.rank - b.rank);
+  if (sorted.length <= 1) return sorted;
+
+  const byRank = new Map(sorted.map((p) => [p.rank, p]));
+  const center = byRank.get(1);
+  const rest = sorted.filter((p) => p.rank !== 1);
+
+  const left: VoidGuardian[] = [];
+  const right: VoidGuardian[] = [];
+  rest.forEach((p, i) => {
+    if (i % 2 === 0) left.push(p);
+    else right.push(p);
+  });
+
+  left.sort((a, b) => b.rank - a.rank);
+  right.sort((a, b) => a.rank - b.rank);
+
+  return [...left, ...(center ? [center] : []), ...right];
+}
+
 export const VOID_GUARDIANS: VoidGuardian[] = [
   {
     rank: 1,
@@ -22,7 +44,7 @@ export const VOID_GUARDIANS: VoidGuardian[] = [
     adsBlocked: "1.5M",
     donated: "300,000",
     avatarUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
     featured: true,
   },
   {
@@ -35,7 +57,7 @@ export const VOID_GUARDIANS: VoidGuardian[] = [
     adsBlocked: "1.2M",
     donated: "250,000",
     avatarUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
   },
   {
     rank: 3,

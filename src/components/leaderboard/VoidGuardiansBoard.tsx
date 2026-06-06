@@ -3,7 +3,10 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { DragonShield } from "@/components/leaderboard/DragonShield";
-import type { VoidGuardian } from "@/components/leaderboard/guardians-data";
+import {
+  getLeaderboardDisplayOrder,
+  type VoidGuardian,
+} from "@/components/leaderboard/guardians-data";
 import { countryFlag } from "@/lib/countries";
 import { cn } from "@/lib/utils";
 
@@ -20,15 +23,15 @@ type VoidGuardianCardProps = {
 };
 
 export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
-  const featured = player.featured ?? player.rank === 1;
+  const featured = player.rank === 1;
 
   return (
     <article
       className={cn(
-        "void-glow-border flex shrink-0 flex-col overflow-hidden rounded-xl bg-void-black/75 backdrop-blur-sm",
+        "void-glow-border flex shrink-0 flex-col overflow-hidden rounded-xl bg-void-black/75 backdrop-blur-sm transition-transform",
         featured
-          ? "void-glow-border-strong w-[220px] sm:w-[250px]"
-          : "w-[180px] opacity-95 sm:w-[200px]",
+          ? "void-glow-border-strong z-10 w-[230px] scale-105 sm:w-[260px] sm:scale-110"
+          : "w-[175px] opacity-95 sm:w-[195px]",
       )}
     >
       <header className="border-b border-void-green/20 px-3 py-2.5 text-center">
@@ -37,7 +40,20 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
       </header>
 
-      <div className={cn("p-3", featured && "px-4 pt-4")}>
+      {featured && (
+        <div className="flex justify-center px-3 pt-3">
+          <Image
+            src="/grand-guardian-shield.png"
+            alt="Grand Guardian"
+            width={88}
+            height={190}
+            className="h-[72px] w-auto object-contain drop-shadow-[0_0_14px_rgba(0,255,153,0.35)] sm:h-[88px]"
+            unoptimized
+          />
+        </div>
+      )}
+
+      <div className={cn("p-3", featured && "px-4 pt-2")}>
         <div
           className={cn(
             "relative mx-auto overflow-hidden rounded-lg border border-void-green/35 bg-void-panel",
@@ -64,7 +80,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
 
         <div className="flex items-center gap-2">
-          <DragonShield size={featured ? "lg" : "md"} />
+          {!featured && <DragonShield size="md" />}
           <p
             className={cn(
               "void-display text-void-green void-glow-text",
@@ -120,7 +136,7 @@ export function VoidGuardiansBoard({
     donated: t("donatedPoints"),
   };
 
-  const list = players ?? [];
+  const list = getLeaderboardDisplayOrder(players ?? []);
 
   return (
     <div className={cn("w-full", className)}>
@@ -158,7 +174,7 @@ export function VoidGuardiansBoard({
         )}
       </div>
 
-      <div className="flex items-end justify-start gap-3 overflow-x-auto pb-2 sm:justify-center sm:gap-4 sm:pb-4">
+      <div className="flex items-end justify-center gap-3 overflow-x-auto pb-2 sm:gap-4 sm:pb-4">
         {list.map((player) => (
           <VoidGuardianCard key={player.rank} player={player} labels={labels} />
         ))}
