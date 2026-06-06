@@ -40,20 +40,7 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
       </header>
 
-      {featured && (
-        <div className="flex justify-center px-3 pt-3">
-          <Image
-            src="/grand-guardian-shield.png"
-            alt="Grand Guardian"
-            width={88}
-            height={190}
-            className="h-[72px] w-auto object-contain drop-shadow-[0_0_14px_rgba(0,255,153,0.35)] sm:h-[88px]"
-            unoptimized
-          />
-        </div>
-      )}
-
-      <div className={cn("p-3", featured && "px-4 pt-2")}>
+      <div className={cn("p-3", featured && "px-4 pt-4")}>
         <div
           className={cn(
             "relative mx-auto overflow-hidden rounded-lg border border-void-green/35 bg-void-panel",
@@ -80,7 +67,18 @@ export function VoidGuardianCard({ player, labels }: VoidGuardianCardProps) {
         </p>
 
         <div className="flex items-center gap-2">
-          {!featured && <DragonShield size="md" />}
+          {featured ? (
+            <Image
+              src="/grand-guardian-shield.png"
+              alt="Grand Guardian"
+              width={44}
+              height={96}
+              className="h-10 w-auto shrink-0 object-contain drop-shadow-[0_0_10px_rgba(0,255,153,0.35)] sm:h-12"
+              unoptimized
+            />
+          ) : (
+            <DragonShield size="md" />
+          )}
           <p
             className={cn(
               "void-display text-void-green void-glow-text",
@@ -174,7 +172,7 @@ export function VoidGuardiansBoard({
         )}
       </div>
 
-      <div className="flex items-end justify-center gap-3 overflow-x-auto pb-2 sm:gap-4 sm:pb-4">
+      <div className="flex items-end justify-start gap-3 overflow-x-auto pb-2 sm:justify-center sm:gap-4 sm:pb-4">
         {list.map((player) => (
           <VoidGuardianCard key={player.rank} player={player} labels={labels} />
         ))}
