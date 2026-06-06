@@ -3,8 +3,6 @@
 import {
   Shield,
   Download,
-  CheckCircle2,
-  Puzzle,
   ExternalLink,
   Copy,
   Check,
@@ -18,7 +16,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
-import { useExtensionStatus } from "@/components/extension/ExtensionSync";
+import { useExtensionRuntimeState, useExtensionStatus } from "@/components/extension/ExtensionSync";
+import Image from "next/image";
 
 const EXTENSION_DOWNLOAD = "/downloads/voidad-extension.zip";
 const CHROME_EXTENSIONS_URL = "chrome://extensions";
@@ -41,6 +40,7 @@ const STEP_KEYS = ["step1", "step2", "step3", "step4", "step5", "step6"] as cons
 export function ExtensionActivate() {
   const t = useTranslations("extension");
   const { installed, checking } = useExtensionStatus();
+  const runtime = useExtensionRuntimeState();
   const [copied, setCopied] = useState(false);
 
   if (checking) return null;
@@ -63,11 +63,13 @@ export function ExtensionActivate() {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-3">
-            {installed ? (
-              <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-void-green" />
-            ) : (
-              <Puzzle className="mt-0.5 h-6 w-6 shrink-0 text-void-green" />
-            )}
+            <Image
+              src="/extension/icon48.png"
+              alt=""
+              width={40}
+              height={40}
+              className="mt-0.5 shrink-0 rounded-lg"
+            />
             <div>
               <p className="text-sm font-bold text-void-green">
                 {installed ? t("activeTitle") : t("installTitle")}
@@ -75,6 +77,19 @@ export function ExtensionActivate() {
               <p className="mt-1 text-xs leading-relaxed text-void-text-mint">
                 {installed ? t("activeDesc") : t("installDesc")}
               </p>
+              {installed && runtime ? (
+                <p className="mt-2 inline-flex items-center gap-2 rounded-md bg-[#8ecaff]/20 px-2 py-1 text-[11px] font-bold text-[#8ecaff]">
+                  <span className="rounded bg-[#8ecaff] px-1.5 py-0.5 text-[10px] text-black">
+                    {runtime.blockedCount > 999 ? "999+" : runtime.blockedCount}
+                  </span>
+                  {runtime.protectionEnabled
+                    ? t("liveBlocked", { count: runtime.blockedCount })
+                    : t("protectionOff")}
+                </p>
+              ) : null}
+              {installed ? (
+                <p className="mt-1 text-[10px] text-void-muted">{t("pinHint")}</p>
+              ) : null}
             </div>
           </div>
 
@@ -137,7 +152,7 @@ export function ExtensionActivate() {
           </a>
           <span className="text-void-green/40">·</span>
           <code className="rounded border border-void-green/20 bg-void-black/50 px-1.5 py-0.5 text-void-green">
-            v0.4.7
+            v0.5.0
           </code>
         </div>
       </div>

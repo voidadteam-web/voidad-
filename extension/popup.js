@@ -1,4 +1,4 @@
-/** Popup UI + install landing when opened from the extension folder */
+/** Popup UI — AdBlock-style blocked count + install landing */
 
 const DASHBOARD_URL = "https://voidad.com/en/dashboard";
 
@@ -11,19 +11,15 @@ function isFileMode() {
 }
 
 function showInstallGuide() {
-  const guide = document.getElementById("install-guide");
-  const panel = document.getElementById("extension-ui");
-  if (guide) guide.hidden = false;
-  if (panel) panel.hidden = true;
-  document.body.classList.add("install-mode");
+  document.getElementById("install-shell")?.removeAttribute("hidden");
+  document.getElementById("extension-ui")?.setAttribute("hidden", "");
+  document.body.className = "install-mode";
 }
 
 function showExtensionUi() {
-  const guide = document.getElementById("install-guide");
-  const panel = document.getElementById("extension-ui");
-  if (guide) guide.hidden = true;
-  if (panel) panel.hidden = false;
-  document.body.classList.remove("install-mode");
+  document.getElementById("install-shell")?.setAttribute("hidden", "");
+  document.getElementById("extension-ui")?.removeAttribute("hidden");
+  document.body.className = "popup-mode";
 }
 
 function sendMessage(message) {
@@ -33,9 +29,7 @@ function sendMessage(message) {
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      reject(new Error("TIMEOUT"));
-    }, 5000);
+    const timer = window.setTimeout(() => reject(new Error("TIMEOUT")), 5000);
 
     try {
       chrome.runtime.sendMessage(message, (response) => {
@@ -54,6 +48,18 @@ function sendMessage(message) {
   });
 }
 
+function formatBlockedLabel(count) {
+  if (count === 0) return "Nothing to block here";
+  if (count === 1) return "1 ad blocked";
+  return `${count.toLocaleString()} ads blocked`;
+}
+
+function formatBlockedSub(state) {
+  const dns = state?.dnsProxyOnline ? "DNS proxy online" : "DNS proxy offline";
+  if (state?.email) return `${state.email} · synced · ${dns}`;
+  return `Sign in at voidad.com · ${dns}`;
+}
+
 async function copyText(text, button) {
   try {
     await navigator.clipboard.writeText(text);
@@ -70,30 +76,25 @@ async function copyText(text, button) {
 }
 
 function wireInstallGuide() {
-  const copyExt = document.getElementById("copy-extensions-url");
-  const copyFolder = document.getElementById("copy-folder-hint");
-
-  copyExt?.addEventListener("click", () => {
-    void copyText("chrome://extensions", copyExt);
-  });
-
-  copyFolder?.addEventListener("click", () => {
-    const folder = window.location.pathname.replace(/\/popup\.html$/, "").replace(/\/+$/, "");
-    void copyText(folder || "voidad-extension", copyFolder);
+  document.getElementById("copy-extensions-url")?.addEventListener("click", (event) => {
+    void copyText("chrome://extensions", event.currentTarget);
   });
 }
 
 async function loadExtensionState() {
-  const protectionEl = document.getElementById("protection");
-  const statsEl = document.getElementById("stats");
+  const statusPill = document.getElementById("status-pill");
+  const protectionLabel = document.getElementById("protection-label");
+  const headlineEl = document.getElementById("blocked-headline");
+  const countEl = document.getElementById("blocked-count");
+  const subEl = document.getElementById("blocked-sub");
   const toggleBtn = document.getElementById("toggle");
   const dashboardLink = document.getElementById("dashboard");
+  const settingsLink = document.getElementById("settings-link");
 
-  if (dashboardLink) {
-    dashboardLink.href = DASHBOARD_URL;
-  }
+  if (dashboardLink) dashboardLink.href = DASHBOARD_URL;
+  if (settingsLink) settingsLink.href = DASHBOARD_URL;
 
-  if (!protectionEl || !statsEl || !toggleBtn) return;
+  if (!statusPill || !protectionLabel || !headlineEl || !countEl || !subEl || !toggleBtn) return;
 
   if (!hasExtensionApis()) {
     showInstallGuide();
@@ -101,27 +102,31 @@ async function loadExtensionState() {
   }
 
   showExtensionUi();
-  protectionEl.textContent = "Loading…";
   toggleBtn.disabled = true;
+  subEl.textContent = "Loading…";
 
   try {
     const state = await sendMessage({ type: "GET_STATE" });
     const enabled = state?.protectionEnabled !== false;
-
-    protectionEl.innerHTML = enabled
-      ? '<span class="on">● Protection Active</span>'
-      : '<span class="off">● Protection Off</span>';
-
     const blocked = state?.blockedCount ?? 0;
-    const dns = state?.dnsProxyOnline ? "DNS proxy online" : "DNS proxy offline";
 
-    if (state?.email) {
-      statsEl.textContent = `${state.email} · ${blocked} blocked · ${dns}`;
+    statusPill.classList.toggle("on", enabled);
+    statusPill.classList.toggle("off", !enabled);
+    protectionLabel.textContent = enabled ? "Protection Active" : "Protection Off";
+
+    if (blocked === 0) {
+      headlineEl.textContent = "Nothing to block here";
+      countEl.textContent = "0";
     } else {
-      statsEl.textContent = `${blocked} blocked · Sign in at voidad.com · ${dns}`;
+      headlineEl.textContent = "Ads blocked";
+      countEl.textContent = blocked.toLocaleString();
     }
 
+    subEl.textContent = formatBlockedSub(state);
+    document.title = `VoidAd — ${formatBlockedLabel(blocked)}`;
+
     toggleBtn.disabled = false;
+    toggleBtn.classList.toggle("off-mode", !enabled);
     toggleBtn.textContent = enabled ? "Turn Off Protection" : "Turn On Protection";
     toggleBtn.onclick = async () => {
       toggleBtn.disabled = true;
@@ -129,8 +134,8 @@ async function loadExtensionState() {
         await sendMessage({ type: "SET_PROTECTION", enabled: !enabled });
         await loadExtensionState();
       } catch {
-        protectionEl.innerHTML = '<span class="off">● Worker error</span>';
-        statsEl.textContent = "Reload at chrome://extensions";
+        protectionLabel.textContent = "Worker error";
+        subEl.textContent = "Reload at chrome://extensions";
         toggleBtn.disabled = true;
       }
     };
@@ -141,17 +146,19 @@ async function loadExtensionState() {
       return;
     }
 
-    protectionEl.innerHTML = '<span class="off">● Extension not responding</span>';
-    statsEl.textContent =
+    statusPill.classList.add("off");
+    statusPill.classList.remove("on");
+    protectionLabel.textContent = "Extension not responding";
+    headlineEl.textContent = "Reload required";
+    countEl.textContent = "!";
+    subEl.textContent =
       code === "TIMEOUT"
         ? "Reload VoidAd at chrome://extensions"
         : "Open chrome://extensions → Reload VoidAd";
-    toggleBtn.disabled = true;
+    toggleBtn.disabled = false;
     toggleBtn.textContent = "Open extensions";
     toggleBtn.onclick = () => {
-      if (hasExtensionApis()) {
-        chrome.tabs?.create({ url: "chrome://extensions" });
-      }
+      if (hasExtensionApis()) chrome.tabs?.create({ url: "chrome://extensions" });
     };
   }
 }

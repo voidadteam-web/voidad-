@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="VoidAd">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="8" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0d2818"/>
+      <stop offset="0.55" stop-color="#143d2a"/>
+      <stop offset="1" stop-color="#050a0a"/>
+    </linearGradient>
+    <linearGradient id="shieldFill" x1="64" y1="18" x2="64" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00ff99"/>
+      <stop offset="0.55" stop-color="#00cc7a"/>
+      <stop offset="1" stop-color="#00995c"/>
+    </linearGradient>
+    <linearGradient id="lockFill" x1="64" y1="34" x2="64" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6fff4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="64" cy="64" r="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00ff99" stop-opacity="0.22"/>
+      <stop offset="1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="url(#bg)"/>
+  <rect width="128" height="128" rx="26" fill="url(#glow)"/>
+  <circle cx="64" cy="64" r="56" stroke="#00ff99" stroke-opacity="0.28" stroke-width="1.4" fill="none"/>
+  <ellipse cx="64" cy="64" rx="56" ry="18" stroke="#00ff99" stroke-opacity="0.16" stroke-width="1" fill="none"/>
+  <ellipse cx="64" cy="64" rx="56" ry="36" stroke="#00ff99" stroke-opacity="0.12" stroke-width="1" fill="none"/>
+  <path d="M64 16 L96 28 V68 C96 92 82 104 64 110 C46 104 32 92 32 68 V28 L64 16 Z" fill="url(#shieldFill)" fill-opacity="0.95" stroke="#66ffcc" stroke-width="1.6"/>
+  <path d="M46 52 C46 38 82 38 82 52" stroke="url(#lockFill)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+  <path d="M45.2 52.8 L54.8 86 Q64 90.4 73.2 86 L82.8 52.8 L76.8 52.8 L64 76.8 L51.2 52.8 Z" fill="url(#lockFill)"/>
+  <path d="M52 54 L64 74.4 L76 54 L70.4 54 L64 65.6 L57.6 54 Z" fill="#00a86b"/>
+  <circle cx="64" cy="50.4" r="3.2" fill="#050a0a"/>
+  <rect x="62.4" y="51.2" width="3.2" height="6.4" rx="0.7" fill="#050a0a"/>
+</svg>

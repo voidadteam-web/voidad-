@@ -50,6 +50,24 @@
           }
         },
       );
+      return;
+    }
+
+    if (data.type === "GET_EXTENSION_STATE") {
+      chrome.runtime.sendMessage({ type: "GET_STATE" }, (response) => {
+        window.postMessage(
+          {
+            source: "voidad-extension",
+            type: "EXTENSION_STATE",
+            ok: Boolean(response),
+            requestId: data.requestId,
+            blockedCount: response?.blockedCount ?? 0,
+            protectionEnabled: response?.protectionEnabled !== false,
+            dnsProxyOnline: Boolean(response?.dnsProxyOnline),
+          },
+          window.location.origin,
+        );
+      });
     }
   });
 

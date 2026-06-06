@@ -59,11 +59,13 @@ async function updateBadge() {
   if (!protectionEnabled) {
     await chrome.action.setBadgeText({ text: "OFF" });
     await chrome.action.setBadgeBackgroundColor({ color: "#7f1d1d" });
+    await chrome.action.setBadgeTextColor({ color: "#ffffff" });
     return;
   }
   const text = blockedCount > 0 ? (blockedCount > 999 ? "999+" : String(blockedCount)) : "";
   await chrome.action.setBadgeText({ text });
-  await chrome.action.setBadgeBackgroundColor({ color: "#0891b2" });
+  await chrome.action.setBadgeBackgroundColor({ color: "#8ecaff" });
+  await chrome.action.setBadgeTextColor({ color: "#000000" });
 }
 
 async function queueBlock(url) {

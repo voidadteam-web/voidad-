@@ -8,9 +8,23 @@ export type ExtensionSyncPayload = {
   protectionEnabled?: boolean;
 };
 
-function postToExtension<T>(type: "PING" | "SYNC_USER", payload: Record<string, unknown> = {}): Promise<T> {
+export type ExtensionRuntimeState = {
+  blockedCount: number;
+  protectionEnabled: boolean;
+  dnsProxyOnline: boolean;
+};
+
+type ExtensionMessageType = "PING" | "SYNC_USER" | "GET_EXTENSION_STATE";
+
+function postToExtension<T>(
+  type: ExtensionMessageType,
+  payload: Record<string, unknown> = {},
+): Promise<T> {
   return new Promise((resolve) => {
     const requestId = crypto.randomUUID();
+    const expectedType =
+      type === "PING" ? "PONG" : type === "GET_EXTENSION_STATE" ? "EXTENSION_STATE" : "SYNC_ACK";
+
     const timeout = window.setTimeout(() => {
       window.removeEventListener("message", onMessage);
       resolve({ ok: false } as T);
@@ -20,6 +34,7 @@ function postToExtension<T>(type: "PING" | "SYNC_USER", payload: Record<string, 
       if (event.source !== window) return;
       const data = event.data;
       if (data?.source !== VOIDAD_EXTENSION_SOURCE || data.requestId !== requestId) return;
+      if (data.type !== expectedType) return;
       window.clearTimeout(timeout);
       window.removeEventListener("message", onMessage);
       resolve(data as T);
@@ -51,6 +66,23 @@ export async function syncExtensionUser(payload: ExtensionSyncPayload): Promise<
     protectionEnabled: payload.protectionEnabled ?? true,
   });
   return Boolean(result.ok);
+}
+
+export async function getExtensionRuntimeState(): Promise<ExtensionRuntimeState | null> {
+  const result = await postToExtension<{
+    ok?: boolean;
+    blockedCount?: number;
+    protectionEnabled?: boolean;
+    dnsProxyOnline?: boolean;
+  }>("GET_EXTENSION_STATE");
+
+  if (!result.ok) return null;
+
+  return {
+    blockedCount: result.blockedCount ?? 0,
+    protectionEnabled: result.protectionEnabled !== false,
+    dnsProxyOnline: Boolean(result.dnsProxyOnline),
+  };
 }
 
 export const CHROME_EXTENSION_INSTALL_URL =

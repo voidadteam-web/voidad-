@@ -385,7 +385,10 @@
     "worksOn": "Chrome · Edge · Brave",
     "copied": "Pfad kopiert! Öffnen Sie chrome://extensions und laden Sie entpackt.",
     "activeTitle": "VoidAd Extension aktiv — Ebene 2 läuft",
-    "activeDesc": "Dual-Layer-Schutz ist an: DNS blockiert Netzwerk-Werbung; Extension bereinigt YouTube, Streaming und Popups. Unten erneut herunterladen für einen anderen PC."
+    "activeDesc": "Dual-Layer-Schutz ist an: DNS blockiert Netzwerk-Werbung; Extension bereinigt YouTube, Streaming und Popups. Unten erneut herunterladen für einen anderen PC.",
+    "liveBlocked": "{count, plural, =0 {Noch keine Werbung im Browser blockiert} one {# Anzeige im Browser blockiert} other {# Anzeigen im Browser blockiert}}",
+    "protectionOff": "Schutz in der Extension ist aus",
+    "pinHint": "Hefte VoidAd an die Symbolleiste, um den Live-Zähler wie bei AdBlock zu sehen."
   },
   "networkDns": {
     "title": "Ihre VoidAd DNS",

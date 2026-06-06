@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
-import { isExtensionInstalled, pingExtension, syncExtensionUser } from "@/lib/extension/sync";
+import {
+  getExtensionRuntimeState,
+  isExtensionInstalled,
+  pingExtension,
+  syncExtensionUser,
+} from "@/lib/extension/sync";
 
 /** Auto-sync VoidAd account with the browser extension when logged in */
 export function ExtensionSync() {
@@ -60,4 +65,40 @@ export function useExtensionStatus() {
   }, []);
 
   return { installed, checking, ready: !checking };
+}
+
+export function useExtensionRuntimeState() {
+  const { installed, ready } = useExtensionStatus();
+  const [state, setState] = useState<{ blockedCount: number; protectionEnabled: boolean } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (!ready || !installed) {
+      setState(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function poll() {
+      const runtime = await getExtensionRuntimeState();
+      if (!cancelled && runtime) {
+        setState({
+          blockedCount: runtime.blockedCount,
+          protectionEnabled: runtime.protectionEnabled,
+        });
+      }
+    }
+
+    void poll();
+    const interval = window.setInterval(poll, 4000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [installed, ready]);
+
+  return state;
 }
