@@ -1,4 +1,5 @@
 import { shieldTierForLevel } from "@/lib/shield-ranks";
+import { deriveImpactMetrics } from "@/lib/user-stats";
 
 export type GuardianContributions = {
   adsBlocked: number;
@@ -30,9 +31,10 @@ function formatNum(value: number, suffix = ""): string {
 export function buildGuardianContributions(rank: number, level: number): GuardianContributions {
   const adsBlocked = Math.max(50_000, 1_550_000 - rank * 25_000);
   const donated = Math.max(5_000, 305_000 - rank * 5_000);
-  const trackersBlocked = Math.round(adsBlocked * 0.62);
-  const bandwidthGb = Math.round(adsBlocked / 850);
-  const carbonOffsetKg = Math.round(bandwidthGb * 0.28 + donated / 1200);
+  const { trackersBlocked, bandwidthGb, carbonOffsetKg } = deriveImpactMetrics(
+    adsBlocked,
+    donated,
+  );
   const voidpointsEarned = Math.round(adsBlocked * 0.04 + donated * 1.2);
   const carbonTreeLevel = shieldTierForLevel(level) + 1;
   const protectionDays = Math.max(30, 400 - rank * 6);

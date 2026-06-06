@@ -209,6 +209,8 @@
     "levelStarter": "Level 0 — Neuer Guardian",
     "carbonTreeTitle": "Kohlenstoff-Absorptionsbaum",
     "carbonTreeLevel": "Baum-Level",
+    "totalBandwidth": "Gesparte Bandbreite gesamt",
+    "carbonOffset": "CO₂-Ausgleich",
     "uploading": "Wird hochgeladen…",
     "saving": "Wird gespeichert…",
     "saved": "Alle Änderungen gespeichert.",
@@ -257,7 +259,14 @@
     "treeEvolutionTitle": "Void-Baum-Evolution",
     "treeEvolutionSubtitle": "Kohlenstoff-Wächter-Rangfortschritt",
     "level": "Level",
-    "viewCurrentLevel": "Ihr aktuelles Level anzeigen (Level {level})"
+    "viewCurrentLevel": "Ihr aktuelles Level anzeigen (Level {level})",
+    "noRecentDonations": "Noch keine Spenden — Ihre Wirkung beginnt mit Ihrer ersten Spende.",
+    "signInForActivity": "Melden Sie sich an, um Ihre Spendenhistorie zu sehen.",
+    "signIn": "Anmelden",
+    "loadingActivity": "Aktivität wird geladen…",
+    "donationEntry": "Sie haben {points} VoidPoints an {charity} gespendet",
+    "playerLevel": "Spieler-Level",
+    "treeLevel": "Kohlenstoff-Baum-Level"
   },
   "about": {
     "title": "Über VoidAd",

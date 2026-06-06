@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { VoidPanel } from "@/components/ui/VoidPanel";
 import { VoidButton } from "@/components/ui/VoidButton";
 import { VoidStat } from "@/components/ui/VoidStat";
@@ -9,6 +9,14 @@ import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { Heart, Leaf, TreePine } from "lucide-react";
 import { CarbonWireframeTree } from "@/components/voidad/CarbonWireframeTree";
 import { VoidTreeEvolution } from "@/components/voidad/VoidTreeEvolution";
+import { useUserStats } from "@/hooks/useUserStats";
+import { useRecentDonations } from "@/hooks/useRecentDonations";
+import {
+  formatBandwidthGb,
+  formatCarbonKg,
+  formatEuro,
+} from "@/lib/user-stats";
+import { Link } from "@/i18n/navigation";
 
 const CHARITIES = [
   { slug: "green-servers", icon: Leaf, nameEn: "Green Servers Alliance" },
@@ -18,7 +26,12 @@ const CHARITIES = [
 
 export default function VoidPointsPage() {
   const t = useTranslations("voidpoints");
-  const [treeLevel, setTreeLevel] = useState(7);
+  const locale = useLocale();
+  const { stats, loading, isAuthenticated } = useUserStats();
+  const { donations, loading: donationsLoading } = useRecentDonations(5);
+  const [previewTreeLevel, setPreviewTreeLevel] = useState<number | null>(null);
+
+  const treeLevel = previewTreeLevel ?? stats.carbonTreeLevel;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -32,7 +45,7 @@ export default function VoidPointsPage() {
               {t("totalBandwidth")}
             </p>
             <p className="void-display text-xl text-void-green void-glow-text">
-              1,280 GB
+              {loading ? "—" : formatBandwidthGb(stats.bandwidthGb, locale)}
             </p>
           </div>
           <div>
@@ -40,17 +53,20 @@ export default function VoidPointsPage() {
               {t("carbonOffset")}
             </p>
             <p className="void-display text-xl text-void-green void-glow-text">
-              350 KG CO₂
+              {loading ? "—" : formatCarbonKg(stats.carbonOffsetKg, locale)}
             </p>
           </div>
         </div>
       </div>
 
       <VoidPanel glow="strong" className="mb-10">
-        <VoidTreeEvolution currentLevel={treeLevel} onSelectLevel={setTreeLevel} />
+        <VoidTreeEvolution
+          currentLevel={treeLevel}
+          onSelectLevel={(level) => setPreviewTreeLevel(level)}
+        />
         <div className="mt-8 flex justify-center">
-          <VoidButton variant="secondary" onClick={() => setTreeLevel(7)}>
-            {t("viewCurrentLevel", { level: treeLevel })}
+          <VoidButton variant="secondary" onClick={() => setPreviewTreeLevel(null)}>
+            {t("viewCurrentLevel", { level: stats.carbonTreeLevel })}
           </VoidButton>
         </div>
       </VoidPanel>
@@ -58,7 +74,10 @@ export default function VoidPointsPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">
           <VoidPanel glow="strong">
-            <VoidStat label={t("estimatedSavings")} value="€35.40" />
+            <VoidStat
+              label={t("estimatedSavings")}
+              value={loading ? "—" : formatEuro(stats.estimatedSavingsEur, locale)}
+            />
             <p className="mt-2 text-center text-xs text-void-muted">{t("savingsNote")}</p>
             <VoidButton className="mt-6 w-full">{t("convert")}</VoidButton>
             <p className="mt-2 text-center text-[10px] text-void-muted">
@@ -67,23 +86,62 @@ export default function VoidPointsPage() {
           </VoidPanel>
 
           <VoidPanel title={t("recentActivity")}>
-            <ul className="space-y-2 text-xs">
-              <li className="rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2.5 text-void-text-mint">
-                <span className="font-medium text-void-green">USER_7841</span> donated
-                5,000 VoidPoints to{" "}
-                <span className="text-void-green">Green Servers Alliance</span>
-              </li>
-              <li className="rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2.5 text-void-text-mint">
-                <span className="font-medium text-void-green">USER_7849</span> donated
-                1,000 VoidPoints to{" "}
-                <span className="text-void-green">Plant-A-Bit Initiative</span>
-              </li>
-            </ul>
+            {!isAuthenticated ? (
+              <p className="text-center text-xs text-void-muted">
+                {t("signInForActivity")}{" "}
+                <Link href="/login" className="text-void-green hover:underline">
+                  {t("signIn")}
+                </Link>
+              </p>
+            ) : donationsLoading ? (
+              <p className="text-center text-xs text-void-muted">{t("loadingActivity")}</p>
+            ) : donations.length === 0 ? (
+              <p className="text-center text-xs text-void-muted">{t("noRecentDonations")}</p>
+            ) : (
+              <ul className="space-y-2 text-xs">
+                {donations.map((donation) => {
+                  const charityName =
+                    locale === "de" ? donation.charityNameDe : donation.charityNameEn;
+                  return (
+                    <li
+                      key={donation.id}
+                      className="rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2.5 text-void-text-mint"
+                    >
+                      {t("donationEntry", {
+                        points: donation.points.toLocaleString(locale),
+                        charity: charityName,
+                      })}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </VoidPanel>
         </div>
 
         <VoidPanel glow="strong">
-          <VoidStat label={t("yourBalance")} value={45210} />
+          <VoidStat
+            label={t("yourBalance")}
+            value={loading ? "—" : stats.voidpoints.toLocaleString(locale)}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-3 text-center text-xs">
+            <div className="rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2">
+              <p className="text-[10px] uppercase tracking-wider text-void-muted">
+                {t("playerLevel")}
+              </p>
+              <p className="void-display mt-1 text-sm text-void-green">
+                {loading ? "—" : stats.level}
+              </p>
+            </div>
+            <div className="rounded-lg border border-void-green/15 bg-void-black/40 px-3 py-2">
+              <p className="text-[10px] uppercase tracking-wider text-void-muted">
+                {t("treeLevel")}
+              </p>
+              <p className="void-display mt-1 text-sm text-void-green">
+                {loading ? "—" : stats.carbonTreeLevel}
+              </p>
+            </div>
+          </div>
           <div className="mt-6 space-y-3">
             {CHARITIES.map(({ slug, icon: Icon, nameEn }) => (
               <div

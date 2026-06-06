@@ -209,6 +209,8 @@
     "levelStarter": "Level 0 — New Guardian",
     "carbonTreeTitle": "Carbon Absorption Tree",
     "carbonTreeLevel": "Tree Level",
+    "totalBandwidth": "Total Bandwidth Saved",
+    "carbonOffset": "Carbon Offset",
     "uploading": "Uploading…",
     "saving": "Saving…",
     "saved": "All changes saved.",
@@ -257,7 +259,14 @@
     "treeEvolutionTitle": "Void Tree Evolution",
     "treeEvolutionSubtitle": "Carbon Guardian Rank Progression",
     "level": "Level",
-    "viewCurrentLevel": "View Your Current Level (Level {level})"
+    "viewCurrentLevel": "View Your Current Level (Level {level})",
+    "noRecentDonations": "No donations yet — your impact starts with your first contribution.",
+    "signInForActivity": "Sign in to see your donation history.",
+    "signIn": "Sign in",
+    "loadingActivity": "Loading activity…",
+    "donationEntry": "You donated {points} VoidPoints to {charity}",
+    "playerLevel": "Player Level",
+    "treeLevel": "Carbon Tree Level"
   },
   "about": {
     "title": "About VoidAd",

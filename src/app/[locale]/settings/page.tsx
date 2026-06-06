@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { StatusBar } from "@/components/layout/StatusBar";
 import { VoidPanel } from "@/components/ui/VoidPanel";
@@ -17,15 +17,18 @@ import { Link } from "@/i18n/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
 import { CarbonWireframeTree } from "@/components/voidad/CarbonWireframeTree";
-import { carbonTreeLevelForPlayerLevel } from "@/lib/carbon-trees";
+import { useUserStats } from "@/hooks/useUserStats";
+import { clampPlayerLevel, formatBandwidthGb, formatCarbonKg } from "@/lib/user-stats";
 import { Shield, Heart, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
   const t = useTranslations("settings");
+  const locale = useLocale();
   const router = useRouter();
   const { user, loading: authLoading } = useUser();
   const { profile, loading: profileLoading, updateProfile, uploadAvatar } =
     useProfile();
+  const { stats } = useUserStats();
   const {
     settings: userSettings,
     loading: settingsLoading,
@@ -81,10 +84,10 @@ export default function SettingsPage() {
     user?.email?.split("@")[0] ||
     "Guest";
 
-  const voidpoints = profile?.voidpoints_total ?? 0;
-  const level = profile?.level ?? 0;
-  const playerLevel = Math.min(Math.max(level, 1), 57);
-  const carbonTreeLevel = carbonTreeLevelForPlayerLevel(level);
+  const voidpoints = stats.voidpoints;
+  const level = stats.level;
+  const playerLevel = clampPlayerLevel(level) || 1;
+  const carbonTreeLevel = stats.carbonTreeLevel;
   const communityRank = voidpoints > 0 ? t("ranked") : t("unranked");
 
   async function handleSignOut() {
@@ -315,9 +318,17 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <VoidPanel title={t("voidpointsCommunity")}>
                   <div className="space-y-2 text-sm">
-                    <StatRow label={t("voidpoints")} value={voidpoints.toLocaleString()} />
+                    <StatRow label={t("voidpoints")} value={voidpoints.toLocaleString(locale)} />
                     <StatRow label={t("level")} value={String(level)} />
                     <StatRow label={t("communityRank")} value={communityRank} />
+                    <StatRow
+                      label={t("totalBandwidth")}
+                      value={formatBandwidthGb(stats.bandwidthGb, locale)}
+                    />
+                    <StatRow
+                      label={t("carbonOffset")}
+                      value={formatCarbonKg(stats.carbonOffsetKg, locale)}
+                    />
                   </div>
                   <div className="mt-4 space-y-2">
                     <VoidToggle

@@ -22,17 +22,17 @@ import {
 import { Link } from "@/i18n/navigation";
 import { VoidPageTitle } from "@/components/ui/VoidPageTitle";
 import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
-import { useProfile } from "@/hooks/useProfile";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
+import { useUserStats } from "@/hooks/useUserStats";
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const ts = useTranslations("stats");
-  const { profile } = useProfile();
+  const { stats } = useUserStats();
 
-  const voidpoints = profile?.voidpoints_total ?? 0;
-  const level = profile?.level ?? 0;
-  const adsBlocked = profile?.ads_blocked ?? 0;
+  const voidpoints = stats.voidpoints;
+  const level = stats.level;
+  const adsBlocked = stats.adsBlocked;
   const isNewAccount = voidpoints === 0 && adsBlocked === 0;
 
   const [settings, setSettings] = useState({
