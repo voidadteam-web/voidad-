@@ -79,6 +79,9 @@ SOCIAL_SUFFIXES: tuple[str, ...] = (
     "discord.gg",
     "twitch.tv",
     "twitchcdn.net",
+    "threads.net",
+    "ig.me",
+    "fb.me",
 )
 
 ADULT_SUFFIXES: tuple[str, ...] = (

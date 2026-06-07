@@ -1,0 +1,47 @@
+[
+  {
+    "id": 11101,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||tiktok.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11102,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||tiktokv.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11103,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||tiktokcdn.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11104,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||musical.ly^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11105,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||byteoversea.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  }
+]

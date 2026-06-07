@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
+import { useProtectionSettings } from "@/hooks/useProtectionSettings";
 import {
   getExtensionRuntimeState,
   isExtensionInstalled,
@@ -9,9 +10,10 @@ import {
   syncExtensionUser,
 } from "@/lib/extension/sync";
 
-/** Auto-sync VoidAd account with the browser extension when logged in */
+/** Auto-sync VoidAd account + family filters with the browser extension */
 export function ExtensionSync() {
   const { user } = useUser();
+  const { settings } = useProtectionSettings();
 
   useEffect(() => {
     let cancelled = false;
@@ -24,7 +26,18 @@ export function ExtensionSync() {
         userId: user.id,
         email: user.email,
         displayName: String(user.user_metadata?.display_name ?? ""),
-        protectionEnabled: true,
+        protectionEnabled: settings?.protection_enabled !== false,
+        familyFilters: settings
+          ? {
+              block_tiktok: settings.block_tiktok,
+              block_social_media: settings.block_social_media,
+              block_adult_content: settings.block_adult_content,
+              block_gambling: settings.block_gambling,
+              safe_search: settings.safe_search,
+              blocked_keywords: settings.blocked_keywords ?? [],
+              profile_mode: settings.profile_mode,
+            }
+          : undefined,
       });
     }
 
@@ -35,7 +48,7 @@ export function ExtensionSync() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [user]);
+  }, [user, settings]);
 
   return null;
 }

@@ -34,6 +34,7 @@
           email: data.email,
           displayName: data.displayName,
           protectionEnabled: data.protectionEnabled,
+          familyFilters: data.familyFilters ?? null,
         },
         (response) => {
           window.postMessage(

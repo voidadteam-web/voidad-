@@ -6,6 +6,15 @@ export type ExtensionSyncPayload = {
   email: string;
   displayName?: string;
   protectionEnabled?: boolean;
+  familyFilters?: {
+    block_tiktok: boolean;
+    block_social_media: boolean;
+    block_adult_content: boolean;
+    block_gambling: boolean;
+    safe_search: boolean;
+    blocked_keywords: string[];
+    profile_mode: string;
+  };
 };
 
 export type ExtensionRuntimeState = {
@@ -64,6 +73,7 @@ export async function syncExtensionUser(payload: ExtensionSyncPayload): Promise<
     email: payload.email,
     displayName: payload.displayName ?? null,
     protectionEnabled: payload.protectionEnabled ?? true,
+    familyFilters: payload.familyFilters ?? null,
   });
   return Boolean(result.ok);
 }

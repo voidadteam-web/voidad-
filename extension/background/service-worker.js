@@ -3,6 +3,10 @@ import {
   pingDnsProxy,
   reportPageAds,
 } from "./dns-proxy-client.js";
+import {
+  applyFamilyFilterRules,
+  fetchFamilyFiltersFromSite,
+} from "./family-filters.js";
 
 const DEFAULT_STATE = {
   protectionEnabled: true,
@@ -13,6 +17,7 @@ const DEFAULT_STATE = {
   pendingEvents: [],
   syncedAt: null,
   dnsProxyOnline: false,
+  familyFilters: null,
 };
 
 function registerBlockListeners() {
@@ -96,14 +101,30 @@ async function queueBlock(url) {
 }
 
 async function syncUser(payload) {
+  const familyFilters = payload.familyFilters ?? null;
   await setState({
     userId: payload.userId ?? null,
     email: payload.email ?? null,
     displayName: payload.displayName ?? null,
     protectionEnabled: payload.protectionEnabled !== false,
+    familyFilters,
     syncedAt: new Date().toISOString(),
   });
+  if (familyFilters) {
+    await applyFamilyFilterRules(familyFilters);
+  }
   await updateBadge();
+}
+
+async function refreshFamilyFilters() {
+  const filters = await fetchFamilyFiltersFromSite();
+  if (!filters) return;
+  const state = await getState();
+  const prev = JSON.stringify(state.familyFilters ?? {});
+  const next = JSON.stringify(filters);
+  if (prev === next) return;
+  await setState({ familyFilters: filters });
+  await applyFamilyFilterRules(filters);
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -121,6 +142,10 @@ async function bootstrap() {
   }
   const online = await pingDnsProxy();
   await setState({ dnsProxyOnline: online });
+  if (state.familyFilters) {
+    await applyFamilyFilterRules(state.familyFilters);
+  }
+  await refreshFamilyFilters();
   await updateBadge();
 }
 
@@ -133,6 +158,10 @@ setInterval(async () => {
   if (state.dnsProxyOnline !== online) {
     await setState({ dnsProxyOnline: online });
   }
+}, 30000);
+
+setInterval(() => {
+  void refreshFamilyFilters();
 }, 30000);
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {

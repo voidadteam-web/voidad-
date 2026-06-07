@@ -121,7 +121,24 @@ class TenantRegistry:
                 tenant = self._by_ip.get(alias)
                 if tenant:
                     return tenant
-            return self._match_home_subnet(client_ip)
+            return self._match_home_subnet(client_ip) or self._lan_mode_default_tenant(
+                client_ip
+            )
+
+    def _lan_mode_default_tenant(self, client_ip: str) -> Tenant | None:
+        """In LAN mode, apply the synced home account to all private-network clients."""
+        if not settings.lan_mode:
+            return None
+        try:
+            client = ipaddress.ip_address(client_ip)
+        except ValueError:
+            return None
+        if not isinstance(client, ipaddress.IPv4Address) or not client.is_private:
+            return None
+        for tenant in self._tenants:
+            if tenant.is_active:
+                return tenant
+        return None
 
     def _match_home_subnet(self, client_ip: str) -> Tenant | None:
         """Apply tenant policy to any device on the same /24 as a registered home IP."""

@@ -1,0 +1,137 @@
+[
+  {
+    "id": 11001,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||instagram.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11002,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||cdninstagram.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11003,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||facebook.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11004,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||fb.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11005,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||fbcdn.net^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11006,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||twitter.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11007,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||x.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11008,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||twimg.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11009,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||snapchat.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11010,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||reddit.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11011,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||redd.it^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11012,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||discord.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11013,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||discordapp.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11014,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||twitch.tv^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  },
+  {
+    "id": 11015,
+    "priority": 20,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||threads.net^",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "script", "image", "media", "websocket", "other"]
+    }
+  }
+]

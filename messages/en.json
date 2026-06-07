@@ -302,7 +302,9 @@
       "addKeyword": "Add",
       "saveKeywords": "Save keywords",
       "removeKeyword": "Remove {word}",
-      "dnsNote": "DNS blocks apps and browsers on your home Wi‑Fi when devices use VoidAd DNS (192.168.0.119). For Chrome/Edge bypass, keep the VoidAd extension enabled.",
+      "dnsNote": "DNS blocks apps on home Wi‑Fi when devices use VoidAd DNS (192.168.0.119). Browsers also need the VoidAd extension — Edge/Chrome Secure DNS bypasses local DNS and must be OFF.",
+      "edgeDnsTitle": "Edge / Chrome: turn OFF Secure DNS",
+      "edgeDnsSteps": "Settings → Privacy → Security → Use secure DNS → Off (or use your ISP). Without this, Instagram/TikTok bypass DNS blocking.",
       "childActiveNote": "Child profile active — TikTok, social, adult, and gambling filters are enforced.",
       "profiles": {
         "default": {

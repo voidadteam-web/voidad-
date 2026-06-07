@@ -275,6 +275,11 @@ export function FamilyFilterPanel() {
         <p>{t("dnsNote")}</p>
       </div>
 
+      <div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/5 p-3">
+        <p className="text-[11px] font-semibold text-red-200">{t("edgeDnsTitle")}</p>
+        <p className="mt-1 text-[11px] leading-relaxed text-red-100/80">{t("edgeDnsSteps")}</p>
+      </div>
+
       {activeProfile === "child" && (
         <div className="mt-3 flex items-center gap-2 text-[11px] text-void-green">
           <Dice5 className="h-4 w-4" />
