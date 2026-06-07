@@ -31,7 +31,7 @@ export async function GET(request: Request) {
       ? await admin
           .from("user_settings")
           .select(
-            "user_id, protection_enabled, anti_adware, anti_tracker, anti_phishing, enhanced_ad_blocking",
+            "user_id, protection_enabled, anti_adware, anti_tracker, anti_phishing, enhanced_ad_blocking, profile_mode, block_tiktok, block_social_media, block_adult_content, block_gambling, safe_search, blocked_keywords",
           )
           .in("user_id", userIds)
       : { data: [] };
@@ -51,6 +51,13 @@ export async function GET(request: Request) {
         anti_tracker: true,
         anti_phishing: true,
         enhanced_ad_blocking: false,
+        profile_mode: "default",
+        block_tiktok: false,
+        block_social_media: false,
+        block_adult_content: false,
+        block_gambling: true,
+        safe_search: false,
+        blocked_keywords: [],
       },
     }));
 

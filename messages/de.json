@@ -279,7 +279,50 @@
     "maxStep2": "Schicht 2: Chrome-Erweiterung (Popups, Streaming, YouTube Skip)",
     "maxStep3": "Chrome: Secure DNS AUS + Pop-ups blockieren",
     "maxStep4": "DNS neu starten: cd dev/dns-proxy && ./run.sh",
-    "maxLimitNote": "Netflix & YouTube TV-Apps brauchen weiterhin Premium/werbefreie Tarife."
+    "maxLimitNote": "Netflix & YouTube TV-Apps brauchen weiterhin Premium/werbefreie Tarife.",
+    "familyFilters": {
+      "title": "Familien- & Inhaltsfilter",
+      "subtitle": "Echte DNS-Blockierung für TikTok, Erwachseneninhalte, Glücksspiel und Ihre Schlüsselwörter. Sync zum Heimnetz in ~60 Sekunden.",
+      "activeBadge": "Filter aktiv",
+      "profileLabel": "Schutzprofil",
+      "filtersLabel": "Kategoriefilter",
+      "blockTiktok": "TikTok blockieren",
+      "blockTiktokHint": "Stoppt tiktok.com, App-CDNs und ByteDance-Hosts",
+      "blockSocial": "Social Media blockieren",
+      "blockSocialHint": "Instagram, Facebook, X, Snapchat, Reddit, Discord, Twitch",
+      "blockAdult": "Erwachseneninhalte blockieren",
+      "blockAdultHint": "Große Adult-Sites + verdächtige Domain-Labels",
+      "blockGambling": "Glücksspiel & Casinos blockieren",
+      "blockGamblingHint": "Casino-Rotatoren, Wettseiten, hitnspin-ähnliche Domains",
+      "safeSearch": "Strenger Safe-Browsing-Modus",
+      "safeSearchHint": "Zusätzliche Adult-Blockierung für Kindergeräte",
+      "keywordsTitle": "Eigene Schlüsselwort-Liste",
+      "keywordsHint": "Blockiert Domains mit Ihren Wörtern im Namen (min. 3 Zeichen). Beispiel: casino, porn, bet",
+      "keywordsPlaceholder": "Wörter durch Komma trennen…",
+      "addKeyword": "Hinzufügen",
+      "saveKeywords": "Schlüsselwörter speichern",
+      "removeKeyword": "{word} entfernen",
+      "dnsNote": "DNS blockiert Apps und Browser im Heim-WLAN, wenn Geräte VoidAd DNS (192.168.0.119) nutzen. Für Chrome/Edge-Umgehung die VoidAd-Erweiterung aktiv lassen.",
+      "childActiveNote": "Kinderprofil aktiv — TikTok, Social, Adult und Glücksspiel werden blockiert.",
+      "profiles": {
+        "default": {
+          "title": "Standard",
+          "desc": "Nur Werbung, Tracker und Phishing. Extra-Filter wählen Sie selbst."
+        },
+        "child": {
+          "title": "Kind",
+          "desc": "TikTok aus, Social begrenzt, Adult & Glücksspiel blockiert, strenge Werbung."
+        },
+        "strict": {
+          "title": "Streng",
+          "desc": "Kinderprofil + Geo-Block und Fokusmodus für maximale Kontrolle."
+        }
+      }
+    },
+    "feedSocial": "SOCIAL",
+    "feedAdult": "ADULT",
+    "feedGambling": "GLÜCKSSPIEL",
+    "feedKeyword": "SCHLÜSSELWORT"
   },
   "voidpoints": {
     "title": "Machen Sie einen Unterschied mit Ihren VoidPoints",

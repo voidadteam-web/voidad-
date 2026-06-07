@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/useUser";
 
+export type ProfileMode = "default" | "child" | "strict";
+
 export type ProtectionSettings = {
   protection_enabled: boolean;
   anti_adware: boolean;
@@ -13,12 +15,19 @@ export type ProtectionSettings = {
   geo_block: boolean;
   focus_mode_enabled: boolean;
   enhanced_ad_blocking: boolean;
+  profile_mode: ProfileMode;
+  block_tiktok: boolean;
+  block_social_media: boolean;
+  block_adult_content: boolean;
+  block_gambling: boolean;
+  safe_search: boolean;
+  blocked_keywords: string[];
 };
 
 const PROTECTION_COLUMNS =
-  "protection_enabled, anti_adware, anti_tracker, anti_phishing, false_positive_filter, geo_block, focus_mode_enabled, enhanced_ad_blocking";
+  "protection_enabled, anti_adware, anti_tracker, anti_phishing, false_positive_filter, geo_block, focus_mode_enabled, enhanced_ad_blocking, profile_mode, block_tiktok, block_social_media, block_adult_content, block_gambling, safe_search, blocked_keywords";
 
-export const MAX_PROTECTION: ProtectionSettings = {
+export const MAX_PROTECTION: Partial<ProtectionSettings> = {
   protection_enabled: true,
   anti_adware: true,
   anti_tracker: true,
@@ -27,6 +36,29 @@ export const MAX_PROTECTION: ProtectionSettings = {
   geo_block: true,
   focus_mode_enabled: true,
   enhanced_ad_blocking: true,
+  block_gambling: true,
+};
+
+export const CHILD_PROFILE: Partial<ProtectionSettings> = {
+  profile_mode: "child",
+  protection_enabled: true,
+  anti_adware: true,
+  anti_tracker: true,
+  anti_phishing: true,
+  false_positive_filter: true,
+  enhanced_ad_blocking: true,
+  block_tiktok: true,
+  block_social_media: true,
+  block_adult_content: true,
+  block_gambling: true,
+  safe_search: true,
+};
+
+export const STRICT_PROFILE: Partial<ProtectionSettings> = {
+  ...CHILD_PROFILE,
+  profile_mode: "strict",
+  geo_block: true,
+  focus_mode_enabled: true,
 };
 
 export function useProtectionSettings() {
@@ -50,7 +82,15 @@ export function useProtectionSettings() {
         .eq("user_id", user.id)
         .single();
 
-      setSettings(data);
+      setSettings(
+        data
+          ? {
+              ...data,
+              profile_mode: (data.profile_mode as ProfileMode) ?? "default",
+              blocked_keywords: data.blocked_keywords ?? [],
+            }
+          : null,
+      );
     } catch {
       setSettings(null);
     } finally {
@@ -79,7 +119,15 @@ export function useProtectionSettings() {
         .single();
 
       if (error) throw error;
-      setSettings(data);
+      setSettings(
+        data
+          ? {
+              ...data,
+              profile_mode: (data.profile_mode as ProfileMode) ?? "default",
+              blocked_keywords: data.blocked_keywords ?? [],
+            }
+          : null,
+      );
       return data;
     } finally {
       setSaving(false);

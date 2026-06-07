@@ -279,7 +279,50 @@
     "maxStep2": "Layer 2: Chrome extension (popups, streaming, YouTube skip)",
     "maxStep3": "Chrome: Secure DNS OFF + block pop-ups",
     "maxStep4": "Restart DNS: cd dev/dns-proxy && ./run.sh",
-    "maxLimitNote": "Netflix & YouTube TV apps still need Premium/ad-free plans — no technology can block same-server video ads on smart TVs."
+    "maxLimitNote": "Netflix & YouTube TV apps still need Premium/ad-free plans — no technology can block same-server video ads on smart TVs.",
+    "familyFilters": {
+      "title": "Family & Content Filters",
+      "subtitle": "Real DNS blocking for TikTok, adult content, gambling, and your custom keywords. Changes sync to your home network within ~60 seconds.",
+      "activeBadge": "Filters active",
+      "profileLabel": "Protection profile",
+      "filtersLabel": "Category filters",
+      "blockTiktok": "Block TikTok",
+      "blockTiktokHint": "Stops tiktok.com, app CDNs, and ByteDance hosts",
+      "blockSocial": "Block social media",
+      "blockSocialHint": "Instagram, Facebook, X, Snapchat, Reddit, Discord, Twitch",
+      "blockAdult": "Block adult content",
+      "blockAdultHint": "Major adult sites + suspicious domain labels",
+      "blockGambling": "Block gambling & casinos",
+      "blockGamblingHint": "Casino rotators, betting sites, hitnspin-style domains",
+      "safeSearch": "Strict safe browsing",
+      "safeSearchHint": "Extra adult-domain blocking for child devices",
+      "keywordsTitle": "Custom keyword blocklist",
+      "keywordsHint": "Blocks domains whose name contains your words (min 3 characters). Example: casino, porn, bet",
+      "keywordsPlaceholder": "Add words separated by commas…",
+      "addKeyword": "Add",
+      "saveKeywords": "Save keywords",
+      "removeKeyword": "Remove {word}",
+      "dnsNote": "DNS blocks apps and browsers on your home Wi‑Fi when devices use VoidAd DNS (192.168.0.119). For Chrome/Edge bypass, keep the VoidAd extension enabled.",
+      "childActiveNote": "Child profile active — TikTok, social, adult, and gambling filters are enforced.",
+      "profiles": {
+        "default": {
+          "title": "Standard",
+          "desc": "Ads, trackers, and phishing only. You choose extra filters."
+        },
+        "child": {
+          "title": "Child",
+          "desc": "TikTok off, social limited, adult & gambling blocked, strict ads."
+        },
+        "strict": {
+          "title": "Strict",
+          "desc": "Child profile + geo-block and focus mode for maximum control."
+        }
+      }
+    },
+    "feedSocial": "SOCIAL",
+    "feedAdult": "ADULT",
+    "feedGambling": "GAMBLING",
+    "feedKeyword": "KEYWORD"
   },
   "voidpoints": {
     "title": "Make a Difference with Your VoidPoints",

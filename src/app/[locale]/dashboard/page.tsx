@@ -26,6 +26,7 @@ import { DashboardProfile } from "@/components/dashboard/DashboardProfile";
 import { ExtensionActivate } from "@/components/extension/ExtensionActivate";
 import { NetworkDnsSetup } from "@/components/dashboard/NetworkDnsSetup";
 import { MaxProtectionPanel } from "@/components/dashboard/MaxProtectionPanel";
+import { FamilyFilterPanel } from "@/components/dashboard/FamilyFilterPanel";
 import { LevelMilitaryRank, levelBadgeTitle } from "@/components/leaderboard/LevelMilitaryRank";
 import { useUserStats } from "@/hooks/useUserStats";
 import { useProtectionSettings } from "@/hooks/useProtectionSettings";
@@ -76,6 +77,8 @@ export default function DashboardPage() {
         <ExtensionActivate />
 
         <MaxProtectionPanel />
+
+        <FamilyFilterPanel />
 
         <div className="grid gap-4 lg:grid-cols-4">
           <VoidPanel title={t("protectionRules")}>
@@ -268,14 +271,31 @@ export default function DashboardPage() {
 
 function formatActivityLine(
   entry: { domain: string; block_type: string; client_ip: string | null },
-  t: (key: "feedAd" | "feedTracker" | "feedPhishing") => string,
+  t: (
+    key:
+      | "feedAd"
+      | "feedTracker"
+      | "feedPhishing"
+      | "feedSocial"
+      | "feedAdult"
+      | "feedGambling"
+      | "feedKeyword",
+  ) => string,
 ) {
   const prefix =
     entry.block_type === "tracker"
       ? t("feedTracker")
       : entry.block_type === "phishing"
         ? t("feedPhishing")
-        : t("feedAd");
+        : entry.block_type === "social"
+          ? t("feedSocial")
+          : entry.block_type === "adult"
+            ? t("feedAdult")
+            : entry.block_type === "gambling"
+              ? t("feedGambling")
+              : entry.block_type === "keyword"
+                ? t("feedKeyword")
+                : t("feedAd");
   const source = entry.client_ip ? ` → ${entry.client_ip}` : "";
   return `${prefix}: ${entry.domain}${source}`;
 }

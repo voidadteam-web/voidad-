@@ -122,3 +122,23 @@ grant execute on function public.record_dns_blocks(uuid, jsonb) to service_role;
 update public.profiles
 set level = public.voidpoints_to_level(voidpoints_total)
 where level <> public.voidpoints_to_level(voidpoints_total);
+
+-- 011: family / child profile filters (run if dashboard family filters fail to save)
+alter table public.user_settings
+  add column if not exists profile_mode text default 'default' not null
+    check (profile_mode in ('default', 'child', 'strict')),
+  add column if not exists block_tiktok boolean default false not null,
+  add column if not exists block_social_media boolean default false not null,
+  add column if not exists block_adult_content boolean default false not null,
+  add column if not exists block_gambling boolean default true not null,
+  add column if not exists safe_search boolean default false not null,
+  add column if not exists blocked_keywords text[] default '{}' not null;
+
+alter table public.dns_activity_log
+  drop constraint if exists dns_activity_log_block_type_check;
+
+alter table public.dns_activity_log
+  add constraint dns_activity_log_block_type_check
+  check (block_type in ('ad', 'tracker', 'phishing', 'social', 'adult', 'gambling', 'keyword'));
+
+-- Re-run record_dns_blocks from 011_family_filters.sql if stats fail on new block types

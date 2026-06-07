@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ipaddress
 import json
 import logging
 import threading
@@ -25,6 +26,13 @@ class TenantSettings:
     anti_tracker: bool = True
     anti_phishing: bool = True
     enhanced_ad_blocking: bool = False
+    profile_mode: str = "default"
+    block_tiktok: bool = False
+    block_social_media: bool = False
+    block_adult_content: bool = False
+    block_gambling: bool = True
+    safe_search: bool = False
+    blocked_keywords: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -63,15 +71,26 @@ class TenantRegistry:
         by_ip: dict[str, Tenant] = {}
 
         for raw in payload.get("tenants", []):
+            raw_settings = raw.get("settings", {})
+            raw_keywords = raw_settings.get("blocked_keywords") or []
             tenant_settings = TenantSettings(
-                protection_enabled=bool(
-                    raw.get("settings", {}).get("protection_enabled", True)
-                ),
-                anti_adware=bool(raw.get("settings", {}).get("anti_adware", True)),
-                anti_tracker=bool(raw.get("settings", {}).get("anti_tracker", True)),
-                anti_phishing=bool(raw.get("settings", {}).get("anti_phishing", True)),
+                protection_enabled=bool(raw_settings.get("protection_enabled", True)),
+                anti_adware=bool(raw_settings.get("anti_adware", True)),
+                anti_tracker=bool(raw_settings.get("anti_tracker", True)),
+                anti_phishing=bool(raw_settings.get("anti_phishing", True)),
                 enhanced_ad_blocking=bool(
-                    raw.get("settings", {}).get("enhanced_ad_blocking", False)
+                    raw_settings.get("enhanced_ad_blocking", False)
+                ),
+                profile_mode=str(raw_settings.get("profile_mode", "default")),
+                block_tiktok=bool(raw_settings.get("block_tiktok", False)),
+                block_social_media=bool(raw_settings.get("block_social_media", False)),
+                block_adult_content=bool(raw_settings.get("block_adult_content", False)),
+                block_gambling=bool(raw_settings.get("block_gambling", True)),
+                safe_search=bool(raw_settings.get("safe_search", False)),
+                blocked_keywords=tuple(
+                    str(k).strip().lower()
+                    for k in raw_keywords
+                    if isinstance(k, str) and str(k).strip()
                 ),
             )
             tenant = Tenant(
@@ -102,7 +121,32 @@ class TenantRegistry:
                 tenant = self._by_ip.get(alias)
                 if tenant:
                     return tenant
+            return self._match_home_subnet(client_ip)
+
+    def _match_home_subnet(self, client_ip: str) -> Tenant | None:
+        """Apply tenant policy to any device on the same /24 as a registered home IP."""
+        try:
+            client = ipaddress.ip_address(client_ip)
+        except ValueError:
             return None
+        if not isinstance(client, ipaddress.IPv4Address) or not client.is_private:
+            return None
+        client_prefix = client.packed[:3]
+        for tenant in self._tenants:
+            if not tenant.is_active:
+                continue
+            for home_ip in tenant.home_ips:
+                try:
+                    home = ipaddress.ip_address(home_ip)
+                except ValueError:
+                    continue
+                if (
+                    isinstance(home, ipaddress.IPv4Address)
+                    and home.is_private
+                    and home.packed[:3] == client_prefix
+                ):
+                    return tenant
+        return None
 
     def should_filter(self, client_ip: str) -> bool:
         tenant = self.get_by_ip(client_ip)

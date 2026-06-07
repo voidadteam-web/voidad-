@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export type ActivityEntry = {
   domain: string;
-  block_type: "ad" | "tracker" | "phishing";
+  block_type: "ad" | "tracker" | "phishing" | "social" | "adult" | "gambling" | "keyword";
   client_ip: string | null;
   created_at: string;
 };

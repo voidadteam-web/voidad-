@@ -8,6 +8,11 @@ from voidad_dns.blocklist import normalize_domain
 from voidad_dns.client_filter import ClientFilter
 from voidad_dns.config import settings
 from voidad_dns.domain_classifier import classify_domain
+from voidad_dns.family_filter import (
+    FamilyFilterSettings,
+    check_family_filters,
+    family_category_to_block_type,
+)
 from voidad_dns.filter_engine import FilterEngine
 from voidad_dns.never_block import is_never_block
 from voidad_dns.pattern_filter import BlockReason, FilterMatch
@@ -56,14 +61,15 @@ class VoidAdDNSHandler:
             reply.header.rcode = RCODE.REFUSED
             return reply
 
-        match = self._evaluate(qname, client)
+        match, block_type = self._evaluate(qname, client)
         if match.blocked:
             tenant = (
                 self._tenant_registry.get_by_ip(client)
                 if self._tenant_registry
                 else None
             )
-            block_type = classify_domain(qname)
+            if block_type is None:
+                block_type = classify_domain(qname)
             reason_tag = match.reason.value if match.reason else "unknown"
             self._request_log.add(
                 RequestLogEntry.now(
@@ -108,32 +114,52 @@ class VoidAdDNSHandler:
             )
             raise
 
-    def _evaluate(self, domain: str, client: str) -> FilterMatch:
+    def _evaluate(self, domain: str, client: str) -> tuple[FilterMatch, str | None]:
         if is_never_block(domain):
-            return FilterMatch(blocked=False)
+            return FilterMatch(blocked=False), None
         # Maximum mode: aggressive rotators + gambling + long-domain heuristics
         max_mode = settings.max_mode
         aggressive = True
-        if self._tenant_registry:
-            tenant = self._tenant_registry.get_by_ip(client)
-            if tenant and not self._tenant_registry.should_filter(client):
-                return FilterMatch(blocked=False)
-            if tenant:
-                settings_obj = tenant.settings
-                if tenant.settings.enhanced_ad_blocking:
-                    max_mode = True
-                block_type = classify_domain(domain)
-                if block_type == "ad" and not settings_obj.anti_adware:
-                    return FilterMatch(blocked=False)
-                if block_type == "tracker" and not settings_obj.anti_tracker:
-                    return FilterMatch(blocked=False)
-                if block_type == "phishing" and not settings_obj.anti_phishing:
-                    return FilterMatch(blocked=False)
-        return self._filter.check(
-            domain,
-            client=client,
-            aggressive=aggressive,
-            max_mode=max_mode,
+        tenant = (
+            self._tenant_registry.get_by_ip(client) if self._tenant_registry else None
+        )
+        if tenant and not self._tenant_registry.should_filter(client):
+            return FilterMatch(blocked=False), None
+        if tenant:
+            settings_obj = tenant.settings
+            if settings_obj.enhanced_ad_blocking:
+                max_mode = True
+            family = check_family_filters(
+                domain,
+                FamilyFilterSettings(
+                    block_tiktok=settings_obj.block_tiktok,
+                    block_social_media=settings_obj.block_social_media,
+                    block_adult_content=settings_obj.block_adult_content,
+                    block_gambling=settings_obj.block_gambling,
+                    safe_search=settings_obj.safe_search,
+                    blocked_keywords=settings_obj.blocked_keywords,
+                ),
+            )
+            if family.blocked:
+                return (
+                    family.to_filter_match(),
+                    family_category_to_block_type(family.category),
+                )
+            block_type = classify_domain(domain)
+            if block_type == "ad" and not settings_obj.anti_adware:
+                return FilterMatch(blocked=False), None
+            if block_type == "tracker" and not settings_obj.anti_tracker:
+                return FilterMatch(blocked=False), None
+            if block_type == "phishing" and not settings_obj.anti_phishing:
+                return FilterMatch(blocked=False), None
+        return (
+            self._filter.check(
+                domain,
+                client=client,
+                aggressive=aggressive,
+                max_mode=max_mode,
+            ),
+            None,
         )
 
     def _blocked_response(self, request: DNSRecord) -> DNSRecord:

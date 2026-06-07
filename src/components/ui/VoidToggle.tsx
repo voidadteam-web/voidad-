@@ -6,6 +6,7 @@ interface VoidToggleProps {
   checked: boolean;
   onChange?: (checked: boolean) => void;
   label?: string;
+  description?: string;
   activeLabel?: string;
   disabled?: boolean;
 }
@@ -14,6 +15,7 @@ export function VoidToggle({
   checked,
   onChange,
   label,
+  description,
   activeLabel = "ON",
   disabled,
 }: VoidToggleProps) {
@@ -25,11 +27,18 @@ export function VoidToggle({
       )}
     >
       {label && (
-        <span className="text-sm text-void-text-mint">
-          {label}
-          {checked && (
-            <span className="ml-2 font-mono text-xs text-void-green">
-              [{activeLabel}]
+        <span className="min-w-0 flex-1 text-sm text-void-text-mint">
+          <span className="block">
+            {label}
+            {checked && (
+              <span className="ml-2 font-mono text-xs text-void-green">
+                [{activeLabel}]
+              </span>
+            )}
+          </span>
+          {description && (
+            <span className="mt-0.5 block text-[11px] leading-snug text-void-muted">
+              {description}
             </span>
           )}
         </span>
