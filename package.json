@@ -7,6 +7,7 @@
     "build": "node extension/scripts/build-zip.mjs && next build",
     "extension:zip": "node extension/scripts/build-zip.mjs",
     "extension:icons": "node extension/scripts/generate-icons.mjs",
+    "site:icons": "node scripts/generate-site-icons.mjs",
     "start": "next start",
     "lint": "eslint",
     "extension:rules": "node extension/scripts/generate-rules.mjs"
