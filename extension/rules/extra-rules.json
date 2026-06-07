@@ -62,5 +62,23 @@
       "urlFilter": "||push-notifications.",
       "resourceTypes": ["script", "xmlhttprequest", "other"]
     }
+  },
+  {
+    "id": 9008,
+    "priority": 2,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||hitnspin.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image", "other"]
+    }
+  },
+  {
+    "id": 9009,
+    "priority": 2,
+    "action": { "type": "block" },
+    "condition": {
+      "regexFilter": "casino|betting|hitnspin|1xbet|gambl",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
   }
 ]

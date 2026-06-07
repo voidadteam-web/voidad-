@@ -6,7 +6,7 @@
     /faselhd|shahid4u|egybest|cima4u|akwam|arabseed|movizland|witanime|topcinema|egydead|xcinema|cimalina|youtube\.com|youtu\.be|netflix\.com/i;
 
   const AD_URL =
-    /chaturbate|stripchat|livejasmin|cam4|bongacams|casino|betting|scratchcard|popads|adsterra|clickadu|exoclick|propellerads|juicyads|trafficjunky|onclick|redirect|affiliate|sponsor|livingcost|begravesimula|1osb\.com/i;
+    /chaturbate|stripchat|livejasmin|cam4|bongacams|casino|betting|hitnspin|gambl|1xbet|betway|stake\.|spin\.com|scratchcard|popads|adsterra|clickadu|exoclick|propellerads|juicyads|trafficjunky|onclick|redirect|affiliate|sponsor|livingcost|begravesimula|1osb\.com/i;
 
   const ROTATOR_TLD =
     /\.(cfd|sbs|bond|lat|monster|icu|buzz|shop|rest|hair|makeup|quest|pw|top|xyz|cam|click|tk|ml|ga|cf)(\/|:|\?|$)/i;

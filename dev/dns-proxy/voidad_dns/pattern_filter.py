@@ -84,6 +84,10 @@ LABEL_SUBSTRINGS: tuple[str, ...] = (
     "impression",
     "adbanner",
     "ad-banner",
+    "hitnspin",
+    "casino",
+    "betting",
+    "gambl",
 )
 
 # Prefix/suffix on a label (e.g. ads-foo, foo-ad).
