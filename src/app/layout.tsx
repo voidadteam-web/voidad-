@@ -23,6 +23,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "VoidAd",
   description: "DNS-level network security platform",
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/voidad-icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/voidad-icon.png",
+    shortcut: "/favicon-32.png",
+  },
 };
 
 export default function RootLayout({
