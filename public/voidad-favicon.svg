@@ -1,24 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="VoidAd">
   <defs>
-    <linearGradient id="shieldFill" x1="64" y1="12" x2="64" y2="116" gradientUnits="userSpaceOnUse">
+    <linearGradient id="shieldFill" x1="64" y1="4" x2="64" y2="124" gradientUnits="userSpaceOnUse">
       <stop stop-color="#00ff99"/>
       <stop offset="0.55" stop-color="#00cc7a"/>
       <stop offset="1" stop-color="#00995c"/>
     </linearGradient>
-    <linearGradient id="lockFill" x1="64" y1="30" x2="64" y2="98" gradientUnits="userSpaceOnUse">
+    <linearGradient id="lockFill" x1="64" y1="28" x2="64" y2="102" gradientUnits="userSpaceOnUse">
       <stop stop-color="#ffffff"/>
       <stop offset="1" stop-color="#e6fff4"/>
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#00ff99" flood-opacity="0.45"/>
-    </filter>
   </defs>
-  <g filter="url(#glow)">
-    <path d="M64 8 L100 24 V72 C100 98 84 112 64 118 C44 112 28 98 28 72 V24 L64 8 Z" fill="url(#shieldFill)" stroke="#66ffcc" stroke-width="2"/>
-    <path d="M42 48 C42 34 86 34 86 48" stroke="url(#lockFill)" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path d="M41 50 L52 88 Q64 93 76 88 L87 50 L79 50 L64 80 L49 50 Z" fill="url(#lockFill)"/>
-    <path d="M48 52 L64 78 L80 52 L73 52 L64 68 L55 52 Z" fill="#00a86b"/>
-    <circle cx="64" cy="46" r="3.5" fill="#0a1410"/>
-    <rect x="62.25" y="47" width="3.5" height="7" rx="0.8" fill="#0a1410"/>
+  <g transform="translate(64 64) scale(1.62) translate(-64 -64)">
+    <path d="M64 4 L104 22 V76 C104 104 86 120 64 126 C42 120 24 104 24 76 V22 L64 4 Z" fill="url(#shieldFill)" stroke="#66ffcc" stroke-width="2.2"/>
+    <path d="M38 46 C38 30 90 30 90 46" stroke="url(#lockFill)" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+    <path d="M37 48 L50 92 Q64 98 78 92 L91 48 L82 48 L64 84 L46 48 Z" fill="url(#lockFill)"/>
+    <path d="M45 50 L64 82 L83 50 L74 50 L64 70 L54 50 Z" fill="#00a86b"/>
+    <circle cx="64" cy="44" r="3.8" fill="#0a1410"/>
+    <rect x="62.1" y="45" width="3.8" height="7.5" rx="0.9" fill="#0a1410"/>
   </g>
 </svg>
