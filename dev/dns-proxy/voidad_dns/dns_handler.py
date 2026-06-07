@@ -111,7 +111,8 @@ class VoidAdDNSHandler:
     def _evaluate(self, domain: str, client: str) -> FilterMatch:
         if is_never_block(domain):
             return FilterMatch(blocked=False)
-        # Maximum mode: always use aggressive rotator + long-domain heuristics
+        # Maximum mode: aggressive rotators + gambling + long-domain heuristics
+        max_mode = settings.max_mode
         aggressive = True
         if self._tenant_registry:
             tenant = self._tenant_registry.get_by_ip(client)
@@ -119,6 +120,8 @@ class VoidAdDNSHandler:
                 return FilterMatch(blocked=False)
             if tenant:
                 settings_obj = tenant.settings
+                if tenant.settings.enhanced_ad_blocking:
+                    max_mode = True
                 block_type = classify_domain(domain)
                 if block_type == "ad" and not settings_obj.anti_adware:
                     return FilterMatch(blocked=False)
@@ -126,7 +129,12 @@ class VoidAdDNSHandler:
                     return FilterMatch(blocked=False)
                 if block_type == "phishing" and not settings_obj.anti_phishing:
                     return FilterMatch(blocked=False)
-        return self._filter.check(domain, client=client, aggressive=aggressive)
+        return self._filter.check(
+            domain,
+            client=client,
+            aggressive=aggressive,
+            max_mode=max_mode,
+        )
 
     def _blocked_response(self, request: DNSRecord) -> DNSRecord:
         reply = request.reply()

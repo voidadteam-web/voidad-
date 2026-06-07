@@ -3,7 +3,7 @@
   "use strict";
 
   const BLOCKED_IFRAME =
-    /ad|ads|banner|pop|track|analytics|doubleclick|syndication|exoclick|propeller|adsterra|clickadu|juicyads|trafficjunky|outbrain|taboola|sponsor|affiliate|casino|betting|hentai|scratch|chaturbate|stripchat|livejasmin|cam4|bongacams|redirect|onclick|\.cfd|\.sbs|\.shop|livingcost|begravesimula|1osb\.com/i;
+    /ad|ads|banner|pop|track|analytics|doubleclick|syndication|exoclick|propeller|adsterra|clickadu|juicyads|trafficjunky|outbrain|taboola|sponsor|affiliate|casino|betting|hentai|scratch|chaturbate|stripchat|livejasmin|cam4|bongacams|redirect|onclick|hitnspin|gambl|1xbet|poker|jackpot|\.cfd|\.sbs|\.shop|\.bet|\.casino|livingcost|begravesimula|1osb\.com/i;
 
   const STREAMING_HOST =
     /faselhd|shahid4u|egybest|cima4u|akwam|arabseed|movizland|witanime|anime4up|mycima|topcinema|egydead|xcinema|cimalina|egy\.|m\.egy/i;
@@ -77,13 +77,14 @@
           if (el instanceof HTMLElement) el.remove();
         });
       }
-      root.querySelectorAll("a[target=_blank]").forEach((link) => {
-        const href = (link.href || "").toLowerCase();
-        if (BLOCKED_IFRAME.test(href) || /\.(cfd|sbs|shop)(\?|$)/.test(href)) {
-          link.remove();
-        }
-      });
     }
+
+    root.querySelectorAll("a[target=_blank]").forEach((link) => {
+      const href = (link.href || "").toLowerCase();
+      if (BLOCKED_IFRAME.test(href) || /\.(cfd|sbs|shop|bet|casino)(\?|$)/.test(href)) {
+        link.remove();
+      }
+    });
 
     root.querySelectorAll("div, aside, section, dialog").forEach((el) => {
       if (looksLikeFakeNotification(el)) {

@@ -60,10 +60,16 @@ class Settings:
     client_filter_enabled: bool = True
     allowed_cidrs: str = DEFAULT_ALLOWED_CIDRS
     detected_lan_ip: str | None = None
+    max_mode: bool = False
 
     @classmethod
     def from_env(cls) -> Settings:
         lan_mode = os.getenv("VOIDAD_LAN_MODE", "false").lower() in ("1", "true", "yes")
+        max_mode = os.getenv("VOIDAD_MAX_MODE", "true" if lan_mode else "false").lower() in (
+            "1",
+            "true",
+            "yes",
+        )
         client_filter = os.getenv("VOIDAD_CLIENT_FILTER", "true").lower() in (
             "1",
             "true",
@@ -116,6 +122,7 @@ class Settings:
                 os.getenv("VOIDAD_LEARNED_BLOCKS_MAX", "5000")
             ),
             lan_mode=lan_mode,
+            max_mode=max_mode,
             client_filter_enabled=client_filter,
             allowed_cidrs=os.getenv("VOIDAD_ALLOWED_CIDRS", DEFAULT_ALLOWED_CIDRS),
         )

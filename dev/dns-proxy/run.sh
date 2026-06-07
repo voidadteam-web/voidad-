@@ -44,6 +44,7 @@ fi
 
 # Home LAN mode: bind DNS to Mac Wi‑Fi IP so phones/TVs can use it
 : "${VOIDAD_LAN_MODE:=0}"
+: "${VOIDAD_MAX_MODE:=${VOIDAD_LAN_MODE}}"
 : "${VOIDAD_CLIENT_FILTER:=true}"
 : "${VOIDAD_ALLOWED_CIDRS:=127.0.0.0/8,192.168.0.0/24,10.0.0.0/8,172.16.0.0/12}"
 : "${VOIDAD_UPSTREAM_DNS_FALLBACK:=1.1.1.1}"
@@ -61,7 +62,7 @@ if [[ "${VOIDAD_LAN_MODE}" == "1" || "${VOIDAD_LAN_MODE}" == "true" ]]; then
   else
     echo "  Could not read en0 IP — set VOIDAD_DNS_HOST manually to your Mac LAN IP"
   fi
-  echo "  Allowed clients: ${VOIDAD_ALLOWED_CIDRS}"
+  echo "  MAX mode ON — block casino, rotators, gambling, aggressive popups"
   echo ""
 fi
 
@@ -83,6 +84,7 @@ RUN_ENV=(
   "VOIDAD_REPORT_URL=${VOIDAD_REPORT_URL:-}"
   "VOIDAD_DNS_SYNC_KEY=${VOIDAD_DNS_SYNC_KEY:-}"
   "VOIDAD_LAN_MODE=${VOIDAD_LAN_MODE}"
+  "VOIDAD_MAX_MODE=${VOIDAD_MAX_MODE}"
   "VOIDAD_DNS_HOST=${VOIDAD_DNS_HOST:-127.0.0.1}"
   "VOIDAD_CLIENT_FILTER=${VOIDAD_CLIENT_FILTER}"
   "VOIDAD_ALLOWED_CIDRS=${VOIDAD_ALLOWED_CIDRS}"

@@ -1,4 +1,4 @@
-/** Runs in page context — blocks popup ads that bypass DNS (maximum mode) */
+/** Maximum mode — block popups, casino tabs, and external redirect ads on all sites */
 (function () {
   "use strict";
 
@@ -6,29 +6,66 @@
     /faselhd|shahid4u|egybest|cima4u|akwam|arabseed|movizland|witanime|topcinema|egydead|xcinema|cimalina|youtube\.com|youtu\.be|netflix\.com/i;
 
   const AD_URL =
-    /chaturbate|stripchat|livejasmin|cam4|bongacams|casino|betting|hitnspin|gambl|1xbet|betway|stake\.|spin\.com|scratchcard|popads|adsterra|clickadu|exoclick|propellerads|juicyads|trafficjunky|onclick|redirect|affiliate|sponsor|livingcost|begravesimula|1osb\.com/i;
+    /chaturbate|stripchat|livejasmin|cam4|bongacams|casino|betting|hitnspin|gambl|1xbet|betway|stake|spin\.com|scratchcard|popads|adsterra|clickadu|exoclick|propellerads|juicyads|trafficjunky|onclick|redirect|affiliate|sponsor|livingcost|begravesimula|1osb\.com|poker|jackpot|lottery|roulette|slots/i;
 
   const ROTATOR_TLD =
-    /\.(cfd|sbs|bond|lat|monster|icu|buzz|shop|rest|hair|makeup|quest|pw|top|xyz|cam|click|tk|ml|ga|cf)(\/|:|\?|$)/i;
+    /\.(cfd|sbs|bond|lat|monster|icu|buzz|shop|rest|hair|makeup|quest|pw|top|xyz|cam|click|tk|ml|ga|cf|bet|casino|poker)(\/|:|\?|$)/i;
 
-  const LONG_RANDOM_COM = /^https?:\/\/[a-z]{22,}\.com(\/|$|\?)/i;
+  const LONG_RANDOM_COM = /^https?:\/\/[a-z]{12,}\.com(\/|$|\?)/i;
+
+  const SAFE_HOST_SUFFIXES = [
+    "google.com",
+    "youtube.com",
+    "youtu.be",
+    "gstatic.com",
+    "googleapis.com",
+    "googlevideo.com",
+    "microsoft.com",
+    "live.com",
+    "office.com",
+    "apple.com",
+    "icloud.com",
+    "github.com",
+    "voidad.com",
+    "voidad.de",
+    "wikipedia.org",
+    "netflix.com",
+    "facebook.com",
+    "instagram.com",
+    "whatsapp.com",
+    "twitter.com",
+    "x.com",
+  ];
 
   const STRICT_HOST = STREAMING_HOST.test(location.hostname);
+
+  function isSafeHost(host, here) {
+    const h = host.toLowerCase();
+    const current = here.toLowerCase();
+    if (!h || h === current || h.endsWith("." + current)) return true;
+    return SAFE_HOST_SUFFIXES.some(
+      (suffix) => h === suffix || h.endsWith("." + suffix),
+    );
+  }
 
   function isAdUrl(url) {
     const u = String(url ?? "").toLowerCase().trim();
     if (!u || u === "about:blank" || u.startsWith("javascript:")) return true;
-    if (STRICT_HOST) {
-      try {
-        const host = new URL(u, location.href).hostname.toLowerCase();
-        const here = location.hostname.toLowerCase();
-        if (host !== here && !host.endsWith(".google.com") && !host.endsWith(".youtube.com")) {
-          return true;
-        }
-      } catch {
-        return true;
+
+    try {
+      const host = new URL(u, location.href).hostname.toLowerCase();
+      const here = location.hostname.toLowerCase();
+
+      if (STRICT_HOST && !isSafeHost(host, here)) return true;
+
+      if (!isSafeHost(host, here)) {
+        if (AD_URL.test(u) || ROTATOR_TLD.test(u) || LONG_RANDOM_COM.test(u)) return true;
+        if (STRICT_HOST) return true;
       }
+    } catch {
+      return true;
     }
+
     return AD_URL.test(u) || ROTATOR_TLD.test(u) || LONG_RANDOM_COM.test(u);
   }
 

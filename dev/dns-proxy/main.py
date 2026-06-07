@@ -37,12 +37,12 @@ def main() -> None:
         settings.learned_blocks_path,
     )
     logger.info(
-        "DNS bind: %s:%s | LAN mode: %s | Client filter: %s | Allowed: %s",
+        "DNS bind: %s:%s | LAN: %s | MAX: %s | Client filter: %s",
         settings.dns_host,
         settings.dns_port,
         "ON" if settings.lan_mode else "OFF",
+        "ON" if settings.max_mode else "OFF",
         "ON" if settings.client_filter_enabled else "OFF",
-        settings.allowed_cidrs,
     )
     if settings.detected_lan_ip:
         logger.info("Detected Mac LAN IP: %s", settings.detected_lan_ip)

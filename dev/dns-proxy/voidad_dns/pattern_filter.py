@@ -60,6 +60,13 @@ EXACT_LABELS: frozenset[str] = frozenset(
         "impression",
         "stat",
         "stats",
+        "spin",
+        "bet",
+        "poker",
+        "slot",
+        "wager",
+        "jackpot",
+        "lottery",
     }
 )
 
@@ -88,6 +95,14 @@ LABEL_SUBSTRINGS: tuple[str, ...] = (
     "casino",
     "betting",
     "gambl",
+    "poker",
+    "jackpot",
+    "lottery",
+    "1xbet",
+    "betway",
+    "stake",
+    "slots",
+    "roulette",
 )
 
 # Prefix/suffix on a label (e.g. ads-foo, foo-ad).
@@ -138,7 +153,7 @@ ALLOWLIST_SUFFIXES: frozenset[str] = frozenset(
 )
 
 
-def _is_rotator_domain(normalized: str, *, aggressive: bool) -> str | None:
+def _is_rotator_domain(normalized: str, *, aggressive: bool, max_mode: bool = False) -> str | None:
     """Block domains used by popup ad rotators (common on streaming sites)."""
     labels = normalized.split(".")
     if len(labels) < 2:
@@ -150,11 +165,15 @@ def _is_rotator_domain(normalized: str, *, aggressive: bool) -> str | None:
     if tld in ROTATOR_TLDS:
         return f"rotator-tld:{tld}"
 
+    if tld in ("bet", "casino", "poker"):
+        return f"gambling-tld:{tld}"
+
     if tld == "shop" and len(base) >= 10 and base.isalpha():
         return "rotator-tld:shop"
 
-    if aggressive and tld == "com" and len(labels) == 2:
-        if len(base) >= 22 and base.isalpha():
+    min_long_com = 12 if max_mode else 22
+    if (aggressive or max_mode) and tld == "com" and len(labels) == 2:
+        if len(base) >= min_long_com and base.isalpha():
             return "rotator-name:long-com"
 
     return None
@@ -186,7 +205,7 @@ class PatternFilter:
     Works label-by-label so ``admin.example.com`` is not blocked for containing ``ad``.
     """
 
-    def match(self, domain: str, *, aggressive: bool = False) -> FilterMatch:
+    def match(self, domain: str, *, aggressive: bool = False, max_mode: bool = False) -> FilterMatch:
         if not settings.pattern_blocking_enabled:
             return FilterMatch(blocked=False)
 
@@ -199,7 +218,8 @@ class PatternFilter:
             if normalized == suffix or normalized.endswith(f".{suffix}"):
                 return FilterMatch(blocked=False)
 
-        rotator = _is_rotator_domain(normalized, aggressive=aggressive)
+        use_aggressive = aggressive or max_mode
+        rotator = _is_rotator_domain(normalized, aggressive=use_aggressive, max_mode=max_mode)
         if rotator:
             return FilterMatch(blocked=True, reason=BlockReason.PATTERN, detail=rotator)
 

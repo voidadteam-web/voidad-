@@ -34,7 +34,14 @@ class FilterEngine:
     def learned_log(self) -> LearnedBlockLog:
         return self._learned
 
-    def check(self, domain: str, *, client: str = "", aggressive: bool = False) -> FilterMatch:
+    def check(
+        self,
+        domain: str,
+        *,
+        client: str = "",
+        aggressive: bool = False,
+        max_mode: bool = False,
+    ) -> FilterMatch:
         normalized = normalize_domain(domain)
 
         if self._blocklist.is_blocked(normalized):
@@ -44,7 +51,11 @@ class FilterEngine:
                 detail="recursive-suffix",
             )
 
-        pattern_hit = self._patterns.match(normalized, aggressive=aggressive)
+        pattern_hit = self._patterns.match(
+            normalized,
+            aggressive=aggressive,
+            max_mode=max_mode,
+        )
         if pattern_hit.blocked:
             self._learned.record(
                 normalized,
